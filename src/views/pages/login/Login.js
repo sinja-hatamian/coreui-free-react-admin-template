@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -17,6 +18,38 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
 const Login = () => {
+  const [formdata, setFormdata] = useState({
+    username: '',
+    password: '',
+  })
+
+  const handleInputCahnge = (e) => {
+    const { name, value } = e.target
+    setFormdata((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleLogin = () => {
+    axios
+      .post('http://localhost:4000/api/manager/auth/login', formdata, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data.token)
+        alert('ورود با موفقیت انجام شد')
+        localStorage.setItem('token', res.data.data.token)
+        localStorage.setItem('manager', JSON.stringify(res.data.data.manager))
+
+        //redirect to openCash page
+        window.location.href = '/#/pages/openCash'
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در ورود ')
+      })
+  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -32,47 +65,35 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput
+                        name="username"
+                        placeholder="Username"
+                        autoComplete="username"
+                        value={formdata.username}
+                        onChange={handleInputCahnge}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
                       <CFormInput
+                        name="password"
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        value={formdata.password}
+                        onChange={handleInputCahnge}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="px-4" onClick={handleLogin}>
                           Login
-                        </CButton>
-                      </CCol>
-                      <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
-                          Forgot password?
                         </CButton>
                       </CCol>
                     </CRow>
                   </CForm>
-                </CCardBody>
-              </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
-                <CCardBody className="text-center">
-                  <div>
-                    <h2>Sign up</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
-                      </CButton>
-                    </Link>
-                  </div>
                 </CCardBody>
               </CCard>
             </CCardGroup>

@@ -279,8 +279,8 @@
 // $enable-important-utilities:        true !default;
 // $enable-contrast-ratio-correction:  true !default;
 // $enable-contrast-ratio-warnings:    false !default;
-// $enable-ltr:                        true !default;
-// $enable-rtl:                        false !default;
+   $enable-ltr:                        false !default;
+   $enable-rtl:                        true !default;
 
 // Set mobile breakpoint
 
