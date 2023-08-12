@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
   CCard,
@@ -8,14 +8,35 @@ import {
   CRow,
   CTabContent,
   CTabPane,
-  CTabs,
   CNav,
   CNavItem,
   CNavLink,
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableRow,
+  CTableHeaderCell,
+  CTableDataCell,
 } from '@coreui/react'
 
 const Stages = () => {
   const [activeKey, setActiveKey] = useState(1)
+  const [stages, setStages] = useState([])
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:4000/api/manager/stages', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        setStages(res.data.data.stages)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   return (
     <>
@@ -39,7 +60,22 @@ const Stages = () => {
                 <CCardHeader>
                   <strong>مشاهده سالن ها</strong>
                 </CCardHeader>
-                <CCardBody></CCardBody>
+                <CCardBody>
+                  <CTable striped>
+                    <CTableHead>
+                      <CTableRow>
+                        <CTableHeaderCell>نام سالن</CTableHeaderCell>
+                      </CTableRow>
+                    </CTableHead>
+                    <CTableBody>
+                      {stages.map((stage) => (
+                        <CTableRow key={stage.id}>
+                          <CTableDataCell>{stage.title}</CTableDataCell>
+                        </CTableRow>
+                      ))}
+                    </CTableBody>
+                  </CTable>
+                </CCardBody>
               </CCard>
             </CCol>
           </CRow>
