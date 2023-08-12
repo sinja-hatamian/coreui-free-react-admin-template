@@ -120,7 +120,7 @@ const Stages = () => {
                     <CCol md={6}>
                       <CFormInput
                         label="نام سالن"
-                        name="title"
+                        name="stageName"
                         value={stageName}
                         onChange={handleTitleChange}
                         aria-label="title"

@@ -23,6 +23,7 @@ const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 const OpenCash = React.lazy(() => import('./views/pages/openCash/OpenCash'))
 const Stages = React.lazy(() => import('./views/pages/stages/Stages'))
+const Games = React.lazy(() => import('./views/pages/games/Games'))
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -98,6 +99,7 @@ const routes = [
   { path: '/pages/login', name: 'Pages', element: Login, exact: true },
   { path: '/pages/openCash', name: 'OpenCash', element: OpenCash, exact: true },
   { path: '/pages/stages', name: 'Stages', element: Stages, exact: true },
+  { path: '/pages/games', name: 'Games', element: Games, exact: true },
 ]
 
 export default routes
