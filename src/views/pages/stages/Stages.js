@@ -17,11 +17,14 @@ import {
   CTableRow,
   CTableHeaderCell,
   CTableDataCell,
+  CFormInput,
+  CButton,
 } from '@coreui/react'
 
 const Stages = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [stages, setStages] = useState([])
+  const [stageName, setStageName] = useState('')
 
   useEffect(() => {
     axios
@@ -37,6 +40,31 @@ const Stages = () => {
         console.log(err)
       })
   }, [])
+
+  const handleTitleChange = (e) => {
+    setStageName(e.target.value)
+  }
+
+  const handleAddStage = () => {
+    axios
+      .post(
+        'http://localhost:4000/api/manager/stages',
+        { title: stageName },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        },
+      )
+      .then((res) => {
+        console.log(res.data.data)
+        alert('سالن با موفقیت اضافه شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در اضافه کردن سالن')
+      })
+  }
 
   return (
     <>
@@ -87,7 +115,27 @@ const Stages = () => {
                 <CCardHeader>
                   <strong>افزودن سالن</strong>
                 </CCardHeader>
-                <CCardBody></CCardBody>
+                <CCardBody>
+                  <CRow>
+                    <CCol md={6}>
+                      <CFormInput
+                        label="نام سالن"
+                        name="title"
+                        value={stageName}
+                        onChange={handleTitleChange}
+                        aria-label="title"
+                        locale="fa-IR"
+                      />
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6}>
+                      <CButton color="success" onClick={handleAddStage}>
+                        افزودن
+                      </CButton>
+                    </CCol>
+                  </CRow>
+                </CCardBody>
               </CCard>
             </CCol>
           </CRow>
