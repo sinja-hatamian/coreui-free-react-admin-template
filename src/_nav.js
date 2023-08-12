@@ -14,6 +14,7 @@ import {
   cilChart,
   cilChartLine,
   cilBarChart,
+  cilGrid,
 } from '@coreui/icons'
 import { CDropdownItem, CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -83,6 +84,12 @@ const _nav = [
     component: CNavItem,
     name: 'مدیریت جدول اعتبارات',
     to: '/charts',
+    icon: <CIcon icon={cilGrid} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: ' مدیریت سالن ها ',
+    to: '/pages/Stages',
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
   },
   // {
