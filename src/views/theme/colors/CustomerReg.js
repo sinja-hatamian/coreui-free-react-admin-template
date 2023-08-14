@@ -77,6 +77,24 @@ const CustomerReg = () => {
       })
   }
 
+  const handleUpdateCustomer = () => {
+    axios
+      .put(`http://localhost:4000/api/manager/users/${formdata.id}`, formdata, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+
+        alert('کاربر با موفقیت ویرایش شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در ویرایش کاربر')
+      })
+  }
+
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -259,7 +277,17 @@ const CustomerReg = () => {
                       </CFormSelect>
                     </CCol>
                     <CCol md={12}>
-                      <CButton color="success" onClick={handleSaveCustomer}>
+                      <CButton
+                        color="success"
+                        onClick={() => {
+                          //if user field is full update user else create new user
+                          if (formdata.id) {
+                            handleUpdateCustomer()
+                          } else {
+                            handleSaveCustomer()
+                          }
+                        }}
+                      >
                         ذخیره
                       </CButton>
                     </CCol>

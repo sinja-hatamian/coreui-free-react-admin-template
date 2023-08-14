@@ -16,6 +16,7 @@ import {
   cilBarChart,
   cilGrid,
   cilGamepad,
+  cilDoor,
 } from '@coreui/icons'
 import { CDropdownItem, CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -98,6 +99,12 @@ const _nav = [
     name: ' مدیریت  بازی ها ',
     to: '/pages/Games',
     icon: <CIcon icon={cilGamepad} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'مدیریت گیت ها ',
+    to: '/pages/Gates',
+    icon: <CIcon icon={cilDoor} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavGroup,
