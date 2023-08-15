@@ -86,7 +86,6 @@ const CustomerReg = () => {
       })
       .then((res) => {
         console.log(res)
-
         alert('کاربر با موفقیت ویرایش شد')
       })
       .catch((err) => {

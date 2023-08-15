@@ -24,7 +24,6 @@ import {
 const Games = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [games, setGames] = useState([])
-  const [selectedGame, setSelectedGame] = useState(null)
   const [gameData, setGameData] = useState({
     name: '',
     type: '',
@@ -53,12 +52,10 @@ const Games = () => {
   }, [])
 
   const handleGamesChange = (e) => {
-    const { name, value } = e.target
-    console.log(name, value)
-    setGameData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }))
+    setGameData({
+      ...gameData,
+      [e.target.name]: e.target.value,
+    })
   }
 
   const handleAddGame = () => {
@@ -78,21 +75,9 @@ const Games = () => {
       })
   }
 
-  const handleEditGame = () => {
-    const updateGameData = {
-      id: selectedGame.id,
-      name: gameData.name,
-      type: gameData.type,
-      device_code: gameData.device_code,
-      accountancy_code: gameData.accountancy_code,
-      base_price: gameData.base_price,
-      extra_price: gameData.extra_price,
-      stage_id: gameData.stage_id,
-      base_time: gameData.base_time,
-    }
-
+  const handleUpdateGame = () => {
     axios
-      .put(`http://localhost:4000/api/manager/games/${selectedGame.id}`, updateGameData, {
+      .put(`http://localhost:4000/api/manager/games/${gameData.id}`, gameData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -100,7 +85,6 @@ const Games = () => {
       .then((res) => {
         console.log(res.data.data)
         alert('بازی با موفقیت ویرایش شد')
-        setSelectedGame(null)
       })
       .catch((err) => {
         console.log(err)
@@ -159,7 +143,9 @@ const Games = () => {
                             <CButton
                               color="info"
                               onClick={() => {
+                                console.log(game)
                                 setGameData({
+                                  id: game.id,
                                   name: game.Name,
                                   type: game.Type,
                                   device_code: game.DeviceCode,
@@ -198,7 +184,7 @@ const Games = () => {
                         name="name"
                         aria-label="name"
                         locale="fa-IR"
-                        value={selectedGame ? selectedGame.Name : gameData.name}
+                        value={gameData.name}
                         onChange={handleGamesChange}
                       />
                     </CCol>
@@ -209,7 +195,7 @@ const Games = () => {
                         name="type"
                         aria-label="type"
                         locale="fa-IR"
-                        value={selectedGame ? selectedGame.Type : gameData.type}
+                        value={gameData.type}
                         onChange={handleGamesChange}
                       />
                     </CCol>
@@ -220,7 +206,7 @@ const Games = () => {
                         name="device_code"
                         aria-label="device_code"
                         locale="fa-IR"
-                        value={selectedGame ? selectedGame.DeviceCode : gameData.device_code}
+                        value={gameData.device_code}
                         onChange={handleGamesChange}
                       />
                     </CCol>
@@ -231,9 +217,7 @@ const Games = () => {
                         name="accountancy_code"
                         aria-label="accountancy_code"
                         locale="fa-IR"
-                        value={
-                          selectedGame ? selectedGame.AccountancyCod : gameData.accountancy_code
-                        }
+                        value={gameData.accountancy_code}
                         onChange={handleGamesChange}
                       />
                     </CCol>
@@ -244,7 +228,7 @@ const Games = () => {
                         name="base_price"
                         aria-label="base_price"
                         locale="fa-IR"
-                        value={selectedGame ? selectedGame.BasePrice : gameData.base_price}
+                        value={gameData.base_price}
                         onChange={handleGamesChange}
                       />
                     </CCol>
@@ -254,7 +238,7 @@ const Games = () => {
                         placeholder="قیمت اضافه"
                         name="extra_price"
                         aria-label="extra_price"
-                        value={selectedGame ? selectedGame.ExtraPrice : gameData.extra_price}
+                        value={gameData.extra_price}
                         locale="fa-IR"
                         onChange={handleGamesChange}
                       />
@@ -266,7 +250,7 @@ const Games = () => {
                         name="stage_id"
                         aria-label="stage_id"
                         locale="fa-IR"
-                        value={selectedGame ? selectedGame.stage_id : gameData.stage_id}
+                        value={gameData.stage_id}
                         onChange={handleGamesChange}
                       />
                     </CCol>
@@ -277,7 +261,7 @@ const Games = () => {
                         name="base_time"
                         aria-label="base_time"
                         locale="fa-IR"
-                        value={selectedGame ? selectedGame.BaseTime : gameData.base_time}
+                        value={gameData.base_time}
                         onChange={handleGamesChange}
                       />
                     </CCol>
@@ -287,7 +271,7 @@ const Games = () => {
                       </CButton>
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CButton color="primary" onClick={handleEditGame}>
+                      <CButton color="primary" onClick={handleUpdateGame}>
                         ویرایش بازی
                       </CButton>
                     </CCol>
