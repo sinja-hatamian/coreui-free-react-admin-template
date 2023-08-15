@@ -23,7 +23,6 @@ import {
 const Gates = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [gates, setGates] = useState([])
-  const [selectedGate, setSelectedGate] = useState(null)
   const [gateData, setGateData] = useState({
     name: '',
     device_code: '',
@@ -69,6 +68,22 @@ const Gates = () => {
         alert('خطا در ثبت گیت')
       })
   }
+  const handleUpdateGame = () => {
+    axios
+      .put(`http://localhost:4000/api/manager/gates/${gateData.id}`, gateData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        alert('گیت با موفقیت ویرایش شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در ویرایش گیت')
+      })
+  }
 
   return (
     <>
@@ -83,12 +98,6 @@ const Gates = () => {
           <CNavLink active={activeKey === 2} onClick={() => setActiveKey(2)}>
             {' '}
             افزودن گیت
-          </CNavLink>
-        </CNavItem>
-        <CNavItem>
-          <CNavLink active={activeKey === 3} onClick={() => setActiveKey(3)}>
-            {' '}
-            ویرایش گیت
           </CNavLink>
         </CNavItem>
       </CNav>
@@ -120,7 +129,23 @@ const Gates = () => {
                           <CTableDataCell>{gate.stage_id}</CTableDataCell>
                           <CTableDataCell>{gate.IsEnter ? 'ورودی' : 'خروجی'}</CTableDataCell>
                           <CTableDataCell>
-                            <CButton color="info">ویرایش</CButton>
+                            <CButton
+                              color="info"
+                              onClick={() => {
+                                console.log(gate)
+                                setGateData({
+                                  id: gate.id,
+                                  name: gate.Name,
+                                  device_code: gate.DeviceCode,
+                                  price: gate.Price,
+                                  stage_id: gate.stage_id,
+                                  is_enter: gate.IsEnter,
+                                })
+                                setActiveKey(2)
+                              }}
+                            >
+                              ویرایش
+                            </CButton>
                           </CTableDataCell>
                         </CTableRow>
                       ))}
@@ -181,7 +206,11 @@ const Gates = () => {
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CButton color="success" onClick={handleSaveGate}>
+                      <CButton
+                        color="success"
+                        //onclick if id is null add else update
+                        onClick={gateData.id ? handleUpdateGame : handleSaveGate}
+                      >
                         ذخیره
                       </CButton>
                     </CCol>
