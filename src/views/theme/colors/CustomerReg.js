@@ -16,11 +16,10 @@ import {
   CFormSelect,
   CButton,
 } from '@coreui/react'
-import BuyCard from 'src/views/pages/buyCard/BuyCard'
-import ExportCard from 'src/views/pages/exportCard/ExportCard'
 import DeliveryCard from 'src/views/pages/deliveryCard/DeliveryCard'
 import ChargCard from 'src/views/pages/chargCard/ChargCard'
 import ChangeCard from 'src/views/pages/changeCard/ChangeCard'
+import AddAttendant from 'src/views/pages/addAttendant/AddAttendant'
 
 const CustomerReg = () => {
   const [formdata, setFormdata] = useState({
@@ -104,42 +103,32 @@ const CustomerReg = () => {
         </CNavItem>
         <CNavItem>
           <CNavLink active={activeKey === 2} onClick={() => setActiveKey(2)}>
-            خرید کارت
-          </CNavLink>
-        </CNavItem>
-        <CNavItem>
-          <CNavLink active={activeKey === 3} onClick={() => setActiveKey(3)}>
-            صدور کارت
-          </CNavLink>
-        </CNavItem>
-        <CNavItem>
-          <CNavLink active={activeKey === 4} onClick={() => setActiveKey(4)}>
             تحویل کارت
           </CNavLink>
         </CNavItem>
         <CNavItem>
-          <CNavLink active={activeKey === 5} onClick={() => setActiveKey(5)}>
+          <CNavLink active={activeKey === 3} onClick={() => setActiveKey(3)}>
             شارژ کارت
           </CNavLink>
         </CNavItem>
 
         <CNavItem>
-          <CNavLink active={activeKey === 6} onClick={() => setActiveKey(6)}>
+          <CNavLink active={activeKey === 4} onClick={() => setActiveKey(4)}>
             تعویض کارت
           </CNavLink>
         </CNavItem>
         <CNavItem>
-          <CNavLink active={activeKey === 7} onClick={() => setActiveKey(7)}>
+          <CNavLink active={activeKey === 5} onClick={() => setActiveKey(5)}>
             انتقال وجه
           </CNavLink>
         </CNavItem>
         <CNavItem>
-          <CNavLink active={activeKey === 8} onClick={() => setActiveKey(8)}>
+          <CNavLink active={activeKey === 6} onClick={() => setActiveKey(6)}>
             بازیابی رمز کارت
           </CNavLink>
         </CNavItem>
         <CNavItem>
-          <CNavLink active={activeKey === 9} onClick={() => setActiveKey(9)}>
+          <CNavLink active={activeKey === 7} onClick={() => setActiveKey(7)}>
             تخصیص دستبند
           </CNavLink>
         </CNavItem>
@@ -296,20 +285,23 @@ const CustomerReg = () => {
             </CCol>
           </CRow>
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
-          <BuyCard />
-        </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 3}>
-          <ExportCard />
-        </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 4}>
+        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 2}>
           <DeliveryCard />
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 5}>
+        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 3}>
           <ChargCard />
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 6}>
+        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 4}>
           <ChangeCard />
+        </CTabPane>
+        {/* <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 5}>
+          <TransferCard />
+        </CTabPane>
+        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 6}>
+          <RecoveryCard />
+        </CTabPane> */}
+        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 7}>
+          <AddAttendant />
         </CTabPane>
       </CTabContent>
     </>
