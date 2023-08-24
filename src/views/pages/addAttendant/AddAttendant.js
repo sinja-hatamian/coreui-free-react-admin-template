@@ -31,15 +31,6 @@ const AddAttendant = () => {
   const [fixedData, setFixedData] = useState([])
   const [customer, setCustomer] = useState({})
   const [tag, setTag] = useState('')
-  const [attendantForm, setAttendantForm] = useState({
-    firstname: '',
-    lastname: '',
-    national_code: '',
-    phone: '',
-    birthday: '',
-    gender: '',
-    tag: '',
-  })
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
@@ -53,8 +44,12 @@ const AddAttendant = () => {
           },
         })
         .then((res) => {
+          console.log(res.data.data)
+          setFixedData([
+            ...res.data.data.attendant.members.filter((item) => item.tag !== undefined),
+          ])
           setAttendant(res.data.data.attendant.members.filter((item) => item.tag === undefined))
-          setFixedData(res.data.data.attendant.members.filter((item) => item.tag !== undefined))
+          setTag(res.data.data.attendant.tag)
         })
         .catch((err) => {
           console.log(err)
@@ -64,17 +59,14 @@ const AddAttendant = () => {
 
   const handleChange = (e, index) => {
     const { name, value } = e.target
-    // setAttendant({
-    //   ...attendant.map((item, i) => {
-    //     if (i === index) {
-    //       return { ...item, [name]: value }
-    //     }
-    //     return item
-    //   }),
-    // })
-    let iot = attendant[index]
-    iot[name] = value
-    setAttendant([...attendant, iot])
+    setAttendant([
+      ...attendant.map((item, i) => {
+        if (i === index) {
+          return { ...item, [name]: value }
+        }
+        return item
+      }),
+    ])
   }
 
   const handleAddAttendant = () => {
@@ -103,6 +95,24 @@ const AddAttendant = () => {
       })
   }
 
+  const removeAttendant = (index) => {
+    setAttendant([...attendant.filter((item, i) => i !== index)])
+  }
+  const cloneAttendant = () => {
+    setAttendant([
+      ...attendant,
+      {
+        firstname: '',
+        lastname: '',
+        national_code: '',
+        phone: '',
+        birthday: '',
+        gender: '',
+        tag: '',
+      },
+    ])
+  }
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -112,8 +122,95 @@ const AddAttendant = () => {
           </CCardHeader>
           <CCardBody>
             <CForm className="row g-3">
+              {tag === null ? (
+                <div className="col-12 row">
+                  <CCol md={6}>
+                    <CFormInput
+                      label="نام"
+                      id="firstname"
+                      name="firstname"
+                      aria-label="firstname"
+                      placeholder="نام"
+                      value={customer.firstname}
+                      locale="fa-IR"
+                      disabled
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormInput
+                      label="نام خانوادگی"
+                      id="lastname"
+                      name="lastname"
+                      aria-label="lastname"
+                      placeholder="نام خانوادگی"
+                      value={customer.lastname}
+                      locale="fa-IR"
+                      disabled
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormInput
+                      label="کد ملی"
+                      id="national_code"
+                      name="national_code"
+                      aria-label="national_code"
+                      placeholder="کد ملی"
+                      value={customer.national_code}
+                      locale="fa-IR"
+                      disabled
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormInput
+                      label="شماره تلفن"
+                      id="phone"
+                      aria-label="phone"
+                      name="phone"
+                      placeholder="شماره تلفن"
+                      value={customer.phone}
+                      locale="fa-IR"
+                      disabled
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormInput
+                      label="تاریخ تولد"
+                      type="date"
+                      id="birthday"
+                      name="birthday"
+                      placeholder="تاریخ تولد"
+                      value={customer.birthday}
+                      locale="fa-IR"
+                      disabled
+                    />
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormSelect
+                      label="جنسیت"
+                      name="gender"
+                      aria-label="gender"
+                      value={customer.gender}
+                      locale="fa-IR"
+                      disabled
+                    >
+                      <option value="male">مرد</option>
+                      <option value="female">زن</option>
+                    </CFormSelect>
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormInput
+                      label="تگ"
+                      name="tag"
+                      aria-label="tag"
+                      onChange={(event) => setTag(event.target.value)}
+                      value={tag}
+                      locale="fa-IR"
+                    ></CFormInput>
+                  </CCol>
+                </div>
+              ) : null}
               {attendant.map((item, index) => (
-                <div key={index}>
+                <div className="col-12 row" key={index}>
                   <CCol md={6}>
                     <CFormInput
                       label="نام"
@@ -133,7 +230,7 @@ const AddAttendant = () => {
                       name="lastname"
                       aria-label="lastname"
                       placeholder="نام خانوادگی"
-                      onChange={handleChange}
+                      onChange={(event) => handleChange(event, index)}
                       value={item.lastname}
                       locale="fa-IR"
                     />
@@ -145,7 +242,7 @@ const AddAttendant = () => {
                       name="national_code"
                       aria-label="national_code"
                       placeholder="کد ملی"
-                      onChange={handleChange}
+                      onChange={(event) => handleChange(event, index)}
                       value={item.national_code}
                       locale="fa-IR"
                     />
@@ -157,7 +254,7 @@ const AddAttendant = () => {
                       aria-label="phone"
                       name="phone"
                       placeholder="شماره تلفن"
-                      onChange={handleChange}
+                      onChange={(event) => handleChange(event, index)}
                       value={item.phone}
                       locale="fa-IR"
                     />
@@ -169,7 +266,7 @@ const AddAttendant = () => {
                       id="birthday"
                       name="birthday"
                       placeholder="تاریخ تولد"
-                      onChange={handleChange}
+                      onChange={(event) => handleChange(event, index)}
                       value={item.birthday}
                       locale="fa-IR"
                     />
@@ -179,7 +276,7 @@ const AddAttendant = () => {
                       label="جنسیت"
                       name="gender"
                       aria-label="gender"
-                      onChange={handleChange}
+                      onChange={(event) => handleChange(event, index)}
                       value={item.gender}
                       locale="fa-IR"
                     >
@@ -192,96 +289,33 @@ const AddAttendant = () => {
                       label="تگ"
                       name="tag"
                       aria-label="tag"
-                      onChange={handleChange}
+                      onChange={(event) => handleChange(event, index)}
                       value={item.tag}
                       locale="fa-IR"
                     ></CFormInput>
                   </CCol>
+                  <CCol md={4}>
+                    <CButton
+                      color="danger"
+                      onClick={() => {
+                        removeAttendant(index)
+                      }}
+                    >
+                      حذف
+                    </CButton>
+                  </CCol>
                 </div>
               ))}
-              {/* <CCol md={6}>
-                <CFormInput
-                  label="نام"
-                  id="firstname"
-                  name="firstname"
-                  aria-label="firstname"
-                  placeholder="نام"
-                  onChange={handleChange}
-                  value={attendantForm.firstname}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={6}>
-                <CFormInput
-                  label="نام خانوادگی"
-                  id="lastname"
-                  name="lastname"
-                  aria-label="lastname"
-                  placeholder="نام خانوادگی"
-                  onChange={handleChange}
-                  value={attendantForm.lastname}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={6}>
-                <CFormInput
-                  label="کد ملی"
-                  id="national_code"
-                  name="national_code"
-                  aria-label="national_code"
-                  placeholder="کد ملی"
-                  onChange={handleChange}
-                  value={attendantForm.national_code}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={6}>
-                <CFormInput
-                  label="شماره تلفن"
-                  id="phone"
-                  aria-label="phone"
-                  name="phone"
-                  placeholder="شماره تلفن"
-                  onChange={handleChange}
-                  value={attendantForm.phone}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={6}>
-                <CFormInput
-                  label="تاریخ تولد"
-                  type="date"
-                  id="birthday"
-                  name="birthday"
-                  placeholder="تاریخ تولد"
-                  onChange={handleChange}
-                  value={attendantForm.birthday}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={4}>
-                <CFormSelect
-                  label="جنسیت"
-                  name="gender"
-                  aria-label="gender"
-                  onChange={handleChange}
-                  value={attendantForm.gender}
-                  locale="fa-IR"
-                >
-                  <option value="male">مرد</option>
-                  <option value="female">زن</option>
-                </CFormSelect>
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  label="تگ"
-                  name="tag"
-                  aria-label="tag"
-                  onChange={handleChange}
-                  value={attendantForm.tag}
-                  locale="fa-IR"
-                ></CFormInput> 
-              </CCol>*/}
+
+              <CButton
+                color="primary"
+                onClick={() => {
+                  cloneAttendant()
+                }}
+              >
+                افزودن همراه
+              </CButton>
+
               <CButton color="primary" onClick={handleAddAttendant}>
                 ثبت
               </CButton>
@@ -296,6 +330,13 @@ const AddAttendant = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
+              {tag !== null ? (
+                <CTableRow>
+                  <CTableHeaderCell>{customer.firstname}</CTableHeaderCell>
+                  <CTableHeaderCell>{customer.lastname}</CTableHeaderCell>
+                  <CTableHeaderCell>{tag}</CTableHeaderCell>
+                </CTableRow>
+              ) : null}
               {fixedData.map((item) => (
                 <CTableRow key={item.id}>
                   <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
