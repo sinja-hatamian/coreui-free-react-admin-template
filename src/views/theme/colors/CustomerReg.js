@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import {
   CNav,
@@ -40,6 +40,12 @@ const CustomerReg = () => {
     setFormdata((prev) => ({ ...prev, [name]: value }))
   }
 
+  useEffect(() => {
+    if (localStorage.getItem('customer')) {
+      setFormdata(JSON.parse(localStorage.getItem('customer')))
+    }
+  }, [])
+
   const handleSaveCustomer = () => {
     console.log(formdata)
     axios
@@ -49,6 +55,7 @@ const CustomerReg = () => {
         },
       })
       .then((res) => {
+        localStorage.setItem('customer', JSON.stringify(res.data.data.user))
         console.log(res)
         alert('کاربر با موفقیت ثبت شد')
       })
@@ -68,6 +75,7 @@ const CustomerReg = () => {
         const customerData = res.data.data.user
         console.log(customerData)
         setFormdata((prev) => ({ ...prev, ...customerData }))
+        localStorage.setItem('customer', JSON.stringify(customerData))
         setActiveKey(2)
       })
       .catch((err) => {
