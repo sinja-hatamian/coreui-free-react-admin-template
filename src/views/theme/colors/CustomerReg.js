@@ -126,11 +126,6 @@ const CustomerReg = () => {
           </CNavLink>
         </CNavItem>
         <CNavItem>
-          <CNavLink active={activeKey === 5} onClick={() => setActiveKey(5)}>
-            بازیابی رمز کارت
-          </CNavLink>
-        </CNavItem>
-        <CNavItem>
           <CNavLink active={activeKey === 6} onClick={() => setActiveKey(6)}>
             تخصیص دستبند
           </CNavLink>
@@ -294,12 +289,6 @@ const CustomerReg = () => {
         <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 3}>
           <ChargCard />
         </CTabPane>
-        {/* <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 5}>
-          <TransferCard />
-        </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 6}>
-          <RecoveryCard />
-        </CTabPane> */}
         <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 6}>
           <AddAttendant />
         </CTabPane>

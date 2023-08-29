@@ -45,12 +45,17 @@ const AddAttendant = () => {
         })
         .then((res) => {
           console.log(res.data.data)
-          setFixedData([
-            ...res.data.data.attendant.members.filter((item) => item.tag !== undefined),
-          ])
-          setAttendant(res.data.data.attendant.members.filter((item) => item.tag === undefined))
-          setTag(res.data.data.attendant.tag)
+          if (res.data.data.attendant !== undefined) {
+            setFixedData([
+              ...res.data.data.attendant.members.filter((item) => item.tag !== undefined),
+            ])
+            setAttendant(res.data.data.attendant.members.filter((item) => item.tag === undefined))
+            setTag(res.data.data.attendant.tag)
+          } else {
+            alert('no members find')
+          }
         })
+
         .catch((err) => {
           console.log(err)
         })
