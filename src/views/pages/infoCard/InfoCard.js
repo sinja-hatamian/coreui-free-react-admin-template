@@ -35,6 +35,7 @@ const InfoCard = () => {
           },
         })
         .then((res) => {
+          console.log(res)
           setCard(res.data.data.card)
           setCardForm({
             number: res.data.data.card.number,

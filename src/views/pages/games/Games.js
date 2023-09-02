@@ -170,7 +170,7 @@ const Games = () => {
             </CCol>
           </CRow>
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 2}>
+        <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
           <CRow>
             <CCol xs={12}>
               <CCard className="mb-4">

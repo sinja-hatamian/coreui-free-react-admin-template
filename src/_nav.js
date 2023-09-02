@@ -85,7 +85,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'مدیریت جدول اعتبارات',
-    to: '/charts',
+    to: '/pages/ChargeCredits',
     icon: <CIcon icon={cilGrid} customClassName="nav-icon" />,
   },
   {
@@ -162,7 +162,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'ثبت کارت هدیه',
-    to: '/charts',
+    to: '/pages/giftCard',
     icon: <CIcon icon={cilGift} customClassName="nav-icon" />,
   },
   {

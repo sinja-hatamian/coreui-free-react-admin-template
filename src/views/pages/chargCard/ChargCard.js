@@ -87,7 +87,7 @@ const ChargCard = () => {
                     <option value="">انتخاب کنید</option>
                     <option value="2">پوز</option>
                     <option value="3">نقدی</option>
-                    <option value="4">اپشنال</option>
+                    <option value="4">کارت هدیه</option>
                   </CFormSelect>
                 </CCol>
               </div>
