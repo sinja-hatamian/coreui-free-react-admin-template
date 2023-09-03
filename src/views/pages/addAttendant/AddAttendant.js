@@ -285,6 +285,7 @@ const AddAttendant = () => {
                       value={item.gender}
                       locale="fa-IR"
                     >
+                      <option value={0}>انتخاب کنید</option>
                       <option value="male">مرد</option>
                       <option value="female">زن</option>
                     </CFormSelect>
