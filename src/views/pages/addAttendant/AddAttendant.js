@@ -15,6 +15,11 @@ import {
   CTableBody,
   CTableHeaderCell,
   CTableRow,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
 } from '@coreui/react'
 const AddAttendant = () => {
   const [attendant, setAttendant] = useState([
@@ -30,7 +35,8 @@ const AddAttendant = () => {
   ])
   const [fixedData, setFixedData] = useState([])
   const [customer, setCustomer] = useState({})
-  const [tag, setTag] = useState('')
+  const [tag, setTag] = useState(null)
+  const [qrcode, setQrcode] = useState(null)
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
@@ -45,7 +51,7 @@ const AddAttendant = () => {
         })
         .then((res) => {
           console.log(res.data.data)
-          if (res.data.data.attendant !== undefined) {
+          if (Object.keys(res.data.data.attendant).length > 0) {
             setFixedData([
               ...res.data.data.attendant.members.filter((item) => item.tag !== undefined),
             ])
@@ -81,7 +87,14 @@ const AddAttendant = () => {
         {
           user_id: customer.id,
           tag: tag,
-          members: attendant,
+          members: attendant.map((item) => {
+            Object.keys(item).forEach((key) => {
+              if (item[key] === '') {
+                delete item[key]
+              }
+            })
+            return item
+          }),
         },
         {
           headers: {
@@ -90,9 +103,13 @@ const AddAttendant = () => {
         },
       )
       .then((res) => {
+        console.log(res)
         const newAttendant = res.data.data
         setAttendant([...attendant, newAttendant])
         alert('همراه با موفقیت ثبت شد')
+        if (res.data.data.qrcode) {
+          setQrcode(res.data.data.qrcode)
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -354,6 +371,19 @@ const AddAttendant = () => {
           </CTable>
         </CCard>
       </CCol>
+      <CModal visible={qrcode !== null} onClose={() => setQrcode(null)} color="primary" size="lg">
+        <CModalHeader closeButton>
+          <CModalTitle>لطفا اسکن کنید</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <img src={qrcode} alt="qrcode" />
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setQrcode(null)}>
+            بستن
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </CRow>
   )
 }
