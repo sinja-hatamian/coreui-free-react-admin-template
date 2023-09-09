@@ -5,7 +5,7 @@ const CustomerReg = React.lazy(() => import('./views/theme/colors/CustomerReg'))
 
 // Base
 const OperatorReg = React.lazy(() => import('./views/base/operatorReg/OperatorReg'))
-const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
+const OperatorList = React.lazy(() => import('./views/base/operatorList/OperatorList'))
 const Cards = React.lazy(() => import('./views/base/cards/Cards'))
 const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'))
 const Collapses = React.lazy(() => import('./views/base/collapses/Collapses'))
@@ -65,7 +65,6 @@ const routes = [
   { path: '/theme/CustomerReg', name: 'Colors', element: CustomerReg },
   { path: '/base', name: 'Base', element: Cards, exact: true },
   { path: '/base/operatorReg', name: 'operatorReg', element: OperatorReg },
-  { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
   { path: '/base/cards', name: 'Cards', element: Cards },
   { path: '/base/carousels', name: 'Carousel', element: Carousels },
   { path: '/base/collapses', name: 'Collapse', element: Collapses },
@@ -108,6 +107,7 @@ const routes = [
   { path: '/pages/infoCard', name: 'InfoCard', element: InfoCard, exact: true },
   { path: '/pages/giftCard', name: 'GiftCard', element: GiftCard, exact: true },
   { path: '/pages/chargeCredits', name: 'ChargeCredits', element: ChargeCredits, exact: true },
+  { path: '/base/operatorList', name: 'OperatorList', element: OperatorList, exact: true },
 ]
 
 export default routes

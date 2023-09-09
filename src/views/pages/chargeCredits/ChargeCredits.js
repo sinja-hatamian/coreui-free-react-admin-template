@@ -8,16 +8,6 @@ import {
   CCol,
   CRow,
   CButton,
-  CForm,
-  CFormGroup,
-  CLabel,
-  CInput,
-  CSelect,
-  CInputFile,
-  CInputCheckbox,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText,
   CNav,
   CNavItem,
   CNavLink,
@@ -44,6 +34,40 @@ const ChargeCredits = () => {
   const handleChangeInput = (e) => {
     const { name, value } = e.target
     setCharge((prev) => ({ ...prev, [name]: value }))
+  }
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:4000/api/manager/charge-credits', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data)
+        setCredit(res.data.data.charge_credits)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
+  const handleAddCredit = () => {
+    axios
+      .post('http://localhost:4000/api/manager/charge-credits/', charge, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data)
+        setCredit([...credit, res.data.data.charge_credit])
+        alert('اعتبار با موفقیت افزوده شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در افزودن اعتبار')
+      })
   }
 
   return (
@@ -122,7 +146,9 @@ const ChargeCredits = () => {
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CButton color="primary">افزودن</CButton>
+                      <CButton color="primary" onClick={handleAddCredit}>
+                        افزودن
+                      </CButton>
                     </CCol>
                   </CRow>
                 </CCardBody>

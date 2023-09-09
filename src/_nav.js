@@ -54,7 +54,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'لیست کاربران',
-        to: '/base/breadcrumbs',
+        to: '/base/operatorList',
       },
     ],
   },
