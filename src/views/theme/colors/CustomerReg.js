@@ -19,6 +19,9 @@ import {
 import ChargCard from 'src/views/pages/chargCard/ChargCard'
 import AddAttendant from 'src/views/pages/addAttendant/AddAttendant'
 import InfoCard from 'src/views/pages/infoCard/InfoCard'
+import DatePicker, { Calendar } from 'react-multi-date-picker'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
 
 const CustomerReg = () => {
   const [formdata, setFormdata] = useState({
@@ -34,6 +37,7 @@ const CustomerReg = () => {
     birthday: '',
   })
   const [activeKey, setActiveKey] = useState(1)
+  const [value, setValue] = useState(new Date())
 
   const handleInputCahnge = (e) => {
     const { name, value } = e.target
@@ -99,6 +103,21 @@ const CustomerReg = () => {
         console.log(err)
         alert('خطا در ویرایش کاربر')
       })
+  }
+
+  const formatDate = (date) => {
+    if (!date) {
+      return null
+    }
+    const year = date.format('YYYY')
+    const month = date.format('MM')
+    const day = date.format('DD')
+
+    return `${year}-${month}-${day}`
+  }
+
+  const handleDate = (newDate) => {
+    setValue(newDate)
   }
 
   return (
@@ -239,7 +258,7 @@ const CustomerReg = () => {
                       />
                     </CCol>
                     <CCol md={6}>
-                      <CFormInput
+                      {/* <CFormInput
                         type="birthday"
                         label="تاریخ تولد"
                         name="birthday"
@@ -247,6 +266,14 @@ const CustomerReg = () => {
                         locale="fa-IR"
                         value={formdata.birthday}
                         onChange={handleInputCahnge}
+                      /> */}
+                      <DatePicker
+                        value={value}
+                        onChange={handleDate}
+                        calendarPosition="bottom-right"
+                        inputPlaceholder="تاریخ تولد"
+                        locale={persian_fa}
+                        calendar={persian}
                       />
                     </CCol>
                     <CCol md={4}>
