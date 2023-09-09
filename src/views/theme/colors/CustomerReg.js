@@ -267,6 +267,7 @@ const CustomerReg = () => {
                         value={formdata.birthday}
                         onChange={handleInputCahnge}
                       /> */}
+
                       <DatePicker
                         value={value}
                         onChange={handleDate}

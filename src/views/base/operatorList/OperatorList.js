@@ -16,52 +16,68 @@ import {
 } from '@coreui/react'
 
 const OperatorList = () => {
-  return <div>operator list</div>
-  //   const [operatorData, setOperatorData] = useState([])
-  //   const [operators, setOperators] = useState({
-  //     firstname: '',
-  //     lastname: '',
-  //     national_code: '',
-  //     username: '',
-  //     phone: '',
-  //   })
+  const [operatorList, setOperatorList] = useState([])
+  const [operator, setOperator] = useState({
+    firstname: '',
+    lastname: '',
+    national_code: '',
+    phone: '',
+    username: '',
+  })
 
-  //   return (
-  //     <>
-  //       <CRow>
-  //         <CCol xs="12">
-  //           <CCard className="mb-4">
-  //             <CCardHeader>
-  //               <strong> لیست اپراتورها</strong>
-  //             </CCardHeader>
-  //             <CCardBody>
-  //               <CTable striped>
-  //                 <CTableHead>
-  //                   <CTableRow>
-  //                     <CTableHeaderCell>نام</CTableHeaderCell>
-  //                     <CTableHeaderCell>نام خانوادگی</CTableHeaderCell>
-  //                     <CTableHeaderCell>کد ملی</CTableHeaderCell>
-  //                     <CTableHeaderCell>نام کاربری</CTableHeaderCell>
-  //                     <CTableHeaderCell>شماره تماس</CTableHeaderCell>
-  //                   </CTableRow>
-  //                 </CTableHead>
-  //               </CTable>
-  //             </CCardBody>
-  //             {operatorData.map((operator) => (
-  //               <CTableRow key={operator._id}>
-  //                 <CTableDataCell>{operator.firstname}</CTableDataCell>
-  //                 <CTableDataCell>{operator.lastname}</CTableDataCell>
-  //                 <CTableDataCell>{operator.national_code}</CTableDataCell>
-  //                 <CTableDataCell>{operator.username}</CTableDataCell>
-  //                 <CTableDataCell>{operator.phone}</CTableDataCell>
-  //               </CTableRow>
-  //             ))}
-  //           </CCard>
-  //         </CCol>
-  //       </CRow>
-  //     </>
-  //   )
-  // }
+  useEffect(() => {
+    axios
+      .get('http://localhost:4000/api/manager/managers', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data)
+        setOperatorList(res.data.data.managers)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
+  return (
+    <>
+      <CRow>
+        <CCol xs={12}>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>لیست اپراتورها</strong>
+            </CCardHeader>
+            <CCardBody>
+              <CTable>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>نام</CTableHeaderCell>
+                    <CTableHeaderCell>نام خانوادگی</CTableHeaderCell>
+                    <CTableHeaderCell>کد ملی</CTableHeaderCell>
+                    <CTableHeaderCell>شماره تماس</CTableHeaderCell>
+                    <CTableHeaderCell>نام کاربری</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {operatorList.map((item) => (
+                    <CTableRow key={item.id}>
+                      <CTableDataCell>{item.firstname}</CTableDataCell>
+                      <CTableDataCell>{item.lastname}</CTableDataCell>
+                      <CTableDataCell>{item.national_code}</CTableDataCell>
+                      <CTableDataCell>{item.phone}</CTableDataCell>
+                      <CTableDataCell>{item.username}</CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+    </>
+  )
 }
 
 export default OperatorList
