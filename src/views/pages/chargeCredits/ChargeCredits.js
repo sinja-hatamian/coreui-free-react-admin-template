@@ -70,6 +70,15 @@ const ChargeCredits = () => {
       })
   }
 
+  const handleDeleteCredit = (id) => {
+    axios.delete(`http://localhost:4000/api/manager/charge-credits/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    setCredit(credit.filter((item) => item.id !== id))
+  }
+
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -105,6 +114,9 @@ const ChargeCredits = () => {
                         <CTableRow key={item.id}>
                           <CTableDataCell>{item.charge_amount}</CTableDataCell>
                           <CTableDataCell>{item.credit_amount}</CTableDataCell>
+                          <CButton color="danger" onClick={() => handleDeleteCredit(item.id)}>
+                            حذف
+                          </CButton>
                         </CTableRow>
                       ))}
                     </CTableBody>
