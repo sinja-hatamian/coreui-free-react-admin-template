@@ -105,16 +105,16 @@ const CustomerReg = () => {
       })
   }
 
-  const formatDate = (date) => {
-    if (!date) {
-      return null
-    }
-    const year = date.format('YYYY')
-    const month = date.format('MM')
-    const day = date.format('DD')
+  // const formatDate = (date) => {
+  //   if (!date) {
+  //     return null
+  //   }
+  //   const year = date.format('YYYY')
+  //   const month = date.format('MM')
+  //   const day = date.format('DD')
 
-    return `${year}-${month}-${day}`
-  }
+  //   return `${year}-${month}-${day}`
+  // }
 
   const handleDate = (newDate) => {
     setValue(newDate.valueOf())
@@ -272,7 +272,6 @@ const CustomerReg = () => {
                       <DatePicker
                         value={value}
                         onChange={handleDate}
-                        format="YYYY-MM-DD"
                         calendarPosition="bottom-right"
                         inputPlaceholder="تاریخ تولد"
                         locale={persian_fa}

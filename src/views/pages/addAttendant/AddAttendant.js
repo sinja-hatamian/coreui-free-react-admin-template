@@ -21,6 +21,10 @@ import {
   CModalBody,
   CModalFooter,
 } from '@coreui/react'
+import DatePicker, { Calendar } from 'react-multi-date-picker'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
+
 const AddAttendant = () => {
   const [attendant, setAttendant] = useState([
     {
@@ -37,6 +41,7 @@ const AddAttendant = () => {
   const [customer, setCustomer] = useState({})
   const [tag, setTag] = useState(null)
   const [qrcode, setQrcode] = useState(null)
+  const [value, setValue] = useState(new Date())
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
@@ -135,6 +140,11 @@ const AddAttendant = () => {
     ])
   }
 
+  const handleDate = (newDate) => {
+    setValue(newDate.valueOf())
+    console.log(newDate.valueOf())
+  }
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -195,7 +205,7 @@ const AddAttendant = () => {
                     />
                   </CCol>
                   <CCol md={6}>
-                    <CFormInput
+                    {/* <CFormInput
                       label="تاریخ تولد"
                       type="date"
                       id="birthday"
@@ -204,6 +214,14 @@ const AddAttendant = () => {
                       value={customer.birthday}
                       locale="fa-IR"
                       disabled
+                    /> */}
+                    <DatePicker
+                      value={value}
+                      onChange={handleDate}
+                      calendarPosition="bottom-right"
+                      inputPlaceholder="تاریخ تولد"
+                      locale={persian_fa}
+                      calendar={persian}
                     />
                   </CCol>
                   <CCol md={4}>
@@ -282,7 +300,7 @@ const AddAttendant = () => {
                     />
                   </CCol>
                   <CCol md={6}>
-                    <CFormInput
+                    {/* <CFormInput
                       label="تاریخ تولد"
                       type="date"
                       id="birthday"
@@ -291,6 +309,15 @@ const AddAttendant = () => {
                       onChange={(event) => handleChange(event, index)}
                       value={item.birthday}
                       locale="fa-IR"
+                    /> */}
+                    <DatePicker
+                      value={value}
+                      label="تاریخ تولد"
+                      onChange={handleDate}
+                      calendarPosition="bottom-right"
+                      inputPlaceholder="تاریخ تولد"
+                      locale={persian_fa}
+                      calendar={persian}
                     />
                   </CCol>
                   <CCol md={4}>

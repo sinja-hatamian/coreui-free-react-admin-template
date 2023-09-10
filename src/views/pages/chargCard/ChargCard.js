@@ -20,7 +20,6 @@ const ChargCard = () => {
     bank: '',
     card_number: '',
   })
-
   const handleInput = (e) => {
     setCardForm({
       ...cardForm,
