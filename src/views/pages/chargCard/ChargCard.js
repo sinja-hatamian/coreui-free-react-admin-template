@@ -17,6 +17,8 @@ const ChargCard = () => {
   const [cardForm, setCardForm] = useState({
     amount: '',
     type: '',
+    bank: '',
+    card_number: '',
   })
 
   const handleInput = (e) => {
@@ -90,6 +92,35 @@ const ChargCard = () => {
                     <option value="4">کارت هدیه</option>
                   </CFormSelect>
                 </CCol>
+                {cardForm.type === '2' ? (
+                  <CCol md={6}>
+                    <CFormSelect
+                      label="بانک"
+                      id="bank"
+                      name="bank"
+                      aria-label="bank"
+                      onChange={handleInput}
+                      value={cardForm.bank}
+                      locale="fa-IR"
+                    >
+                      <option value="">انتخاب کنید</option>
+                      <option value="1">بانک ملی</option>
+                    </CFormSelect>
+                  </CCol>
+                ) : null}
+                {cardForm.type === '4' ? (
+                  <CCol md={6}>
+                    <CFormInput
+                      label="شماره کارت هدیه"
+                      id="card_number"
+                      name="card_number"
+                      aria-label="card_number"
+                      onChange={handleInput}
+                      value={cardForm.card_number}
+                      locale="fa-IR"
+                    />
+                  </CCol>
+                ) : null}
               </div>
               <div className="col-12">
                 <CButton type="button" onClick={handleForm}>

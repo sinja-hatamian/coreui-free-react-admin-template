@@ -272,6 +272,7 @@ const CustomerReg = () => {
                       <DatePicker
                         value={value}
                         onChange={handleDate}
+                        format="YYYY-MM-DD"
                         calendarPosition="bottom-right"
                         inputPlaceholder="تاریخ تولد"
                         locale={persian_fa}
