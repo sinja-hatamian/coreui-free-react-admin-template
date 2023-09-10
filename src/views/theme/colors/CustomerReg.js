@@ -117,7 +117,8 @@ const CustomerReg = () => {
   }
 
   const handleDate = (newDate) => {
-    setValue(newDate)
+    setValue(newDate.valueOf())
+    console.log(newDate.valueOf())
   }
 
   return (
