@@ -215,14 +215,19 @@ const AddAttendant = () => {
                       locale="fa-IR"
                       disabled
                     /> */}
-                    <DatePicker
-                      value={value}
-                      onChange={handleDate}
-                      calendarPosition="bottom-right"
-                      inputPlaceholder="تاریخ تولد"
-                      locale={persian_fa}
-                      calendar={persian}
-                    />
+
+                    <label>
+                      <p>تاریخ تولد</p>
+                      <DatePicker
+                        value={value}
+                        label="تاریخ تولد"
+                        onChange={handleDate}
+                        calendarPosition="bottom-right"
+                        inputPlaceholder="تاریخ تولد"
+                        locale={persian_fa}
+                        calendar={persian}
+                      />
+                    </label>
                   </CCol>
                   <CCol md={4}>
                     <CFormSelect
@@ -310,15 +315,18 @@ const AddAttendant = () => {
                       value={item.birthday}
                       locale="fa-IR"
                     /> */}
-                    <DatePicker
-                      value={value}
-                      label="تاریخ تولد"
-                      onChange={handleDate}
-                      calendarPosition="bottom-right"
-                      inputPlaceholder="تاریخ تولد"
-                      locale={persian_fa}
-                      calendar={persian}
-                    />
+                    <label>
+                      <p>تاریخ تولد</p>
+                      <DatePicker
+                        value={value}
+                        label="تاریخ تولد"
+                        onChange={handleDate}
+                        calendarPosition="bottom-right"
+                        inputPlaceholder="تاریخ تولد"
+                        locale={persian_fa}
+                        calendar={persian}
+                      />
+                    </label>
                   </CCol>
                   <CCol md={4}>
                     <CFormSelect

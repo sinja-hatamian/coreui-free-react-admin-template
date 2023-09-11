@@ -259,6 +259,7 @@ const CustomerReg = () => {
                       />
                     </CCol>
                     <CCol md={6}>
+                      <p>تاریخ تولد</p>
                       {/* <CFormInput
                         type="birthday"
                         label="تاریخ تولد"

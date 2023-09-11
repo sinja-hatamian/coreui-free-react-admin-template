@@ -40,6 +40,7 @@ const Login = () => {
         alert('ورود با موفقیت انجام شد')
         localStorage.setItem('token', res.data.data.token)
         localStorage.setItem('manager', JSON.stringify(res.data.data.manager))
+        localStorage.removeItem('customer')
 
         //redirect to openCash page
         window.location.href = '/#/pages/openCash'

@@ -235,18 +235,7 @@ const _nav = [
     to: '/theme/CustomerReg',
     icon: <CIcon icon={cilCheckCircle} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: ' خرید کارت هدیه',
-    to: '/theme/colors',
-    icon: <CIcon icon={cilCreditCard} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'مدیریت ارسال کارت‌ها',
-    to: '/theme/colors',
-    icon: <CIcon icon={cilSend} customClassName="nav-icon" />,
-  },
+
   {
     component: CNavTitle,
     name: 'گزارشات',
