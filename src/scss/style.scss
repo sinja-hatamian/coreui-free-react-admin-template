@@ -3,6 +3,8 @@
 
 $enable-ltr: true;
 $enable-rtl: true;
+$font-family-base: "Open Sans", sans-serif;
+
 
 // Import CoreUI for React components library
 @import "@coreui/coreui/scss/coreui";
