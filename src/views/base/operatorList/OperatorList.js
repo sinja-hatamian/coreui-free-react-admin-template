@@ -17,6 +17,20 @@ import {
 
 const OperatorList = () => {
   const [operatorList, setOperatorList] = useState([])
+  const [operator, setOperator] = useState({
+    national_code: '',
+    firstname: '',
+    lastname: '',
+    phone: '',
+    username: '',
+    password: '',
+    is_superadmin: true,
+  })
+
+  const handleInputCahnge = (e) => {
+    const { name, value } = e.target
+    setOperator((prev) => ({ ...prev, [name]: value }))
+  }
 
   useEffect(() => {
     AxiosInstance.get('/managers')
@@ -28,6 +42,18 @@ const OperatorList = () => {
         console.log(err)
       })
   }, [])
+
+  const handleUpdateOperator = (id) => {
+    AxiosInstance.put(`/managers/${id}`, operator)
+      .then((res) => {
+        console.log(res)
+        alert('اپراتور با موفقیت ویرایش شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در ویرایش اپراتور')
+      })
+  }
 
   return (
     <>
@@ -56,6 +82,11 @@ const OperatorList = () => {
                       <CTableDataCell>{item.national_code}</CTableDataCell>
                       <CTableDataCell>{item.phone}</CTableDataCell>
                       <CTableDataCell>{item.username}</CTableDataCell>
+                      <CTableDataCell>
+                        <CButton color="primary" onClick={() => handleUpdateOperator(item.id)}>
+                          ویرایش
+                        </CButton>
+                      </CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>
