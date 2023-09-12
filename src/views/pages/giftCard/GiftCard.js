@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CButton,
   CRow,
@@ -34,12 +34,7 @@ const GiftCard = () => {
   })
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/manager/gift-cards', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.get('/gift-cards')
       .then((res) => {
         console.log(res)
         setCard(res.data.data.giftCards)
@@ -63,12 +58,7 @@ const GiftCard = () => {
 
   const handleSaveGiftCard = () => {
     console.log(formdata)
-    axios
-      .post('http://localhost:4000/api/manager/gift-cards', formdata, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.post('/gift-cards', formdata)
       .then((res) => {
         console.log(res)
         alert('کارت با موفقیت ثبت شد')

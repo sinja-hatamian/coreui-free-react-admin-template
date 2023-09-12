@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CCard,
   CCardBody,
@@ -28,12 +28,7 @@ const InfoCard = () => {
   useEffect(() => {
     if (localStorage.getItem('customer')) {
       const customer = JSON.parse(localStorage.getItem('customer'))
-      axios
-        .get(`http://localhost:4000/api/manager/cards/${customer.id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        })
+      AxiosInstance.get(`/manager/cards/${customer.id}`)
         .then((res) => {
           console.log(res)
           setCard(res.data.data.card)
@@ -51,27 +46,20 @@ const InfoCard = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setCardForm((prevForm) => ({
-      ...prevForm,
-      [name]: value,
-    }))
+    const rawNumber = value.replace(/[^0-9]/g, '')
+    const formattedData = numberWithCommas(rawNumber)
+    setCardForm({
+      ...cardForm,
+      [name]: formattedData,
+    })
   }
 
   const handleUpdate = () => {
     const customer = JSON.parse(localStorage.getItem('customer'))
-    axios
-      .put(
-        `http://localhost:4000/api/manager/cards`,
-        {
-          user_id: customer.id,
-          ...cardForm,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      )
+    AxiosInstance.put(`/manager/cards`, {
+      user_id: customer.id,
+      ...cardForm,
+    })
       .then((res) => {
         console.log(res)
         alert('به روزرسانی با موفقیت انجام شد')(false) // Exit editing mode after successful update
@@ -80,6 +68,11 @@ const InfoCard = () => {
         console.log(err)
         alert('خطا در به روزرسانی')
       })
+  }
+
+  const numberWithCommas = (x) => {
+    //add comma to each 3 digit
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   return (

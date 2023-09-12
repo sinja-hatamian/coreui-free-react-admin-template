@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CButton,
   CRow,
@@ -10,7 +11,6 @@ import {
   CFormSelect,
   CCardHeader,
 } from '@coreui/react'
-import axios from 'axios'
 
 const ChargCard = () => {
   // const [card, setCard] = useState([])
@@ -20,29 +20,24 @@ const ChargCard = () => {
     bank: '',
     card_number: '',
   })
+
   const handleInput = (e) => {
+    const { name, value } = e.target
+    const rawNumber = value.replace(/[^0-9]/g, '')
+    const formattedData = numberWithCommas(rawNumber)
     setCardForm({
       ...cardForm,
-      [e.target.name]: e.target.value,
+      [name]: formattedData,
     })
   }
 
   const handleForm = () => {
     if (localStorage.getItem('customer')) {
       const customer = JSON.parse(localStorage.getItem('customer'))
-      axios
-        .post(
-          'http://localhost:4000/api/manager/cards/charge',
-          {
-            ...cardForm,
-            user_id: customer.id,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          },
-        )
+      AxiosInstance.post('/cards/charge', {
+        ...cardForm,
+        user_id: customer.id,
+      })
         .then((res) => {
           console.log(res)
           alert('شارژ با موفقیت انجام شد')
@@ -52,6 +47,11 @@ const ChargCard = () => {
           alert('خطا در شارژ کارت')
         })
     }
+  }
+
+  const numberWithCommas = (x) => {
+    //add comma to each 3 digit
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   return (
@@ -67,7 +67,7 @@ const ChargCard = () => {
                 <CCol md={6}>
                   <CFormInput
                     label="مبلغ"
-                    id="amoint"
+                    id="amount"
                     name="amount"
                     aria-label="amount"
                     onChange={handleInput}

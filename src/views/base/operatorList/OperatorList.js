@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CTable,
   CButton,
@@ -17,21 +17,9 @@ import {
 
 const OperatorList = () => {
   const [operatorList, setOperatorList] = useState([])
-  const [operator, setOperator] = useState({
-    firstname: '',
-    lastname: '',
-    national_code: '',
-    phone: '',
-    username: '',
-  })
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/manager/managers', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.get('/managers')
       .then((res) => {
         console.log(res.data.data)
         setOperatorList(res.data.data.managers)

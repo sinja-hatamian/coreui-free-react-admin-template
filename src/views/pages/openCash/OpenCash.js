@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CButton,
   CCard,
@@ -10,7 +11,6 @@ import {
   CForm,
   CFormSelect,
 } from '@coreui/react'
-import axios from 'axios'
 
 const OpenCash = () => {
   const manager = JSON.parse(localStorage.getItem('manager'))
@@ -18,12 +18,7 @@ const OpenCash = () => {
   const [stages, setStages] = useState([])
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/manager/stages', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.get('/stages')
       .then((res) => {
         setStages(res.data.data.stages)
       })
@@ -37,16 +32,9 @@ const OpenCash = () => {
   }
 
   const handleOpenCash = () => {
-    axios
-      .post(
-        'http://localhost:4000/api/manager/managers/open-register',
-        { stage_id: selectedStage },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      )
+    AxiosInstance.post('/managers/open-register', {
+      stage_id: selectedStage,
+    })
       .then((res) => {
         console.log(res.data.data)
         alert('صندوق با موفقیت باز شد')

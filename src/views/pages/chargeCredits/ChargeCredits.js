@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CCard,
   CCardBody,
@@ -33,16 +32,16 @@ const ChargeCredits = () => {
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target
-    setCharge((prev) => ({ ...prev, [name]: value }))
+    const rawNumber = value.replace(/[^0-9]/g, '')
+    const formattedData = numberWithCommas(rawNumber)
+    setCharge({
+      ...charge,
+      [name]: formattedData,
+    })
   }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/manager/charge-credits', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.get('/charge-credits')
       .then((res) => {
         console.log(res.data.data)
         setCredit(res.data.data.charge_credits)
@@ -53,12 +52,7 @@ const ChargeCredits = () => {
   }, [])
 
   const handleAddCredit = () => {
-    axios
-      .post('http://localhost:4000/api/manager/charge-credits/', charge, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.post('/charge-credits/', charge)
       .then((res) => {
         console.log(res.data.data)
         setCredit([...credit, res.data.data.charge_credit])
@@ -71,12 +65,25 @@ const ChargeCredits = () => {
   }
 
   const handleDeleteCredit = (id) => {
-    axios.delete(`http://localhost:4000/api/manager/charge-credits/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    AxiosInstance.delete(`/charge-credits/${id}`)
     setCredit(credit.filter((item) => item.id !== id))
+  }
+
+  const handleUpdateCredit = (id) => {
+    AxiosInstance.put(`/charge-credits/${id}`, charge)
+      .then((res) => {
+        console.log(res.data.data)
+        setCredit([...credit, res.data.data.charge_credit])
+        alert('اعتبار با موفقیت ویرایش شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در ویرایش اعتبار')
+      })
+  }
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   return (
@@ -114,9 +121,14 @@ const ChargeCredits = () => {
                         <CTableRow key={item.id}>
                           <CTableDataCell>{item.charge_amount}</CTableDataCell>
                           <CTableDataCell>{item.credit_amount}</CTableDataCell>
-                          <CButton color="danger" onClick={() => handleDeleteCredit(item.id)}>
-                            حذف
-                          </CButton>
+                          <CTableDataCell>
+                            <CButton color="primary">ویرایش</CButton>
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            <CButton color="danger" onClick={() => handleDeleteCredit(item.id)}>
+                              حذف
+                            </CButton>
+                          </CTableDataCell>
                         </CTableRow>
                       ))}
                     </CTableBody>

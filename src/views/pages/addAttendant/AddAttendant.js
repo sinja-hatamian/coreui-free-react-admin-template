@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CRow,
   CCol,
@@ -24,6 +24,7 @@ import {
 import DatePicker, { Calendar } from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
+import { Axios } from 'axios'
 
 const AddAttendant = () => {
   const [attendant, setAttendant] = useState([
@@ -40,6 +41,7 @@ const AddAttendant = () => {
   const [fixedData, setFixedData] = useState([])
   const [customer, setCustomer] = useState({})
   const [tag, setTag] = useState(null)
+  const [serverTag, setServerTag] = useState(null)
   const [qrcode, setQrcode] = useState(null)
   const [value, setValue] = useState(new Date())
 
@@ -48,12 +50,7 @@ const AddAttendant = () => {
       const parsedCustomer = JSON.parse(localStorage.getItem('customer'))
       setCustomer(parsedCustomer)
 
-      axios
-        .get(`http://localhost:4000/api/manager/attendants/${parsedCustomer.id}/last`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        })
+      AxiosInstance.get(`/attendants/${parsedCustomer.id}/last`)
         .then((res) => {
           console.log(res.data.data)
           if (Object.keys(res.data.data.attendant).length > 0) {
@@ -62,6 +59,7 @@ const AddAttendant = () => {
             ])
             setAttendant(res.data.data.attendant.members.filter((item) => item.tag === undefined))
             setTag(res.data.data.attendant.tag)
+            setServerTag(res.data.data.attendant.tag)
           } else {
             alert('no members find')
           }
@@ -86,27 +84,18 @@ const AddAttendant = () => {
   }
 
   const handleAddAttendant = () => {
-    axios
-      .post(
-        'http://localhost:4000/api//manager/attendants/complete',
-        {
-          user_id: customer.id,
-          tag: tag,
-          members: attendant.map((item) => {
-            Object.keys(item).forEach((key) => {
-              if (item[key] === '') {
-                delete item[key]
-              }
-            })
-            return item
-          }),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      )
+    Axios.post('/attendants/complete', {
+      user_id: customer.id,
+      tag: tag,
+      members: attendant.map((item) => {
+        Object.keys(item).forEach((key) => {
+          if (item[key] === '') {
+            delete item[key]
+          }
+        })
+        return item
+      }),
+    })
       .then((res) => {
         console.log(res)
         const newAttendant = res.data.data
@@ -140,9 +129,16 @@ const AddAttendant = () => {
     ])
   }
 
-  const handleDate = (newDate) => {
+  const handleDate = (newDate, index) => {
     setValue(newDate.valueOf())
-    console.log(newDate.valueOf())
+    setAttendant(
+      ...attendant.map((item, i) => {
+        if (i === index) {
+          return { ...item, birthday: newDate.valueOf() }
+        }
+        return item
+      }),
+    )
   }
 
   return (
@@ -154,7 +150,7 @@ const AddAttendant = () => {
           </CCardHeader>
           <CCardBody>
             <CForm className="row g-3">
-              {tag === null ? (
+              {serverTag === null ? (
                 <div className="col-12 row">
                   <CCol md={6}>
                     <CFormInput
@@ -205,17 +201,6 @@ const AddAttendant = () => {
                     />
                   </CCol>
                   <CCol md={6}>
-                    {/* <CFormInput
-                      label="تاریخ تولد"
-                      type="date"
-                      id="birthday"
-                      name="birthday"
-                      placeholder="تاریخ تولد"
-                      value={customer.birthday}
-                      locale="fa-IR"
-                      disabled
-                    /> */}
-
                     <label>
                       <p>تاریخ تولد</p>
                       <DatePicker
@@ -388,7 +373,7 @@ const AddAttendant = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {tag !== null ? (
+              {serverTag !== null ? (
                 <CTableRow>
                   <CTableHeaderCell>{customer.firstname}</CTableHeaderCell>
                   <CTableHeaderCell>{customer.lastname}</CTableHeaderCell>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CCard,
   CCardBody,
@@ -38,12 +38,7 @@ const Stages = () => {
   }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/manager/stages', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.get('/stages')
       .then((res) => {
         setStages(res.data.data.stages)
       })
@@ -57,16 +52,7 @@ const Stages = () => {
   }
 
   const handleAddStage = () => {
-    axios
-      .post(
-        'http://localhost:4000/api/manager/stages',
-        { title: stageName },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      )
+    AxiosInstance.post('/stages', { title: stageName })
       .then((res) => {
         console.log(res.data.data)
         alert('سالن با موفقیت اضافه شد')
@@ -79,16 +65,9 @@ const Stages = () => {
 
   const handleUpdateStage = () => {
     if (selectedStageId !== null) {
-      axios
-        .put(
-          `http://localhost:4000/api/manager/stages/${selectedStageId}`,
-          { title: updateStageName },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          },
-        )
+      AxiosInstance.put(`/stages/${selectedStageId}`, {
+        title: updateStageName,
+      })
         .then((res) => {
           console.log(res.data.data)
           alert('سالن با موفقیت ویرایش شد')

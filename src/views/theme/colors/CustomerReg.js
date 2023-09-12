@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CNav,
   CNavItem,
@@ -52,12 +52,7 @@ const CustomerReg = () => {
 
   const handleSaveCustomer = () => {
     console.log(formdata)
-    axios
-      .post('http://localhost:4000/api/manager/users', formdata, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.post('/users', formdata)
       .then((res) => {
         localStorage.setItem('customer', JSON.stringify(res.data.data.user))
         console.log(res)
@@ -69,12 +64,7 @@ const CustomerReg = () => {
       })
   }
   const fetchCustomerData = () => {
-    axios
-      .get(`http://localhost:4000/api/manager/users/national-code/${formdata.national_code}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.get(`/users/national-code/${formdata.national_code}`)
       .then((res) => {
         const customerData = res.data.data.user
         console.log(customerData)
@@ -89,12 +79,7 @@ const CustomerReg = () => {
   }
 
   const handleUpdateCustomer = () => {
-    axios
-      .put(`http://localhost:4000/api/manager/users/${formdata.id}`, formdata, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.put(`/users/${formdata.id}`, formdata)
       .then((res) => {
         console.log(res)
         alert('کاربر با موفقیت ویرایش شد')
@@ -119,6 +104,7 @@ const CustomerReg = () => {
   const handleDate = (newDate) => {
     setValue(newDate.valueOf())
     console.log(newDate.valueOf())
+    setFormdata((prev) => ({ ...prev, birthday: newDate.valueOf() }))
   }
 
   return (
@@ -288,6 +274,7 @@ const CustomerReg = () => {
                         value={formdata.gender}
                         onChange={handleInputCahnge}
                       >
+                        <option value="">انتخاب کنید</option>
                         <option value="male">مرد</option>
                         <option value="female">زن</option>
                       </CFormSelect>

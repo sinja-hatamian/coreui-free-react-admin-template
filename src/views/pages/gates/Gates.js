@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CCard,
   CCardBody,
@@ -29,6 +29,7 @@ const Gates = () => {
     price: '',
     stage_id: '',
     is_enter: '',
+    accountancy_code: '',
   })
 
   const handleInputChange = (event) => {
@@ -37,12 +38,7 @@ const Gates = () => {
   }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/manager/gates', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.get('/gates')
       .then((res) => {
         setGates(res.data.data.gates)
         console.log(res.data.data.gates)
@@ -53,12 +49,7 @@ const Gates = () => {
   }, [])
 
   const handleSaveGate = () => {
-    axios
-      .post('http://localhost:4000/api/manager/gates', gateData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.post('/gates', gateData)
       .then((res) => {
         console.log(res)
         alert('گیت با موفقیت ثبت شد')
@@ -69,12 +60,7 @@ const Gates = () => {
       })
   }
   const handleUpdateGame = () => {
-    axios
-      .put(`http://localhost:4000/api/manager/gates/${gateData.id}`, gateData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.put(`/gates/${gateData.id}`, gateData)
       .then((res) => {
         console.log(res)
         alert('گیت با موفقیت ویرایش شد')
@@ -115,6 +101,7 @@ const Gates = () => {
                       <CTableRow>
                         <CTableDataCell>نام گیت</CTableDataCell>
                         <CTableDataCell> شماره دستگاه</CTableDataCell>
+                        <CTableDataCell> کد حسابداری</CTableDataCell>
                         <CTableDataCell> هزینه ورودی</CTableDataCell>
                         <CTableDataCell> شماره سالن</CTableDataCell>
                         <CTableDataCell> نوع گیت</CTableDataCell>
@@ -125,6 +112,7 @@ const Gates = () => {
                         <CTableRow key={gates.id}>
                           <CTableDataCell>{gate.Name}</CTableDataCell>
                           <CTableDataCell>{gate.DeviceCode}</CTableDataCell>
+                          <CTableDataCell>{gate.accountancy_code}</CTableDataCell>
                           <CTableDataCell>{gate.Price}</CTableDataCell>
                           <CTableDataCell>{gate.stage_id}</CTableDataCell>
                           <CTableDataCell>{gate.IsEnter ? 'ورودی' : 'خروجی'}</CTableDataCell>
@@ -137,6 +125,7 @@ const Gates = () => {
                                   id: gate.id,
                                   name: gate.Name,
                                   device_code: gate.DeviceCode,
+                                  accountancy_code: gate.accountancy_code,
                                   price: gate.Price,
                                   stage_id: gate.stage_id,
                                   is_enter: gate.IsEnter,
@@ -178,6 +167,14 @@ const Gates = () => {
                         label="شماره دستگاه"
                         name="device_code"
                         value={gateData.device_code}
+                        onChange={handleInputChange}
+                      />
+                    </CCol>
+                    <CCol xs={12} md={6}>
+                      <CFormInput
+                        label=" کد حسابداری"
+                        name="accountancy_code"
+                        value={gateData.accountancy_code}
                         onChange={handleInputChange}
                       />
                     </CCol>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CCard,
   CCardBody,
@@ -9,7 +10,6 @@ import {
   CCol,
   CRow,
 } from '@coreui/react'
-import axios from 'axios'
 
 const OperatorReg = () => {
   const [formdata, setFormdata] = useState({
@@ -28,12 +28,7 @@ const OperatorReg = () => {
   }
 
   const handleSaveOperator = () => {
-    axios
-      .post('http://localhost:4000/api/manager/managers', formdata, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.post('/managers', formdata)
       .then((res) => {
         console.log(res)
         alert('اپراتور با موفقیت ثبت شد')
@@ -42,6 +37,29 @@ const OperatorReg = () => {
         console.log(err)
         alert('خطا در ثبت اپراتور')
       })
+  }
+
+  const handleUpdateOperator = () => {
+    AxiosInstance.put(
+      '/managers/1',
+      formdata({
+        national_code: '',
+        firstname: '',
+        lastname: '',
+        phone: '',
+        username: '',
+        password: '',
+        is_superadmin: true,
+      })
+        .then((res) => {
+          console.log(res)
+          alert('اپراتور با موفقیت ویرایش شد')
+        })
+        .catch((err) => {
+          console.log(err)
+          alert('خطا در ویرایش اپراتور')
+        }),
+    )
   }
 
   return (
@@ -137,10 +155,19 @@ const OperatorReg = () => {
                 </CFormSelect>
               </CCol> */}
               <CCol md={12}>
-                <CButton color="info" onClick={handleSaveOperator}>
+                <CButton
+                  color="info"
+                  onClick={() => {
+                    if (formdata.id) {
+                      handleUpdateOperator()
+                    } else {
+                      handleSaveOperator()
+                    }
+                  }}
+                >
                   ثبت
                 </CButton>
-                <CButton color="success">افزودن</CButton>
+                {/* <CButton color="success">افزودن</CButton> */}
               </CCol>
             </CForm>
           </CCardBody>

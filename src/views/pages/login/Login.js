@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -29,12 +29,7 @@ const Login = () => {
   }
 
   const handleLogin = () => {
-    axios
-      .post('http://localhost:4000/api/manager/auth/login', formdata, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+    AxiosInstance.post('http://localhost:4000/api/manager/auth/login', formdata)
       .then((res) => {
         console.log(res.data.data.token)
         alert('ورود با موفقیت انجام شد')
@@ -60,8 +55,8 @@ const Login = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm>
-                    <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <h1>ورود</h1>
+                    <p className="text-medium-emphasis">ورود به پنل کاربری</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -90,7 +85,7 @@ const Login = () => {
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" onClick={handleLogin}>
-                          Login
+                          ورود
                         </CButton>
                       </CCol>
                     </CRow>

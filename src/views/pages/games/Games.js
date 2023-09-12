@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CCard,
   CCardBody,
@@ -36,12 +36,7 @@ const Games = () => {
   })
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/api/manager/games', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.get('/games')
       .then((res) => {
         setGames(res.data.data.games)
         console.log(res.data.data.games)
@@ -59,12 +54,7 @@ const Games = () => {
   }
 
   const handleAddGame = () => {
-    axios
-      .post('http://localhost:4000/api/manager/games', gameData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.post('/games', gameData)
       .then((res) => {
         console.log(res.data.data)
         alert('بازی با موفقیت اضافه شد')
@@ -76,12 +66,7 @@ const Games = () => {
   }
 
   const handleUpdateGame = () => {
-    axios
-      .put(`http://localhost:4000/api/manager/games/${gameData.id}`, gameData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+    AxiosInstance.put(`/games/${gameData.id}`, gameData)
       .then((res) => {
         console.log(res.data.data)
         alert('بازی با موفقیت ویرایش شد')
