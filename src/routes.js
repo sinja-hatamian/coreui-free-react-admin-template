@@ -5,7 +5,6 @@ const CustomerReg = React.lazy(() => import('./views/theme/colors/CustomerReg'))
 
 // Base
 const OperatorReg = React.lazy(() => import('./views/base/operatorReg/OperatorReg'))
-const OperatorList = React.lazy(() => import('./views/base/operatorList/OperatorList'))
 const Cards = React.lazy(() => import('./views/base/cards/Cards'))
 const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'))
 const Collapses = React.lazy(() => import('./views/base/collapses/Collapses'))
@@ -107,7 +106,6 @@ const routes = [
   { path: '/pages/infoCard', name: 'InfoCard', element: InfoCard, exact: true },
   { path: '/pages/giftCard', name: 'GiftCard', element: GiftCard, exact: true },
   { path: '/pages/chargeCredits', name: 'ChargeCredits', element: ChargeCredits, exact: true },
-  { path: '/base/operatorList', name: 'OperatorList', element: OperatorList, exact: true },
 ]
 
 export default routes

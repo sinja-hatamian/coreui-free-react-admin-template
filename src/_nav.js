@@ -41,46 +41,11 @@ const _nav = [
     name: 'مدیریت ',
   },
   {
-    component: CNavGroup,
-    name: 'ثبت نام کاربران',
-    to: '/base',
+    component: CNavItem,
+    name: 'افزودن کاربر جدید',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'افزودن کاربر جدید',
-        to: '/base/operatorReg',
-      },
-      {
-        component: CNavItem,
-        name: 'لیست کاربران',
-        to: '/base/operatorList',
-      },
-    ],
+    to: '/base/operatorReg',
   },
-  // {
-  //   component: CNavGroup,
-  //   name: 'مدیریت جدول اعتبارات',
-  //   to: '/buttons',
-  //   icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Buttons',
-  //       to: '/buttons/buttons',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Buttons groups',
-  //       to: '/buttons/button-groups',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Dropdowns',
-  //       to: '/buttons/dropdowns',
-  //     },
-  //   ],
-  // },
 
   {
     component: CNavItem,

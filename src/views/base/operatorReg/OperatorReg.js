@@ -117,7 +117,23 @@ const OperatorReg = () => {
                           <CTableDataCell>{item.phone}</CTableDataCell>
                           <CTableDataCell>{item.username}</CTableDataCell>
                           <CTableDataCell>
-                            <CButton color="primary" onClick={() => handleUpdateOperator(item.id)}>
+                            <CButton
+                              color="primary"
+                              onClick={() => {
+                                console.log(item)
+                                setFormdata({
+                                  id: item.id,
+                                  national_code: item.national_code,
+                                  firstname: item.firstname,
+                                  lastname: item.lastname,
+                                  phone: item.phone,
+                                  username: item.username,
+                                  password: item.password,
+                                  is_superadmin: item.is_superadmin,
+                                })
+                                setActivekey(2)
+                              }}
+                            >
                               ویرایش
                             </CButton>
                           </CTableDataCell>
