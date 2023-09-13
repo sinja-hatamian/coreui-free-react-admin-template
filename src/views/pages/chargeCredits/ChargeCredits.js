@@ -69,8 +69,8 @@ const ChargeCredits = () => {
     setCredit(credit.filter((item) => item.id !== id))
   }
 
-  const handleUpdateCredit = (id) => {
-    AxiosInstance.put(`/charge-credits/${id}`, charge)
+  const handleUpdateCredit = () => {
+    AxiosInstance.put(`/charge-credits/${charge.id}`, charge)
       .then((res) => {
         console.log(res.data.data)
         setCredit([...credit, res.data.data.charge_credit])
@@ -122,7 +122,19 @@ const ChargeCredits = () => {
                           <CTableDataCell>{item.charge_amount}</CTableDataCell>
                           <CTableDataCell>{item.credit_amount}</CTableDataCell>
                           <CTableDataCell>
-                            <CButton color="primary">ویرایش</CButton>
+                            <CButton
+                              color="primary"
+                              onClick={() => {
+                                setCharge({
+                                  id: item.id,
+                                  charge_amount: item.charge_amount,
+                                  credit_amount: item.credit_amount,
+                                })
+                                setActiveKey(2)
+                              }}
+                            >
+                              ویرایش
+                            </CButton>
                           </CTableDataCell>
                           <CTableDataCell>
                             <CButton color="danger" onClick={() => handleDeleteCredit(item.id)}>
@@ -170,8 +182,11 @@ const ChargeCredits = () => {
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CButton color="primary" onClick={handleAddCredit}>
-                        افزودن
+                      <CButton
+                        color="primary"
+                        onClick={charge.id ? handleUpdateCredit : handleAddCredit}
+                      >
+                        ثبت
                       </CButton>
                     </CCol>
                   </CRow>
