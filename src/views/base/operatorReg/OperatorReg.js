@@ -68,6 +68,7 @@ const OperatorReg = () => {
       .then((res) => {
         console.log(res)
         alert('اپراتور با موفقیت ویرایش شد')
+        setActivekey(1)
       })
       .catch((err) => {
         console.log(err)
