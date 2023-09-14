@@ -38,7 +38,7 @@ const GiftCard = () => {
     AxiosInstance.get('/gift-cards')
       .then((res) => {
         console.log(res)
-        setCard(res.data.data.giftCards)
+        setCard(res.data.data.gift_cards)
       })
       .catch((err) => {
         console.log(err)
@@ -70,11 +70,33 @@ const GiftCard = () => {
     AxiosInstance.post('/gift-cards', formdata)
       .then((res) => {
         console.log(res)
+        setCard([...card, res.data.data.gift_cards])
         alert('کارت با موفقیت ثبت شد')
+        setActiveKey(2)
       })
       .catch((err) => {
         console.log(err)
         alert('خطا در ثبت کارت')
+      })
+  }
+
+  const handleUpdateGiftcard = () => {
+    AxiosInstance.put(`/gift-cards/${formdata.id}`, {
+      number: formdata.numbers[0],
+      amount: formdata.amount,
+      directive: formdata.directive,
+      description: formdata.description,
+      is_active: formdata.is_active,
+    })
+      .then((res) => {
+        console.log(res)
+        setCard([...card.filter((item) => item.id !== formdata.id), res.data.data.gift_card])
+        alert('کارت با موفقیت ویرایش شد')
+        setActiveKey(2)
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در ویرایش کارت')
       })
   }
 
@@ -161,38 +183,6 @@ const GiftCard = () => {
                     <CCol md={6}>
                       <div>
                         <p>وضعیت کارت</p>
-                        {/* <CCol xs>
-                        <CFormInput
-                          label="وضعیت"
-                          name="is_active"
-                          placeholder="وضعیت"
-                          aria-label="is_active"
-                          locale="fa-IR"
-                          value={formdata.is_active}
-                          onChange={handleInputCahnge}
-                        />
-                      </CCol> */}
-                        {/* <CFormCheck
-                          button={{ color: 'success', variant: 'outline' }}
-                          type="radio"
-                          name="is_active"
-                          label="فعال"
-                          id="success-outlined"
-                          value="true"
-                          onChange={handleInputCahnge}
-                          autoComplete="off"
-                        />
-                        <CFormCheck
-                          button={{ color: 'danger', variant: 'outline' }}
-                          type="radio"
-                          name="is_active"
-                          label="غیر فعال"
-                          id="danger-outlined"
-                          value="false"
-                          onChange={handleInputCahnge}
-                          autoComplete="off"
-                          defaultChecked
-                        /> */}
                         <CFormCheck
                           button={{ color: 'success', variant: 'outline' }}
                           type="radio"
@@ -219,7 +209,10 @@ const GiftCard = () => {
                     </CCol>
 
                     <CCol md={12}>
-                      <CButton color="primary" onClick={handleSaveGiftCard}>
+                      <CButton
+                        color="primary"
+                        onClick={formdata.id ? handleUpdateGiftcard : handleSaveGiftCard}
+                      >
                         ثبت
                       </CButton>
                     </CCol>
@@ -253,6 +246,24 @@ const GiftCard = () => {
                       <CTableDataCell>{item.description}</CTableDataCell>
                       <CTableDataCell>{item.is_active ? 'فعال' : 'غیرفعال'}</CTableDataCell>
                       <CTableDataCell>{item.directive}</CTableDataCell>
+                      <CTableDataCell>
+                        <CButton
+                          color="primary"
+                          onClick={() => {
+                            setFormdata({
+                              id: item.id,
+                              numbers: [item.number],
+                              amount: item.amount,
+                              directive: item.directive,
+                              description: item.description,
+                              is_active: item.is_active,
+                            })
+                            setActiveKey(1)
+                          }}
+                        >
+                          ویرایش
+                        </CButton>
+                      </CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>
