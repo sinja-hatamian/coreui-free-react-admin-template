@@ -20,6 +20,7 @@ import {
   CTableHeaderCell,
   CTableDataCell,
   CTableRow,
+  CFormCheck,
 } from '@coreui/react'
 
 const GiftCard = () => {
@@ -93,7 +94,7 @@ const GiftCard = () => {
                 </CCardHeader>
                 <CCardBody>
                   <CRow>
-                    <CCol md={6}>
+                    <CCol md={8}>
                       <CFormInput
                         label="کد کارت"
                         name="numbers"
@@ -106,7 +107,7 @@ const GiftCard = () => {
                     </CCol>
                   </CRow>
                   <CForm className="row g-3">
-                    <CCol md={6}>
+                    <CCol md={8}>
                       <CCol xs>
                         <CFormInput
                           label="مبلغ"
@@ -119,7 +120,7 @@ const GiftCard = () => {
                         />
                       </CCol>
                     </CCol>
-                    <CCol md={6}>
+                    <CCol md={8}>
                       <CCol xs>
                         <CFormInput
                           label="توضیحات"
@@ -132,20 +133,7 @@ const GiftCard = () => {
                         />
                       </CCol>
                     </CCol>
-                    <CCol md={6}>
-                      <CCol xs>
-                        <CFormInput
-                          label="وضعیت"
-                          name="is_active"
-                          placeholder="وضعیت"
-                          aria-label="is_active"
-                          locale="fa-IR"
-                          value={formdata.is_active}
-                          onChange={handleInputCahnge}
-                        />
-                      </CCol>
-                    </CCol>
-                    <CCol md={6}>
+                    <CCol md={8}>
                       <CCol xs>
                         <CFormInput
                           label="دستور دهنده"
@@ -158,6 +146,65 @@ const GiftCard = () => {
                         />
                       </CCol>
                     </CCol>
+                    <CCol md={6}>
+                      <div>
+                        <p>وضعیت کارت</p>
+                        {/* <CCol xs>
+                        <CFormInput
+                          label="وضعیت"
+                          name="is_active"
+                          placeholder="وضعیت"
+                          aria-label="is_active"
+                          locale="fa-IR"
+                          value={formdata.is_active}
+                          onChange={handleInputCahnge}
+                        />
+                      </CCol> */}
+                        {/* <CFormCheck
+                          button={{ color: 'success', variant: 'outline' }}
+                          type="radio"
+                          name="is_active"
+                          label="فعال"
+                          id="success-outlined"
+                          value="true"
+                          onChange={handleInputCahnge}
+                          autoComplete="off"
+                        />
+                        <CFormCheck
+                          button={{ color: 'danger', variant: 'outline' }}
+                          type="radio"
+                          name="is_active"
+                          label="غیر فعال"
+                          id="danger-outlined"
+                          value="false"
+                          onChange={handleInputCahnge}
+                          autoComplete="off"
+                          defaultChecked
+                        /> */}
+                        <CFormCheck
+                          button={{ color: 'success', variant: 'outline' }}
+                          type="radio"
+                          name="is_active"
+                          id="success-outlined"
+                          value={true}
+                          handleInputCahnge={handleInputCahnge}
+                          autoComplete="off"
+                          label="فعال"
+                          defaultChecked
+                        />
+                        <CFormCheck
+                          button={{ color: 'danger', variant: 'outline' }}
+                          type="radio"
+                          name="is_active"
+                          value={false}
+                          handleInputCahnge={handleInputCahnge}
+                          id="danger-outlined"
+                          autoComplete="off"
+                          label="غیر فعال"
+                        />
+                      </div>
+                    </CCol>
+
                     <CCol md={12}>
                       <CButton color="primary" onClick={handleSaveGiftCard}>
                         ثبت
