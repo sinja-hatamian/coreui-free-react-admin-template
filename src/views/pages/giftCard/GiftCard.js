@@ -159,7 +159,7 @@ const GiftCard = () => {
                       </CCol>
                     </CCol>
                     <CCol md={12}>
-                      <CButton type="button" onClick={handleSaveGiftCard}>
+                      <CButton color="primary" onClick={handleSaveGiftCard}>
                         ثبت
                       </CButton>
                     </CCol>

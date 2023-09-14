@@ -128,7 +128,6 @@ const OperatorReg = () => {
                                   lastname: item.lastname,
                                   phone: item.phone,
                                   username: item.username,
-                                  password: item.password,
                                   is_superadmin: item.is_superadmin,
                                 })
                                 setActivekey(2)
