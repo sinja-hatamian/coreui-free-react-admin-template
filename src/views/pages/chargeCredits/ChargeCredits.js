@@ -17,7 +17,6 @@ import {
   CTableHead,
   CTableRow,
   CTableBody,
-  CTableHeader,
   CTableDataCell,
   CTableHeaderCell,
 } from '@coreui/react'

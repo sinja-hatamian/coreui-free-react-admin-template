@@ -31,7 +31,7 @@ const GiftCard = () => {
     amount: '',
     directive: '',
     description: '',
-    is_active: '',
+    is_active: 'true',
   })
 
   useEffect(() => {
@@ -52,8 +52,16 @@ const GiftCard = () => {
         ...prev,
         numbers: [value],
       }))
+    } else if (name === 'amount') {
+      const rawNumber = value.replace(/[^0-9]/g, '')
+      const formattedData = numberWithCommas(rawNumber)
+      setFormdata({
+        ...formdata,
+        [name]: formattedData,
+      })
     } else {
       setFormdata((prev) => ({ ...prev, [name]: value }))
+      console.log(name, value)
     }
   }
 
@@ -68,6 +76,10 @@ const GiftCard = () => {
         console.log(err)
         alert('خطا در ثبت کارت')
       })
+  }
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   return (
@@ -187,20 +199,21 @@ const GiftCard = () => {
                           name="is_active"
                           id="success-outlined"
                           value={true}
-                          handleInputCahnge={handleInputCahnge}
+                          onChange={handleInputCahnge}
                           autoComplete="off"
                           label="فعال"
-                          defaultChecked
+                          checked={formdata.is_active === 'true'}
                         />
                         <CFormCheck
                           button={{ color: 'danger', variant: 'outline' }}
                           type="radio"
                           name="is_active"
-                          value={false}
-                          handleInputCahnge={handleInputCahnge}
+                          onChange={handleInputCahnge}
                           id="danger-outlined"
                           autoComplete="off"
                           label="غیر فعال"
+                          value={false}
+                          checked={formdata.is_active === 'false'}
                         />
                       </div>
                     </CCol>
@@ -238,7 +251,7 @@ const GiftCard = () => {
                       <CTableDataCell>{item.number}</CTableDataCell>
                       <CTableDataCell>{item.amount}</CTableDataCell>
                       <CTableDataCell>{item.description}</CTableDataCell>
-                      <CTableDataCell>{item.is_active}</CTableDataCell>
+                      <CTableDataCell>{item.is_active ? 'فعال' : 'غیرفعال'}</CTableDataCell>
                       <CTableDataCell>{item.directive}</CTableDataCell>
                     </CTableRow>
                   ))}
