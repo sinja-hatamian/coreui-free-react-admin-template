@@ -38,6 +38,7 @@ const CustomerReg = () => {
   })
   const [activeKey, setActiveKey] = useState(1)
   const [value, setValue] = useState(new Date())
+  const [introductionWays, setIntroductionWays] = useState([])
 
   const handleInputCahnge = (e) => {
     const { name, value } = e.target
@@ -48,6 +49,14 @@ const CustomerReg = () => {
     if (localStorage.getItem('customer')) {
       setFormdata(JSON.parse(localStorage.getItem('customer')))
     }
+    AxiosInstance.get('/introduction-ways')
+      .then((res) => {
+        console.log(res)
+        setIntroductionWays(res.data.data.introduction_ways)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   const handleSaveCustomer = () => {
@@ -190,7 +199,7 @@ const CustomerReg = () => {
                       </CCol>
                     </CCol>
                     <CCol md={6}>
-                      <CFormInput
+                      {/* <CFormInput
                         label=" نحوه آشنایی"
                         name="introduction_way"
                         placeholder="نحوه آشنایی"
@@ -198,7 +207,21 @@ const CustomerReg = () => {
                         locale="fa-IR"
                         value={formdata.introduction_way}
                         onChange={handleInputCahnge}
-                      />
+                      /> */}
+                      <CFormSelect
+                        name="introduction_way"
+                        label="نحوه آشنایی"
+                        aria-label="introduction_way"
+                        locale="fa-IR"
+                        onChange={handleInputCahnge}
+                      >
+                        <option>انتخاب کنید</option>
+                        {introductionWays.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.title}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                     <CCol md={6}>
                       <CFormInput
