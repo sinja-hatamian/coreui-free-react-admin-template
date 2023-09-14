@@ -20,6 +20,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
+  CFormSelect,
 } from '@coreui/react'
 
 const OperatorReg = () => {
@@ -32,7 +33,9 @@ const OperatorReg = () => {
     phone: '',
     username: '',
     password: '',
+    accounting_code: '',
     is_superadmin: true,
+    status: '1',
   })
 
   useEffect(() => {
@@ -107,6 +110,7 @@ const OperatorReg = () => {
                         <CTableHeaderCell>کد ملی</CTableHeaderCell>
                         <CTableHeaderCell>شماره تماس</CTableHeaderCell>
                         <CTableHeaderCell>نام کاربری</CTableHeaderCell>
+                        <CTableHeaderCell>وضعیت</CTableHeaderCell>
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -117,6 +121,7 @@ const OperatorReg = () => {
                           <CTableDataCell>{item.national_code}</CTableDataCell>
                           <CTableDataCell>{item.phone}</CTableDataCell>
                           <CTableDataCell>{item.username}</CTableDataCell>
+                          <CTableDataCell>{item.status}</CTableDataCell>
                           <CTableDataCell>
                             <CButton
                               color="primary"
@@ -130,6 +135,8 @@ const OperatorReg = () => {
                                   phone: item.phone,
                                   username: item.username,
                                   is_superadmin: item.is_superadmin,
+                                  accounting_code: item.accounting_code,
+                                  status: item.status,
                                 })
                                 setActivekey(2)
                               }}
@@ -218,26 +225,27 @@ const OperatorReg = () => {
                         onChange={handleInputCahnge}
                       />
                     </CCol>
-                    {/* <CCol md={4}>
-                 <CFormSelect id="inputState" label="جنسیت">
-                   <option value="male">مرد</option>
-                   <option value="female">زن</option>
-                 </CFormSelect>
-               </CCol> */}
-                    {/* <CCol xs={12}>
-                 <CFormInput id="inputAddress" label="آدرس پستی" placeholder="1234 Main St" />
-               </CCol>
-               <CCol md={2}>
-                 <CFormInput id="inputZip" label="کدپستی" />
-               </CCol>
-               <CCol md={4}>
-                 <CFormSelect id="inputState" label="نقش">
-                   <option>مدیر سایت</option>
-                   <option>کارمند پذیرش</option>
-                   <option>پیک </option>
-                   <option> حسابدار</option>
-                 </CFormSelect>
-               </CCol> */}
+                    <CCol md={6}>
+                      <CFormInput
+                        name="accounting_code"
+                        label="کد حسابداری"
+                        placeholder="کد حسابداری"
+                        value={formdata.accounting_code}
+                        onChange={handleInputCahnge}
+                      />
+                    </CCol>
+                    <CCol md={6}>
+                      <CFormSelect
+                        name="status"
+                        label="وضعیت"
+                        value={formdata.status}
+                        onChange={handleInputCahnge}
+                      >
+                        <option value="">انتخاب کنید</option>
+                        <option value="1">فعال</option>
+                        <option value="0">غیرفعال</option>
+                      </CFormSelect>
+                    </CCol>
                     <CCol md={12}>
                       <CButton
                         color="info"
