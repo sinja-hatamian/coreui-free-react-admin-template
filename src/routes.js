@@ -27,6 +27,7 @@ const Gates = React.lazy(() => import('./views/pages/gates/Gates'))
 const InfoCard = React.lazy(() => import('./views/pages/infoCard/InfoCard'))
 const GiftCard = React.lazy(() => import('./views/pages/giftCard/GiftCard'))
 const ChargeCredits = React.lazy(() => import('./views/pages/chargeCredits/ChargeCredits'))
+const IntroductionWays = React.lazy(() => import('./views/pages/introductionWays/IntroductionWays'))
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -106,6 +107,12 @@ const routes = [
   { path: '/pages/infoCard', name: 'InfoCard', element: InfoCard, exact: true },
   { path: '/pages/giftCard', name: 'GiftCard', element: GiftCard, exact: true },
   { path: '/pages/chargeCredits', name: 'ChargeCredits', element: ChargeCredits, exact: true },
+  {
+    path: '/pages/introductionWays',
+    name: 'IntroductionWays',
+    element: IntroductionWays,
+    exact: true,
+  },
 ]
 
 export default routes

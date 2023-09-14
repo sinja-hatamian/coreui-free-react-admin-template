@@ -1,0 +1,92 @@
+import React, { useState, useEffect } from 'react'
+import AxiosInstance from 'src/utils/AxiosInstance'
+
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CRow,
+  CTable,
+  CTabContent,
+  CTabPane,
+  CNav,
+  CNavItem,
+  CNavLink,
+  CTableHead,
+  CTableRow,
+  CTableHeaderCell,
+  CButton,
+  CTableDataCell,
+  CTableBody,
+} from '@coreui/react'
+
+const IntroductionWays = () => {
+  const [activekey, setActivekey] = useState(1)
+  const [introductionWaysList, setIntroductionWaysList] = useState([])
+  const [formdata, setFormdata] = useState({
+    title: '',
+  })
+
+  useEffect(() => {
+    AxiosInstance.get('/introduction-ways')
+      .then((res) => {
+        console.log(res.data.data)
+        setIntroductionWaysList(res.data.data.introduction_ways)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
+  return (
+    <>
+      <CNav variant="tabs" role="tablis">
+        <CNavItem>
+          <CNavLink active={activekey === 1} onClick={() => setActivekey(1)}>
+            لیست روش های آشنایی
+          </CNavLink>
+        </CNavItem>
+        <CNavItem>
+          <CNavLink active={activekey === 2} onClick={() => setActivekey(2)}>
+            ثبت روش آشنایی جدید
+          </CNavLink>
+        </CNavItem>
+      </CNav>
+      <CTabContent>
+        <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activekey === 1}>
+          <CRow>
+            <CCol xs="12">
+              <CCard className="mb-4">
+                <CCardHeader>
+                  <strong>لیست روش های آشنایی</strong>
+                </CCardHeader>
+                <CCardBody>
+                  <CTable striped>
+                    <CTableHead>
+                      <CTableRow>
+                        <CTableHeaderCell>نام</CTableHeaderCell>
+                      </CTableRow>
+                    </CTableHead>
+                    <CTableBody>
+                      {introductionWaysList.map((introductionWay) => (
+                        <CTableRow key={introductionWay.id}>
+                          <CTableDataCell>{introductionWay.title}</CTableDataCell>
+                          <CTableDataCell>
+                            <CButton color="primary">ویرایش</CButton>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ))}
+                    </CTableBody>
+                  </CTable>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+        </CTabPane>
+      </CTabContent>
+    </>
+  )
+}
+
+export default IntroductionWays

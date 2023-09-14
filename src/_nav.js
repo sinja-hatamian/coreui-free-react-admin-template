@@ -10,15 +10,15 @@ import {
   cilCreditCard,
   cilDollar,
   cilCheckCircle,
-  cilSend,
   cilChart,
   cilChartLine,
   cilBarChart,
   cilGrid,
   cilGamepad,
   cilDoor,
+  cilRoom,
 } from '@coreui/icons'
-import { CDropdownItem, CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
   {
@@ -45,6 +45,12 @@ const _nav = [
     name: 'افزودن کاربر جدید',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
     to: '/base/operatorReg',
+  },
+  {
+    component: CNavItem,
+    name: ' مدیریت راه های آشنایی',
+    icon: <CIcon icon={cilRoom} customClassName="nav-icon" />,
+    to: '/pages/introductionWays',
   },
 
   {
