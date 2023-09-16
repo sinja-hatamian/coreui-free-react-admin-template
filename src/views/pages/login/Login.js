@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import { Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -29,7 +28,7 @@ const Login = () => {
   }
 
   const handleLogin = () => {
-    AxiosInstance.post('http://localhost:4000/api/manager/auth/login', formdata)
+    AxiosInstance.post('/auth/login', formdata)
       .then((res) => {
         console.log(res.data.data.token)
         alert('ورود با موفقیت انجام شد')

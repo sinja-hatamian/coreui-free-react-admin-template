@@ -73,6 +73,8 @@ const Games = () => {
       .then((res) => {
         console.log(res.data.data)
         alert('بازی با موفقیت اضافه شد')
+        setGames([...games, res.data.data.game])
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -85,6 +87,8 @@ const Games = () => {
       .then((res) => {
         console.log(res.data.data)
         alert('بازی با موفقیت ویرایش شد')
+        setGames([...games.filter((item) => item.id != gameData.id), res.data.data.game])
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -93,7 +97,6 @@ const Games = () => {
   }
 
   const numberWithCommas = (x) => {
-    //add comma to each 3 digit
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
@@ -140,8 +143,12 @@ const Games = () => {
                           <CTableDataCell>{game.Type}</CTableDataCell>
                           <CTableDataCell>{game.DeviceCode}</CTableDataCell>
                           <CTableDataCell>{game.AccountancyCod}</CTableDataCell>
-                          <CTableDataCell>{game.BasePrice}</CTableDataCell>
-                          <CTableDataCell>{game.ExtraPrice}</CTableDataCell>
+                          <CTableDataCell>
+                            {game.BasePrice ? numberWithCommas(game.BasePrice) : ''}
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            {game.ExtraPrice ? numberWithCommas(game.ExtraPrice) : ''}
+                          </CTableDataCell>
                           <CTableDataCell>{game.stage_id}</CTableDataCell>
                           <CTableDataCell>{game.BaseTime}</CTableDataCell>
                           <CTableDataCell>
@@ -245,7 +252,7 @@ const Games = () => {
                         aria-label="extra_price"
                         value={gameData.extra_price}
                         locale="fa-IR"
-                        onChange={handleAddGame}
+                        onChange={handleInput}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
@@ -273,9 +280,7 @@ const Games = () => {
                     <CCol xs={12} md={6}>
                       <CButton
                         color="primary"
-                        onClick={() => {
-                          gameData.id ? handleUpdateGame() : handleAddGame()
-                        }}
+                        onClick={gameData.id ? handleUpdateGame : handleAddGame}
                       >
                         ثبت
                       </CButton>

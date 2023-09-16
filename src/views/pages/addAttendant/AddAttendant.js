@@ -24,7 +24,6 @@ import {
 import DatePicker, { Calendar } from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
-import { Axios } from 'axios'
 
 const AddAttendant = () => {
   const [attendant, setAttendant] = useState([
@@ -84,7 +83,7 @@ const AddAttendant = () => {
   }
 
   const handleAddAttendant = () => {
-    Axios.post('/attendants/complete', {
+    AxiosInstance.post('/attendants/complete', {
       user_id: customer.id,
       tag: tag,
       members: attendant.map((item) => {
