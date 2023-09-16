@@ -28,7 +28,7 @@ const InfoCard = () => {
   useEffect(() => {
     if (localStorage.getItem('customer')) {
       const customer = JSON.parse(localStorage.getItem('customer'))
-      AxiosInstance.get(`/manager/cards/${customer.id}`)
+      AxiosInstance.get(`/cards/${customer.id}`)
         .then((res) => {
           console.log(res)
           setCard(res.data.data.card)

@@ -17,6 +17,7 @@ import {
   cilGamepad,
   cilDoor,
   cilRoom,
+  cilExitToApp,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -205,6 +206,12 @@ const _nav = [
     name: 'پذیرش مشتریان',
     to: '/theme/CustomerReg',
     icon: <CIcon icon={cilCheckCircle} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: ' تسویه مشتریان',
+    to: '/pages/exitCustomer',
+    icon: <CIcon icon={cilExitToApp} customClassName="nav-icon" />,
   },
 
   {

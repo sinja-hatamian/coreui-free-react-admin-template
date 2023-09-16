@@ -59,8 +59,6 @@ const AddAttendant = () => {
             setAttendant(res.data.data.attendant.members.filter((item) => item.tag === undefined))
             setTag(res.data.data.attendant.tag)
             setServerTag(res.data.data.attendant.tag)
-          } else {
-            alert('no members find')
           }
         })
 

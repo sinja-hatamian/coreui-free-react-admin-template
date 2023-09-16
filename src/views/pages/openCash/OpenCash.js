@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CButton,
@@ -16,6 +17,7 @@ const OpenCash = () => {
   const manager = JSON.parse(localStorage.getItem('manager'))
   const [selectedStage, setSelectedStage] = useState(0)
   const [stages, setStages] = useState([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     AxiosInstance.get('/stages')
@@ -38,6 +40,7 @@ const OpenCash = () => {
       .then((res) => {
         console.log(res.data.data)
         alert('صندوق با موفقیت باز شد')
+        navigate('/theme/CustomerReg')
       })
       .catch((err) => {
         console.log(err)
