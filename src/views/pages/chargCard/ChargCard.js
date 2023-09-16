@@ -13,7 +13,6 @@ import {
 } from '@coreui/react'
 
 const ChargCard = () => {
-  // const [card, setCard] = useState([])
   const [cardForm, setCardForm] = useState({
     amount: '',
     type: '',

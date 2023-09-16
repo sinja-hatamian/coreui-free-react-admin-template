@@ -196,7 +196,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'فرم پرداخت',
-        to: '/register',
+        to: '/pages/chargeForm',
       },
     ],
   },

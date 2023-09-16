@@ -99,17 +99,6 @@ const CustomerReg = () => {
       })
   }
 
-  // const formatDate = (date) => {
-  //   if (!date) {
-  //     return null
-  //   }
-  //   const year = date.format('YYYY')
-  //   const month = date.format('MM')
-  //   const day = date.format('DD')
-
-  //   return `${year}-${month}-${day}`
-  // }
-
   const handleDate = (newDate) => {
     setValue(newDate.valueOf())
     console.log(newDate.valueOf())
@@ -199,15 +188,6 @@ const CustomerReg = () => {
                       </CCol>
                     </CCol>
                     <CCol md={6}>
-                      {/* <CFormInput
-                        label=" نحوه آشنایی"
-                        name="introduction_way"
-                        placeholder="نحوه آشنایی"
-                        aria-label="introduction_way"
-                        locale="fa-IR"
-                        value={formdata.introduction_way}
-                        onChange={handleInputCahnge}
-                      /> */}
                       <CFormSelect
                         name="introduction_way"
                         label="نحوه آشنایی"
@@ -269,16 +249,6 @@ const CustomerReg = () => {
                     </CCol>
                     <CCol md={6}>
                       <p>تاریخ تولد</p>
-                      {/* <CFormInput
-                        type="birthday"
-                        label="تاریخ تولد"
-                        name="birthday"
-                        aria-label="birthday"
-                        locale="fa-IR"
-                        value={formdata.birthday}
-                        onChange={handleInputCahnge}
-                      /> */}
-
                       <DatePicker
                         value={value}
                         onChange={handleDate}

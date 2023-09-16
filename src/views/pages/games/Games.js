@@ -46,11 +46,26 @@ const Games = () => {
       })
   }, [])
 
-  const handleGamesChange = (e) => {
-    setGameData({
-      ...gameData,
-      [e.target.name]: e.target.value,
-    })
+  const handleInput = (e) => {
+    const { name, value } = e.target
+    if (name === 'name') {
+      setGameData((prev) => ({
+        ...prev,
+        name: value,
+      }))
+    } else if (name === 'base_price' || name === 'extra_price') {
+      const rawNumber = value.replace(/[^0-9]/g, '')
+      const formattedData = numberWithCommas(rawNumber)
+      setGameData({
+        ...gameData,
+        [name]: formattedData,
+      })
+    } else {
+      setGameData((prev) => ({
+        ...prev,
+        [name]: value,
+      }))
+    }
   }
 
   const handleAddGame = () => {
@@ -75,6 +90,11 @@ const Games = () => {
         console.log(err)
         alert('خطا در ویرایش بازی')
       })
+  }
+
+  const numberWithCommas = (x) => {
+    //add comma to each 3 digit
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   return (
@@ -170,7 +190,7 @@ const Games = () => {
                         aria-label="name"
                         locale="fa-IR"
                         value={gameData.name}
-                        onChange={handleGamesChange}
+                        onChange={handleInput}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
@@ -181,7 +201,7 @@ const Games = () => {
                         aria-label="type"
                         locale="fa-IR"
                         value={gameData.type}
-                        onChange={handleGamesChange}
+                        onChange={handleInput}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
@@ -192,7 +212,7 @@ const Games = () => {
                         aria-label="device_code"
                         locale="fa-IR"
                         value={gameData.device_code}
-                        onChange={handleGamesChange}
+                        onChange={handleInput}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
@@ -203,7 +223,7 @@ const Games = () => {
                         aria-label="accountancy_code"
                         locale="fa-IR"
                         value={gameData.accountancy_code}
-                        onChange={handleGamesChange}
+                        onChange={handleInput}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
@@ -214,7 +234,7 @@ const Games = () => {
                         aria-label="base_price"
                         locale="fa-IR"
                         value={gameData.base_price}
-                        onChange={handleGamesChange}
+                        onChange={handleInput}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
@@ -225,7 +245,7 @@ const Games = () => {
                         aria-label="extra_price"
                         value={gameData.extra_price}
                         locale="fa-IR"
-                        onChange={handleGamesChange}
+                        onChange={handleAddGame}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
@@ -236,7 +256,7 @@ const Games = () => {
                         aria-label="stage_id"
                         locale="fa-IR"
                         value={gameData.stage_id}
-                        onChange={handleGamesChange}
+                        onChange={handleInput}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
@@ -247,17 +267,17 @@ const Games = () => {
                         aria-label="base_time"
                         locale="fa-IR"
                         value={gameData.base_time}
-                        onChange={handleGamesChange}
+                        onChange={handleInput}
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CButton color="primary" onClick={handleAddGame}>
-                        افزودن بازی
-                      </CButton>
-                    </CCol>
-                    <CCol xs={12} md={6}>
-                      <CButton color="primary" onClick={handleUpdateGame}>
-                        ویرایش بازی
+                      <CButton
+                        color="primary"
+                        onClick={() => {
+                          gameData.id ? handleUpdateGame() : handleAddGame()
+                        }}
+                      >
+                        ثبت
                       </CButton>
                     </CCol>
                   </CRow>
