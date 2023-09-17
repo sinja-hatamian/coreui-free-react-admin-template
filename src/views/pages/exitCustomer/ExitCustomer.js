@@ -35,7 +35,6 @@ const ExitCustomer = () => {
         alert('خطا در ثبت خروج')
       })
   }
-
   return (
     <CRow>
       <CCol xs="12">
@@ -46,6 +45,9 @@ const ExitCustomer = () => {
           value={tag.tag}
           ref={inputRef}
         />
+      </CCol>
+      <p></p>
+      <CCol>
         <CButton color="primary" onClick={handleExit}>
           ثبت خروج
         </CButton>
