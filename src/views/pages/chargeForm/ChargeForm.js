@@ -21,7 +21,7 @@ import {
 const ChargeForm = () => {
   const [chargeForm, setChargeForm] = useState([])
   const [paymentHistories, setPaymentHistories] = useState({
-    pos_amounts: '',
+    pos_amounts: {},
     gift_amount: '',
     cash_amount: '',
   })
@@ -72,6 +72,7 @@ const ChargeForm = () => {
   return (
     <>
       <CRow>
+        {/* Show All amounts */}
         <CCol xs="12">
           <CCard className="mb-4">
             <CCardHeader>
@@ -104,6 +105,31 @@ const ChargeForm = () => {
               </CTable>
             </CCardBody>
           </CCard>
+          {/* Show Pos Amounts */}
+          <CCol xs="12">
+            <CCard className="mb-4">
+              <CCardHeader>
+                <strong>گزارش دستگاه پوز</strong>
+              </CCardHeader>
+              <CCardBody>
+                <CTable striped>
+                  <CTableHead>
+                    <CTableRow>
+                      <CTableHeaderCell> نام بانک</CTableHeaderCell>
+                      <CTableHeaderCell> مبلغ</CTableHeaderCell>
+                    </CTableRow>
+                  </CTableHead>
+                </CTable>
+              </CCardBody>
+              <CCardBody>
+                {Object.keys(paymentHistories.pos_amounts).map((item) => (
+                  <CListGroupItem key={item}>
+                    {item} : {numberWithCommas(paymentHistories.pos_amounts[item])}
+                  </CListGroupItem>
+                ))}
+              </CCardBody>
+            </CCard>
+          </CCol>
           <CCol xs="12">
             <CCard className="mb-4">
               <CCardHeader>
@@ -113,9 +139,9 @@ const ChargeForm = () => {
                 <CRow>
                   <CCol xs="12" md="6">
                     <CListGroup striped>
-                      <CListGroupItem>
+                      {/* <CListGroupItem>
                         مبلغ پوز : {numberWithCommas(paymentHistories.pos_amounts)}
-                      </CListGroupItem>
+                      </CListGroupItem> */}
                       <CListGroupItem>
                         مبلغ نقدی : {numberWithCommas(paymentHistories.cash_amount)}
                       </CListGroupItem>
