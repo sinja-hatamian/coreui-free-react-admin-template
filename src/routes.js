@@ -30,6 +30,7 @@ const ChargeCredits = React.lazy(() => import('./views/pages/chargeCredits/Charg
 const IntroductionWays = React.lazy(() => import('./views/pages/introductionWays/IntroductionWays'))
 const ChargeForm = React.lazy(() => import('./views/pages/chargeForm/ChargeForm'))
 const exitCustomer = React.lazy(() => import('./views/pages/exitCustomer/ExitCustomer'))
+const banks = React.lazy(() => import('./views/pages/banks/Banks'))
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -117,6 +118,7 @@ const routes = [
   },
   { path: '/pages/chargeForm', name: 'ChargeForm', element: ChargeForm, exact: true },
   { path: '/pages/exitCustomer', name: 'ExitCustomer', element: exitCustomer, exact: true },
+  { path: '/pages/banks', name: 'banks', element: banks, exact: true },
 ]
 
 export default routes
