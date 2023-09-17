@@ -94,11 +94,6 @@ const Stages = () => {
             افزودن سالن
           </CNavLink>
         </CNavItem>
-        <CNavItem>
-          <CNavLink active={activeKey === 3} onClick={() => setActiveKey(3)}>
-            ویرایش سالن
-          </CNavLink>
-        </CNavItem>
       </CNav>
       <CTabContent>
         <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 1}>
@@ -155,40 +150,10 @@ const Stages = () => {
                   </CRow>
                   <CRow>
                     <CCol md={6}>
-                      <CButton color="success" onClick={handleAddStage}>
+                      <CButton color="success" 
+                      onClick=
+                      >
                         افزودن
-                      </CButton>
-                    </CCol>
-                  </CRow>
-                </CCardBody>
-              </CCard>
-            </CCol>
-          </CRow>
-        </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 3}>
-          <CRow>
-            <CCol xs={12}>
-              <CCard className="mb-4">
-                <CCardHeader>
-                  <strong>ویرایش سالن</strong>
-                </CCardHeader>
-                <CCardBody>
-                  <CRow>
-                    <CCol md={6}>
-                      <CFormInput
-                        label="نام جدید سالن"
-                        name="stageName"
-                        value={updateStageName}
-                        onChange={handleUpdateStageTitleChange}
-                        aria-label="title"
-                        locale="fa-IR"
-                      />
-                    </CCol>
-                  </CRow>
-                  <CRow>
-                    <CCol md={6}>
-                      <CButton color="success" onClick={handleUpdateStage}>
-                        ویرایش
                       </CButton>
                     </CCol>
                   </CRow>

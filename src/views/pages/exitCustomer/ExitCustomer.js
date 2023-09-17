@@ -1,20 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CRow,
-  CTable,
-  CTableBody,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CButton,
-  CForm,
-  CFormInput,
-} from '@coreui/react'
+import { CCol, CRow, CButton, CFormInput } from '@coreui/react'
 
 const ExitCustomer = () => {
   const [tag, setTag] = useState({
