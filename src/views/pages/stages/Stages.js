@@ -23,62 +23,54 @@ import {
 
 const Stages = () => {
   const [activeKey, setActiveKey] = useState(1)
-  const [stages, setStages] = useState([])
-  const [stageName, setStageName] = useState('')
-  const [selectedStageId, setSelectedStageId] = useState(null)
-  const [updateStageName, setUpdateStageName] = useState('')
-
-  const handleSelectStage = (id) => {
-    setSelectedStageId(id)
-    setActiveKey(3)
-  }
-
-  const handleUpdateStageTitleChange = (e) => {
-    setUpdateStageName(e.target.value)
-  }
+  const [stageList, setStageList] = useState([])
+  const [stage, setStage] = useState({
+    title: '',
+  })
 
   useEffect(() => {
     AxiosInstance.get('/stages')
       .then((res) => {
-        setStages(res.data.data.stages)
+        console.log(res.data.data.stages)
+        setStageList(res.data.data.stages)
       })
       .catch((err) => {
         console.log(err)
       })
   }, [])
 
-  const handleTitleChange = (e) => {
-    setStageName(e.target.value)
+  const handleInput = (e) => {
+    setStage({ ...stage, [e.target.name]: e.target.value })
   }
 
   const handleAddStage = () => {
-    AxiosInstance.post('/stages', { title: stageName })
+    AxiosInstance.post('/stages', stage)
       .then((res) => {
         console.log(res.data.data)
-        alert('سالن با موفقیت اضافه شد')
+        setStageList([...stageList, res.data.data.stage])
+        setStage({ title: '' })
+        alert('با موفقیت اضافه شد')
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در اضافه کردن سالن')
+        alert('خطا در اضافه کردن')
       })
   }
 
   const handleUpdateStage = () => {
-    if (selectedStageId !== null) {
-      AxiosInstance.put(`/stages/${selectedStageId}`, {
-        title: updateStageName,
+    AxiosInstance.put(`/stages/${stage.id}`, stage)
+      .then((res) => {
+        console.log(res.data.data)
+        setStageList(stageList.map((item) => (item.id === stage.id ? stage : item)))
+        setStage({ title: '' })
+        alert('با موفقیت  ویرایش شد')
+        setActiveKey(1)
       })
-        .then((res) => {
-          console.log(res.data.data)
-          alert('سالن با موفقیت ویرایش شد')
-          setUpdateStageName('')
-          setSelectedStageId(null)
-        })
-        .catch((err) => {
-          console.log(err)
-          alert('خطا در ویرایش سالن')
-        })
-    }
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در ویرایش')
+      })
   }
 
   return (
@@ -86,12 +78,12 @@ const Stages = () => {
       <CNav variant="tabs" role="tablist">
         <CNavItem>
           <CNavLink active={activeKey === 1} onClick={() => setActiveKey(1)}>
-            مشاهده سالن ها
+            لیست سالن ها
           </CNavLink>
         </CNavItem>
         <CNavItem>
           <CNavLink active={activeKey === 2} onClick={() => setActiveKey(2)}>
-            افزودن سالن
+            افزودن سالن جدید
           </CNavLink>
         </CNavItem>
       </CNav>
@@ -101,7 +93,7 @@ const Stages = () => {
             <CCol xs={12}>
               <CCard className="mb-4">
                 <CCardHeader>
-                  <strong>مشاهده سالن ها</strong>
+                  <strong> لیست سالن ها</strong>
                 </CCardHeader>
                 <CCardBody>
                   <CTable striped>
@@ -111,11 +103,20 @@ const Stages = () => {
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                      {stages.map((stage) => (
-                        <CTableRow key={stage.id}>
-                          <CTableDataCell>{stage.title}</CTableDataCell>
+                      {stageList.map((item) => (
+                        <CTableRow key={item.id}>
+                          <CTableDataCell>{item.title}</CTableDataCell>
                           <CTableDataCell>
-                            <CButton color="info" onClick={() => handleSelectStage(stage.id)}>
+                            <CButton
+                              color="primary"
+                              onClick={() => {
+                                setStage({
+                                  id: item.id,
+                                  title: item.title,
+                                })
+                                setActiveKey(2)
+                              }}
+                            >
                               ویرایش
                             </CButton>
                           </CTableDataCell>
@@ -128,32 +129,33 @@ const Stages = () => {
             </CCol>
           </CRow>
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 2}>
+        <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
           <CRow>
             <CCol xs={12}>
               <CCard className="mb-4">
-                <CCardHeader>
-                  <strong>افزودن سالن</strong>
-                </CCardHeader>
+                <CCardHeader>افزودن بازی جدید</CCardHeader>
                 <CCardBody>
                   <CRow>
-                    <CCol md={6}>
+                    <CCol xs={12} md={6}>
                       <CFormInput
                         label="نام سالن"
-                        name="stageName"
-                        value={stageName}
-                        onChange={handleTitleChange}
-                        aria-label="title"
+                        placeholder="نام سالن"
+                        name="title"
+                        aria-label="نام سالن"
                         locale="fa-IR"
+                        value={stage.title}
+                        onChange={handleInput}
                       />
                     </CCol>
                   </CRow>
+                  <p></p>
                   <CRow>
-                    <CCol md={6}>
-                      <CButton color="success" 
-                      onClick=
+                    <CCol>
+                      <CButton
+                        color="primary"
+                        onClick={stage.id ? handleUpdateStage : handleAddStage}
                       >
-                        افزودن
+                        ثبت
                       </CButton>
                     </CCol>
                   </CRow>
