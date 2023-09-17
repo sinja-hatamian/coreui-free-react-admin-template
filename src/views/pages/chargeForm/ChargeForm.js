@@ -13,7 +13,6 @@ import {
   CButton,
   CCardHeader,
   CCardBody,
-  CPagination,
   CListGroup,
   CListGroupItem,
   CFormInput,
@@ -22,7 +21,7 @@ import {
 const ChargeForm = () => {
   const [chargeForm, setChargeForm] = useState([])
   const [paymentHistories, setPaymentHistories] = useState({
-    pos_amount: '',
+    pos_amounts: '',
     gift_amount: '',
     cash_amount: '',
   })
@@ -44,7 +43,7 @@ const ChargeForm = () => {
         console.log(res.data)
         setChargeForm(res.data.data.payment_histories)
         setPaymentHistories({
-          pos_amount: res.data.data.pos_amount,
+          pos_amounts: res.data.data.pos_amounts,
           gift_amount: res.data.data.gift_amount,
           cash_amount: res.data.data.cash_amount,
         })
@@ -115,7 +114,7 @@ const ChargeForm = () => {
                   <CCol xs="12" md="6">
                     <CListGroup striped>
                       <CListGroupItem>
-                        مبلغ پوز : {numberWithCommas(paymentHistories.pos_amount)}
+                        مبلغ پوز : {numberWithCommas(paymentHistories.pos_amounts)}
                       </CListGroupItem>
                       <CListGroupItem>
                         مبلغ نقدی : {numberWithCommas(paymentHistories.cash_amount)}
