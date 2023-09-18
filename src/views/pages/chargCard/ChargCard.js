@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CButton,
@@ -13,28 +13,58 @@ import {
 } from '@coreui/react'
 
 const ChargCard = () => {
-  const [cardForm, setCardForm] = useState({
+  const initialCardForm = {
     amount: '',
     type: '',
     bank: '',
     card_number: '',
-  })
+  }
 
-  const handleInput = (e) => {
+  const [cardForm, setCardForm] = useState([initialCardForm])
+  const [selectedTypes, setSelectedTypes] = useState([''])
+
+  const handleInput = (e, index) => {
     const { name, value } = e.target
     const rawNumber = value.replace(/[^0-9]/g, '')
     const formattedData = numberWithCommas(rawNumber)
-    setCardForm({
-      ...cardForm,
-      [name]: formattedData,
-    })
+    const updatedCardForms = [...cardForm]
+    updatedCardForms[index] = {
+      ...updatedCardForms[index], // Copy the existing object
+      [name]: formattedData, // Update the specific field
+    }
+    setCardForm(updatedCardForms)
   }
 
+  const handleTypeChange = (e, index) => {
+    const { value } = e.target
+
+    const updatedSelectedTypes = [...selectedTypes]
+    updatedSelectedTypes[index] = value
+    setSelectedTypes(updatedSelectedTypes)
+
+    // Also update the type in the cardForms array
+    const updatedCardForms = [...cardForm]
+    updatedCardForms[index] = {
+      ...updatedCardForms[index],
+      type: value,
+    }
+    setCardForm(updatedCardForms)
+  }
   const handleForm = () => {
     if (localStorage.getItem('customer')) {
       const customer = JSON.parse(localStorage.getItem('customer'))
       AxiosInstance.post('/cards/charge', {
-        ...cardForm,
+        payments: [
+          ...cardForm.map((item) => {
+            Object.keys(item).forEach((key) => {
+              item[key] = item[key].replace(/[^0-9]/g, '')
+              if (item[key] === '') {
+                delete item[key]
+              }
+            })
+            return item
+          }),
+        ],
         user_id: customer.id,
       })
         .then((res) => {
@@ -46,6 +76,20 @@ const ChargCard = () => {
           alert('خطا در شارژ کارت')
         })
     }
+  }
+
+  const CloneForm = () => {
+    setCardForm([...cardForm, initialCardForm])
+    setSelectedTypes([...selectedTypes, ''])
+  }
+
+  const removeForm = (index) => {
+    const updatedCardForms = [...cardForm]
+    updatedCardForms.splice(index, 1)
+    setCardForm(updatedCardForms)
+    const updatedSelectedTypes = [...selectedTypes]
+    updatedSelectedTypes.splice(index, 1)
+    setSelectedTypes(updatedSelectedTypes)
   }
 
   const numberWithCommas = (x) => {
@@ -61,15 +105,15 @@ const ChargCard = () => {
             <strong>شارژ کارت</strong>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
-              <div className="col-md-12">
+            {cardForm.map((cardForm, index) => (
+              <CForm className="row g-3" key={index}>
                 <CCol md={6}>
                   <CFormInput
                     label="مبلغ"
-                    id="amount"
+                    id={`amount-${index}`}
                     name="amount"
                     aria-label="amount"
-                    onChange={handleInput}
+                    onChange={(e) => handleInput(e, index)}
                     value={cardForm.amount}
                     locale="fa-IR"
                   />
@@ -77,10 +121,10 @@ const ChargCard = () => {
                 <CCol md={6}>
                   <CFormSelect
                     label="نوع"
-                    id="type"
+                    id={`type-${index}`}
                     name="type"
                     aria-label="type"
-                    onChange={handleInput}
+                    onChange={(e) => handleTypeChange(e, index)}
                     value={cardForm.type}
                     locale="fa-IR"
                   >
@@ -94,10 +138,10 @@ const ChargCard = () => {
                   <CCol md={6}>
                     <CFormSelect
                       label="بانک"
-                      id="bank"
+                      id={`bank-${index}`}
                       name="bank"
                       aria-label="bank"
-                      onChange={handleInput}
+                      onChange={(e) => handleInput(e, index)}
                       value={cardForm.bank}
                       locale="fa-IR"
                     >
@@ -110,22 +154,32 @@ const ChargCard = () => {
                   <CCol md={6}>
                     <CFormInput
                       label="شماره کارت هدیه"
-                      id="card_number"
+                      id={`card_number-${index}`}
                       name="card_number"
                       aria-label="card_number"
-                      onChange={handleInput}
+                      onChange={(e) => handleInput(e, index)}
                       value={cardForm.card_number}
                       locale="fa-IR"
                     />
                   </CCol>
                 ) : null}
-              </div>
-              <div className="col-12">
-                <CButton type="button" onClick={handleForm}>
-                  ثبت
-                </CButton>
-              </div>
-            </CForm>
+                <div className="col-12">
+                  <CButton type="button" onClick={() => removeForm(index)}>
+                    حذف
+                  </CButton>
+                </div>
+              </CForm>
+            ))}
+            <div className="col-12">
+              <CButton type="button" onClick={CloneForm}>
+                افزودن کارت جدید
+              </CButton>
+            </div>
+            <div className="col-12">
+              <CButton type="button" onClick={() => handleForm()}>
+                ثبت
+              </CButton>
+            </div>
           </CCardBody>
         </CCard>
       </CCol>

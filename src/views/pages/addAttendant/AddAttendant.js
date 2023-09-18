@@ -287,16 +287,6 @@ const AddAttendant = () => {
                     />
                   </CCol>
                   <CCol md={6}>
-                    {/* <CFormInput
-                      label="تاریخ تولد"
-                      type="date"
-                      id="birthday"
-                      name="birthday"
-                      placeholder="تاریخ تولد"
-                      onChange={(event) => handleChange(event, index)}
-                      value={item.birthday}
-                      locale="fa-IR"
-                    /> */}
                     <label>
                       <p>تاریخ تولد</p>
                       <DatePicker
