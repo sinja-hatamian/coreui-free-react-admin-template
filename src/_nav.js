@@ -21,6 +21,7 @@ import {
   cilBank,
   cilDevices,
   cilColorBorder,
+  cilFile,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -68,6 +69,12 @@ const _nav = [
     name: 'مدیریت بانک ها',
     to: '/pages/banks',
     icon: <CIcon icon={cilBank} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'مدیریت اسناد',
+    to: '/pages/accountingDetails',
+    icon: <CIcon icon={cilFile} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,

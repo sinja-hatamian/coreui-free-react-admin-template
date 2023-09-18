@@ -33,6 +33,9 @@ const exitCustomer = React.lazy(() => import('./views/pages/exitCustomer/ExitCus
 const banks = React.lazy(() => import('./views/pages/banks/Banks'))
 const posDevice = React.lazy(() => import('./views/pages/posDevice/PosDevice'))
 const Wristband = React.lazy(() => import('./views/pages/wristband/Wristband'))
+const AccountingDetails = React.lazy(() =>
+  import('./views/pages/accountingDetails/AccountingDetails'),
+)
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -123,6 +126,12 @@ const routes = [
   { path: '/pages/banks', name: 'banks', element: banks, exact: true },
   { path: '/pages/posDevice', name: 'posDevice', element: posDevice, exact: true },
   { path: '/pages/wristband', name: 'Wristband', element: Wristband, exact: true },
+  {
+    path: '/pages/accountingDetails',
+    name: 'AccountingDetails',
+    element: AccountingDetails,
+    exact: true,
+  },
 ]
 
 export default routes
