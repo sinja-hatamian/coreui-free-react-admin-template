@@ -24,6 +24,11 @@ import {
 const Wristband = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [wristband, setWristband] = useState([])
+  const [wrist, setWrist] = useState({
+    number: '',
+    tag: '',
+    stage_id: '',
+  })
 
   useEffect(() => {
     AxiosInstance.get('/wrist-bands')
@@ -35,6 +40,47 @@ const Wristband = () => {
         console.log(err)
       })
   }, [])
+
+  const handleInputChange = (e) => {
+    setWrist({ ...wrist, [e.target.name]: e.target.value })
+  }
+
+  const handleAddWrist = () => {
+    AxiosInstance.post('/wrist-bands', wrist)
+      .then((res) => {
+        setWristband([...wristband, res.data.data.wrist_band])
+        alert('دستبند با موفقیت افزوده شد')
+        setActiveKey(1)
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('مشکلی در افزودن دستبند به وجود آمده است')
+      })
+  }
+
+  const handleUpdateWrist = (id) => {
+    AxiosInstance.put(`/wrist-bands/${id}`, wrist)
+      .then((res) => {
+        setWristband([...wristband, res.data.data.wrist_band])
+        alert('دستبند با موفقیت ویرایش شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('مشکلی در ویرایش دستبند به وجود آمده است')
+      })
+  }
+
+  const handleRemoveWrist = (id) => {
+    AxiosInstance.delete(`/wrist-bands/${id}`)
+      .then((res) => {
+        setWristband([...wristband.filter((item) => item.id !== id)])
+        // alert('دستبند با موفقیت حذف شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('مشکلی در حذف دستبند به وجود آمده است')
+      })
+  }
 
   return (
     <>
@@ -74,7 +120,29 @@ const Wristband = () => {
                           <CTableDataCell>{item.tag}</CTableDataCell>
                           <CTableDataCell>{item.stage_id}</CTableDataCell>
                           <CTableDataCell>
-                            <CButton color="primary">ویرایش</CButton>
+                            <CButton
+                              color="primary"
+                              onClick={() => {
+                                setWrist({
+                                  number: item.number,
+                                  tag: item.tag,
+                                  stage_id: item.stage_id,
+                                })
+                                setActiveKey(2)
+                              }}
+                            >
+                              ویرایش
+                            </CButton>
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            <CButton
+                              color="danger"
+                              onClick={() => {
+                                handleRemoveWrist(item.id)
+                              }}
+                            >
+                              حذف
+                            </CButton>
                           </CTableDataCell>
                         </CTableRow>
                       ))}
@@ -91,7 +159,46 @@ const Wristband = () => {
               <CCard className="mb-4">
                 <CCardHeader>افزودن دستبند جدید</CCardHeader>
                 <CCardBody>
-                  <CRow>{/* <CCol xs={12} md={6}> */}</CRow>
+                  <CRow>
+                    <CCol xs={12} md={6}>
+                      <CFormInput
+                        label="شماره دستبند"
+                        placeholder="شماره دستبند"
+                        name="number"
+                        value={wrist.number}
+                        onChange={handleInputChange}
+                      />
+                    </CCol>
+                    <CCol xs={12} md={6}>
+                      <CFormInput
+                        label="تگ دستبند"
+                        placeholder="تگ دستبند"
+                        name="tag"
+                        value={wrist.tag}
+                        onChange={handleInputChange}
+                      />
+                    </CCol>
+                    <CCol xs={12} md={6}>
+                      <CFormInput
+                        name="stage_id"
+                        label="شماره سالن"
+                        placeholder="شماره سالن"
+                        value={wrist.stage_id}
+                        onChange={handleInputChange}
+                      />
+                    </CCol>
+                    <CCol xs={12} md={4} style={{ margin: 15 + 'px' }}>
+                      <p></p>
+                      <CButton
+                        color="success"
+                        onClick={() => {
+                          if (wrist.id ? handleUpdateWrist() : handleAddWrist()) setActiveKey(1)
+                        }}
+                      >
+                        افزودن دستبند
+                      </CButton>
+                    </CCol>
+                  </CRow>
                 </CCardBody>
               </CCard>
             </CCol>
