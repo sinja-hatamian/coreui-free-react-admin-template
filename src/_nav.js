@@ -20,6 +20,7 @@ import {
   cilExitToApp,
   cilBank,
   cilDevices,
+  cilColorBorder,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -91,6 +92,12 @@ const _nav = [
     name: 'مدیریت گیت ها ',
     to: '/pages/Gates',
     icon: <CIcon icon={cilDoor} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: ' مدیریت دستبند ها ',
+    to: '/pages/Wristband',
+    icon: <CIcon icon={cilColorBorder} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavGroup,
