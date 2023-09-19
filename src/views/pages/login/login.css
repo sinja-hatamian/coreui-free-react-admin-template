@@ -1,0 +1,7 @@
+.c-app {
+    height: 100vh;
+    background-image: url("../../../assets/images/trampolin.jpg");
+    background-size: cover; /* Adjust the background size as needed */
+    background-repeat: no-repeat;
+    background-position: center center;
+}
