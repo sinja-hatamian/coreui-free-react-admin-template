@@ -56,6 +56,7 @@ const ChargeCredits = () => {
         console.log(res.data.data)
         setCredit([...credit, res.data.data.charge_credit])
         alert('اعتبار با موفقیت افزوده شد')
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -74,6 +75,7 @@ const ChargeCredits = () => {
         console.log(res.data.data)
         setCredit([...credit, res.data.data.charge_credit])
         alert('اعتبار با موفقیت ویرایش شد')
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -118,8 +120,8 @@ const ChargeCredits = () => {
                     <CTableBody>
                       {credit.map((item) => (
                         <CTableRow key={item.id}>
-                          <CTableDataCell>{item.charge_amount}</CTableDataCell>
-                          <CTableDataCell>{item.credit_amount}</CTableDataCell>
+                          <CTableDataCell>{numberWithCommas(item.charge_amount)}</CTableDataCell>
+                          <CTableDataCell>{numberWithCommas(item.credit_amount)}</CTableDataCell>
                           <CTableDataCell>
                             <CButton
                               color="primary"
