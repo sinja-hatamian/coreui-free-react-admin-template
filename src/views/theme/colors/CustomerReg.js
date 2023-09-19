@@ -156,7 +156,7 @@ const CustomerReg = () => {
                         onChange={handleInputCahnge}
                       />
                     </CCol>
-                    <CCol md={4} xs={6}>
+                    <CCol md={8} xs={6}>
                       <CButton color="info" onClick={fetchCustomerData}>
                         بررسی کد ملی
                       </CButton>
