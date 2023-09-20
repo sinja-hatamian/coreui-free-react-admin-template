@@ -18,6 +18,7 @@ import {
   CTableRow,
   CFormInput,
   CButton,
+  CFormSelect,
 } from '@coreui/react'
 
 const Gates = () => {
@@ -34,7 +35,12 @@ const Gates = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
-    setGateData({ ...gateData, [name]: value })
+    const rawNumber = value.replace(/[^0-9]/g, '')
+    const formattedData = numberWithCommas(rawNumber)
+    setGateData({
+      ...gateData,
+      [name]: formattedData,
+    })
   }
 
   useEffect(() => {
@@ -52,7 +58,9 @@ const Gates = () => {
     AxiosInstance.post('/gates', gateData)
       .then((res) => {
         console.log(res)
+        setGates([...gates, res.data.data.gate])
         alert('گیت با موفقیت ثبت شد')
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -64,11 +72,16 @@ const Gates = () => {
       .then((res) => {
         console.log(res)
         alert('گیت با موفقیت ویرایش شد')
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
         alert('خطا در ویرایش گیت')
       })
+  }
+  const numberWithCommas = (x) => {
+    //add comma to each 3 digit
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   return (
@@ -112,10 +125,12 @@ const Gates = () => {
                         <CTableRow key={gates.id}>
                           <CTableDataCell>{gate.Name}</CTableDataCell>
                           <CTableDataCell>{gate.DeviceCode}</CTableDataCell>
-                          <CTableDataCell>{gate.accountancy_code}</CTableDataCell>
+                          <CTableDataCell>
+                            {gate.accountancy_code ? gate.accountancy_code : '-'}
+                          </CTableDataCell>
                           <CTableDataCell>{gate.Price}</CTableDataCell>
                           <CTableDataCell>{gate.stage_id}</CTableDataCell>
-                          <CTableDataCell>{gate.IsEnter ? 'ورودی' : 'خروجی'}</CTableDataCell>
+                          <CTableDataCell>{gate.IsEnter == '1' ? 'ورودی' : 'خروجی'}</CTableDataCell>
                           <CTableDataCell>
                             <CButton
                               color="info"
@@ -195,12 +210,22 @@ const Gates = () => {
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CFormInput
+                      {/* <CFormInput
                         label="نوع گیت"
                         name="is_enter"
                         value={gateData.is_enter}
                         onChange={handleInputChange}
-                      />
+                      /> */}
+                      <CFormSelect
+                        name="is_enter"
+                        value={gateData.is_enter}
+                        onChange={handleInputChange}
+                        label="نوع گیت"
+                      >
+                        <option value="">انتخاب کنید</option>
+                        <option value="1">ورودی</option>
+                        <option value="2">خروجی</option>
+                      </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={6}>
                       <CButton

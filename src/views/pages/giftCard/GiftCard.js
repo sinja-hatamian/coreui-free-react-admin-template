@@ -70,7 +70,7 @@ const GiftCard = () => {
     AxiosInstance.post('/gift-cards', formdata)
       .then((res) => {
         console.log(res)
-        setCard([...card, res.data.data.gift_cards])
+        setCard([...card, res.data.data.gift_card])
         alert('کارت با موفقیت ثبت شد')
         setActiveKey(2)
       })
@@ -92,7 +92,7 @@ const GiftCard = () => {
         console.log(res)
         setCard([...card.filter((item) => item.id !== formdata.id), res.data.data.gift_card])
         alert('کارت با موفقیت ویرایش شد')
-        setActiveKey(2)
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -109,17 +109,17 @@ const GiftCard = () => {
       <CNav variant="tabs" role="tablist">
         <CNavItem>
           <CNavLink active={activeKey === 1} onClick={() => setActiveKey(1)}>
-            ثبت کارت هدیه
+            لیست کارت هدیه
           </CNavLink>
         </CNavItem>
         <CNavItem>
           <CNavLink active={activeKey === 2} onClick={() => setActiveKey(2)}>
-            لیست کارت هدیه
+            ثبت کارت هدیه
           </CNavLink>
         </CNavItem>
       </CNav>
       <CTabContent>
-        <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 1}>
+        <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 2}>
           <CRow>
             <CCol xs={12}>
               <CCard className="mb-4">
@@ -222,7 +222,7 @@ const GiftCard = () => {
             </CCol>
           </CRow>
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
+        <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 1}>
           <CCard className="mb-4">
             <CCardHeader>
               <strong>لیست کارت هدیه</strong>
@@ -242,7 +242,7 @@ const GiftCard = () => {
                   {card.map((item) => (
                     <CTableRow key={item.id}>
                       <CTableDataCell>{item.number}</CTableDataCell>
-                      <CTableDataCell>{item.amount}</CTableDataCell>
+                      <CTableDataCell>{numberWithCommas(item.amount)}</CTableDataCell>
                       <CTableDataCell>{item.description}</CTableDataCell>
                       <CTableDataCell>{item.is_active ? 'فعال' : 'غیرفعال'}</CTableDataCell>
                       <CTableDataCell>{item.directive}</CTableDataCell>
@@ -258,7 +258,7 @@ const GiftCard = () => {
                               description: item.description,
                               is_active: item.is_active,
                             })
-                            setActiveKey(1)
+                            setActiveKey(2)
                           }}
                         >
                           ویرایش

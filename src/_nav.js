@@ -21,7 +21,6 @@ import {
   cilBank,
   cilDevices,
   cilColorBorder,
-  cilFile,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -153,24 +152,25 @@ const _nav = [
   //     },
   //   ],
   // },
-  {
-    component: CNavItem,
-    name: 'حذف کارت',
-    to: '/charts',
-    icon: <CIcon icon={cilDelete} customClassName="nav-icon" />,
-  },
+
+  // {
+  //   component: CNavItem,
+  //   name: 'حذف کارت',
+  //   to: '/charts',
+  //   icon: <CIcon icon={cilDelete} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'ثبت کارت هدیه',
     to: '/pages/giftCard',
     icon: <CIcon icon={cilGift} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'هزینه صدور و تعویض کارت',
-    to: '/charts',
-    icon: <CIcon icon={cilCreditCard} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'هزینه صدور و تعویض کارت',
+  //   to: '/charts',
+  //   icon: <CIcon icon={cilCreditCard} customClassName="nav-icon" />,
+  // },
   // {
   //   component: CNavGroup,
   //   name: 'Notifications',

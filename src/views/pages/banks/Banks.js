@@ -61,8 +61,8 @@ const Banks = () => {
     AxiosInstance.put(`/banks/${bank.id}`, bank)
       .then((res) => {
         console.log(res.data.data)
-        alert('بانک با موفقیت ویرایش شد')
         setBankslist([...bankslist.filter((item) => item.id != bank.id), res.data.data.bank])
+        alert('بانک با موفقیت ویرایش شد')
         setActtiveKey(1)
       })
       .catch((err) => {

@@ -73,7 +73,7 @@ const ChargeCredits = () => {
     AxiosInstance.put(`/charge-credits/${charge.id}`, charge)
       .then((res) => {
         console.log(res.data.data)
-        setCredit([...credit, res.data.data.charge_credit])
+        setCredit([...credit.filter((item) => item.id !== charge.id), res.data.data.charge_credit])
         alert('اعتبار با موفقیت ویرایش شد')
         setActiveKey(1)
       })

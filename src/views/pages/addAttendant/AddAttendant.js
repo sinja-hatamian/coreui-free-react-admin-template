@@ -198,18 +198,17 @@ const AddAttendant = () => {
                     />
                   </CCol>
                   <CCol md={6}>
-                    <label>
-                      <p>تاریخ تولد</p>
-                      <DatePicker
-                        value={value}
-                        label="تاریخ تولد"
-                        onChange={handleDate}
-                        calendarPosition="bottom-right"
-                        inputPlaceholder="تاریخ تولد"
-                        locale={persian_fa}
-                        calendar={persian}
-                      />
-                    </label>
+                    <p>تاریخ تولد</p>
+                    <DatePicker
+                      value={customer.birthday}
+                      label="تاریخ تولد"
+                      onChange={handleDate}
+                      calendarPosition="bottom-right"
+                      inputPlaceholder="تاریخ تولد"
+                      locale={persian_fa}
+                      calendar={persian}
+                      disabled
+                    />
                   </CCol>
                   <CCol md={4}>
                     <CFormSelect
@@ -292,7 +291,7 @@ const AddAttendant = () => {
                       <DatePicker
                         value={value}
                         label="تاریخ تولد"
-                        onChange={handleDate}
+                        onChange={(newDate) => handleDate(newDate, index)}
                         calendarPosition="bottom-right"
                         inputPlaceholder="تاریخ تولد"
                         locale={persian_fa}
