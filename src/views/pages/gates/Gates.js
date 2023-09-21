@@ -36,11 +36,12 @@ const Gates = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target
     const rawNumber = value.replace(/[^0-9]/g, '')
-    const formattedData = numberWithCommas(rawNumber)
-    setGateData({
-      ...gateData,
-      [name]: formattedData,
-    })
+    const formatedNumber = numberWithCommas(rawNumber)
+    if (name === 'price') {
+      setGateData({ ...gateData, [name]: formatedNumber })
+    } else {
+      setGateData({ ...gateData, [name]: value })
+    }
   }
 
   useEffect(() => {

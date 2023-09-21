@@ -95,7 +95,9 @@ const InfoCard = () => {
               <CTableBody>
                 <CTableRow>
                   <CTableHeaderCell>{card.number}</CTableHeaderCell>
-                  <CTableHeaderCell>{card.balance}</CTableHeaderCell>
+                  <CTableHeaderCell>
+                    {card.balance ? numberWithCommas(card.balance) : 0}
+                  </CTableHeaderCell>
                   <CTableHeaderCell>{card.received_card}</CTableHeaderCell>
                   <CTableHeaderCell>
                     {editing ? (

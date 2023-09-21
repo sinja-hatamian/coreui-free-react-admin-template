@@ -163,14 +163,24 @@ const ChargCard = () => {
                     />
                   </CCol>
                 ) : null}
-                <div className="col-12">
+                {/* <div className="col-12">
                   <CButton type="button" onClick={() => removeForm(index)}>
                     حذف
                   </CButton>
-                </div>
+                </div> */}
+
+                <CCol md={6}>
+                  <CButton
+                    style={{ color: '#fff' }}
+                    color="danger"
+                    onClick={() => removeForm(index)}
+                  >
+                    حذف
+                  </CButton>
+                </CCol>
               </CForm>
             ))}
-            <div className="col-12">
+            {/* <div className="col-12">
               <CButton type="button" onClick={CloneForm}>
                 افزودن کارت جدید
               </CButton>
@@ -179,7 +189,19 @@ const ChargCard = () => {
               <CButton type="button" onClick={() => handleForm()}>
                 ثبت
               </CButton>
-            </div>
+            </div> */}
+            <p />
+            <CCol md={6}>
+              <CButton color="primary" onClick={CloneForm}>
+                افزودن کارت جدید
+              </CButton>
+            </CCol>
+            <p />
+            <CCol md={6}>
+              <CButton color="success" onClick={() => handleForm()}>
+                ثبت
+              </CButton>
+            </CCol>
           </CCardBody>
         </CCard>
       </CCol>
