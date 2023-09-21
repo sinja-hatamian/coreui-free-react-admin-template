@@ -235,8 +235,11 @@ const AddAttendant = () => {
                   </CCol>
                 </div>
               ) : null}
+
               {attendant.map((item, index) => (
                 <div className="col-12 row" key={index}>
+                  <p />
+                  <hr />
                   <CCol md={6}>
                     <CFormInput
                       label="نام"
@@ -325,6 +328,7 @@ const AddAttendant = () => {
                   </CCol>
                   <CCol md={4}>
                     <CButton
+                      style={{ color: '#fff', marginTop: '2rem' }}
                       color="danger"
                       onClick={() => {
                         removeAttendant(index)
