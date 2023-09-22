@@ -19,14 +19,19 @@ import {
   CNavItem,
   CNavLink,
   CFormInput,
+  CFormSelect,
 } from '@coreui/react'
 
 const PosDevice = () => {
   const [acttiveKey, setActtiveKey] = useState(1)
   const [posList, setPosList] = useState([])
+  const [bankTitle, setBankTitle] = useState([])
+  const [stage, setStage] = useState([])
   const [pos, setPos] = useState({
     title: '',
     bank_id: '',
+    bank_title: '',
+    stage_title: '',
     stage_id: '',
     operator_ip: '',
     pos_ip: '',
@@ -42,6 +47,20 @@ const PosDevice = () => {
       .catch((err) => {
         console.log(err)
       })
+
+    AxiosInstance.get('/banks')
+      .then((res) => {
+        setBankTitle(res.data.data.banks)
+        console.log(res.data.data.banks)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    AxiosInstance.get('/stages').then((res) => {
+      setStage(res.data.data.stages)
+      console.log(res.data.data.stages)
+    })
   }, [])
 
   const handleInputChange = (e) => {
@@ -108,8 +127,8 @@ const PosDevice = () => {
                     <CTableHead>
                       <CTableRow>
                         <CTableHeaderCell>نام دستگاه</CTableHeaderCell>
-                        <CTableHeaderCell>آیدی بانک</CTableHeaderCell>
-                        <CTableHeaderCell>آیدی سالن</CTableHeaderCell>
+                        <CTableHeaderCell> بانک</CTableHeaderCell>
+                        <CTableHeaderCell> سالن</CTableHeaderCell>
                         <CTableHeaderCell>آیپی اپراتور</CTableHeaderCell>
                         <CTableHeaderCell>آیپی پوز</CTableHeaderCell>
                         <CTableHeaderCell>پورت پوز</CTableHeaderCell>
@@ -119,8 +138,8 @@ const PosDevice = () => {
                       {posList.map((pos) => (
                         <CTableRow key={pos.id}>
                           <CTableDataCell>{pos.title}</CTableDataCell>
-                          <CTableDataCell>{pos.bank_id}</CTableDataCell>
-                          <CTableDataCell>{pos.stage_id}</CTableDataCell>
+                          <CTableDataCell>{pos.bank_title}</CTableDataCell>
+                          <CTableDataCell>{pos.stage_title}</CTableDataCell>
                           <CTableDataCell>{pos.operator_ip}</CTableDataCell>
                           <CTableDataCell>{pos.pos_ip}</CTableDataCell>
                           <CTableDataCell>{pos.pos_port}</CTableDataCell>
@@ -131,8 +150,8 @@ const PosDevice = () => {
                                 setPos({
                                   id: pos.id,
                                   title: pos.title,
-                                  bank_id: pos.bank_id,
-                                  stage_id: pos.stage_id,
+                                  bank_title: pos.bank_title,
+                                  stage_title: pos.stage_title,
                                   operator_ip: pos.operator_ip,
                                   pos_ip: pos.pos_ip,
                                   pos_port: pos.pos_port,
@@ -172,22 +191,36 @@ const PosDevice = () => {
                       />
                     </CCol>
                     <CCol md={6}>
-                      <CFormInput
-                        label="آیدی بانک"
-                        placeholder="آیدی بانک"
-                        value={pos.bank_id}
+                      <CFormSelect
+                        label="بانک"
+                        placeholder="بانک"
+                        value={pos.bank_title}
                         onChange={handleInputChange}
-                        name="bank_id"
-                      />
+                        name="bank_title"
+                      >
+                        <option value="">انتخاب کنید</option>
+                        {bankTitle.map((bank) => (
+                          <option key={bank.id} value={bank.title}>
+                            {bank.title}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                     <CCol md={6}>
-                      <CFormInput
-                        label="آیدی سالن"
-                        placeholder="آیدی سالن"
-                        value={pos.stage_id}
+                      <CFormSelect
+                        label=" سالن"
+                        placeholder="سالن"
+                        value={pos.stage_title}
                         onChange={handleInputChange}
-                        name="stage_id"
-                      />
+                        name="stage_title"
+                      >
+                        <option value="">انتخاب کنید</option>
+                        {stage.map((stage) => (
+                          <option key={stage.id} value={stage.title}>
+                            {stage.title}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                     <CCol md={6}>
                       <CFormInput
