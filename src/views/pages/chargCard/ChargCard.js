@@ -140,6 +140,7 @@ const ChargCard = () => {
                     <option value="2">پوز</option>
                     <option value="3">نقدی</option>
                     <option value="4">کارت هدیه</option>
+                    <option value="5">رایگان</option>
                   </CFormSelect>
                 </CCol>
                 {cardForm.type === '2' ? (
@@ -184,12 +185,6 @@ const ChargCard = () => {
                     />
                   </CCol>
                 ) : null}
-                {/* <div className="col-12">
-                  <CButton type="button" onClick={() => removeForm(index)}>
-                    حذف
-                  </CButton>
-                </div> */}
-
                 <CCol md={6}>
                   <CButton
                     style={{ color: '#fff' }}
@@ -201,16 +196,6 @@ const ChargCard = () => {
                 </CCol>
               </CForm>
             ))}
-            {/* <div className="col-12">
-              <CButton type="button" onClick={CloneForm}>
-                افزودن کارت جدید
-              </CButton>
-            </div>
-            <div className="col-12">
-              <CButton type="button" onClick={() => handleForm()}>
-                ثبت
-              </CButton>
-            </div> */}
             <p />
             <CCol md={6}>
               <CButton color="primary" onClick={CloneForm}>
