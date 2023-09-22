@@ -24,6 +24,7 @@ import {
 const Gates = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [gates, setGates] = useState([])
+  const [deviceCode, setDeviceCode] = useState('')
   const [gateData, setGateData] = useState({
     name: '',
     device_code: '',
@@ -80,6 +81,24 @@ const Gates = () => {
         alert('خطا در ویرایش گیت')
       })
   }
+
+  const handleIpSend = () => {
+    // Check if deviceCode (IP) is empty
+    if (!deviceCode) {
+      alert('لطفاً یک آدرس IP معتبر را وارد کنید')
+      return
+    }
+
+    AxiosInstance.post('/gates/open', { ip: deviceCode }) // Send "ip" in the request body
+      .then((res) => {
+        console.log(res)
+        alert('دستور ارسال شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('خطا در ارسال دستور')
+      })
+  }
   const numberWithCommas = (x) => {
     //add comma to each 3 digit
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -119,6 +138,8 @@ const Gates = () => {
                         <CTableDataCell> هزینه ورودی</CTableDataCell>
                         <CTableDataCell> شماره سالن</CTableDataCell>
                         <CTableDataCell> نوع گیت</CTableDataCell>
+                        <CTableDataCell> ویرایش </CTableDataCell>
+                        <CTableDataCell> تردد کارکنان</CTableDataCell>
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -150,6 +171,17 @@ const Gates = () => {
                               }}
                             >
                               ویرایش
+                            </CButton>
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            <CButton
+                              color="success"
+                              onClick={() => {
+                                setDeviceCode(gate.DeviceCode)
+                                handleIpSend()
+                              }}
+                            >
+                              ارسال دستور
                             </CButton>
                           </CTableDataCell>
                         </CTableRow>
