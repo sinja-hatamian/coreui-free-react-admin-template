@@ -30,16 +30,16 @@ const InfoCard = () => {
       const customer = JSON.parse(localStorage.getItem('customer'))
       AxiosInstance.get(`/cards/${customer.id}`)
         .then((res) => {
-          console.log(res)
           setCard(res.data.data.card)
           setCardForm({
             number: res.data.data.card.number,
-            // password: res.data.data.card.password,
+            password: res.data.data.card.password,
             received_card: res.data.data.card.received_card,
           })
         })
         .catch((err) => {
           console.log(err)
+          alert('خطا در دریافت اطلاعات کارت')
         })
     }
   }, [])
