@@ -348,7 +348,6 @@ const AddAttendant = () => {
               >
                 افزودن همراه
               </CButton>
-
               <CButton color="primary" onClick={handleAddAttendant}>
                 ثبت
               </CButton>
