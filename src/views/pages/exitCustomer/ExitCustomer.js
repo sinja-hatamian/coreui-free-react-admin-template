@@ -1,11 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import { CCol, CRow, CButton, CFormInput } from '@coreui/react'
+import {
+  CCol,
+  CRow,
+  CButton,
+  CFormInput,
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableRow,
+  CTableHeaderCell,
+  CTableDataCell,
+} from '@coreui/react'
 
 const ExitCustomer = () => {
   const [tag, setTag] = useState({
     tag: '',
   })
+  const [customers, setCustomers] = useState([])
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -25,6 +37,7 @@ const ExitCustomer = () => {
     AxiosInstance.post('/attendants/exit', tag)
       .then((res) => {
         console.log(res.data)
+        setCustomers(res.data.data.customers)
         setTag({
           tag: res.data.data.tag,
         })
@@ -51,6 +64,50 @@ const ExitCustomer = () => {
         <CButton color="primary" onClick={handleExit}>
           ثبت خروج
         </CButton>
+      </CCol>
+      <CCol xs="12">
+        <CRow>
+          <p />
+          <CTable striped>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
+                <CTableHeaderCell>تاریخ ورود</CTableHeaderCell>
+                <CTableHeaderCell>تاریخ خروج</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {customers.map((customer, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{customer.number}</CTableDataCell>
+                  <CTableDataCell>
+                    {Intl.DateTimeFormat('fa-IR', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    }).format(new Date(customer.EnterTime.split('.')[0]))}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    {customer.ExitTime
+                      ? Intl.DateTimeFormat('fa-IR', {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        }).format(
+                          new Date(customer.ExitTime.split('.')[0]),
+                          // Helper.getIsoDateWithTimezone(new Date(customer.ExitTime).getTime()),
+                        )
+                      : '-'}
+                  </CTableDataCell>
+                </CTableRow>
+              ))}
+            </CTableBody>
+          </CTable>
+        </CRow>
       </CCol>
     </CRow>
   )
