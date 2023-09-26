@@ -26,17 +26,7 @@ import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 
 const AddAttendant = () => {
-  const [attendant, setAttendant] = useState([
-    {
-      firstname: '',
-      lastname: '',
-      national_code: '',
-      phone: '',
-      birthday: '',
-      gender: '',
-      tag: '',
-    },
-  ])
+  const [attendant, setAttendant] = useState([])
   const [fixedData, setFixedData] = useState([])
   const [customer, setCustomer] = useState({})
   const [tag, setTag] = useState(null)

@@ -296,13 +296,13 @@ const CustomerReg = () => {
           </CRow>
         </CTabPane>
         <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 2}>
-          <InfoCard />
+          {activeKey === 2 ? <InfoCard /> : null}
         </CTabPane>
         <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 3}>
-          <ChargCard />
+          {activeKey === 3 ? <ChargCard /> : null}
         </CTabPane>
         <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 6}>
-          <AddAttendant />
+          {activeKey === 6 ? <AddAttendant /> : null}
         </CTabPane>
       </CTabContent>
     </>
