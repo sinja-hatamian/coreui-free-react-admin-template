@@ -37,7 +37,9 @@ const ExitCustomer = () => {
     AxiosInstance.post('/attendants/exit', tag)
       .then((res) => {
         console.log(res.data)
-        setCustomers(res.data.data.customers)
+        if (res.data.data.customers) {
+          setCustomers(res.data.data.customers)
+        }
         setTag({
           tag: res.data.data.tag,
         })

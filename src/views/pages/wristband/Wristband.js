@@ -31,14 +31,16 @@ const Wristband = () => {
   })
 
   useEffect(() => {
-    AxiosInstance.get('/wrist-bands')
-      .then((res) => {
-        setWristband(res.data.data.wrist_bands)
-        console.log(res.data.data.wrist_bands)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    if (activeKey === 1) {
+      AxiosInstance.get('/wrist-bands')
+        .then((res) => {
+          setWristband(res.data.data.wrist_bands)
+          console.log(res.data.data.wrist_bands)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }, [])
 
   const handleInputChange = (e) => {
