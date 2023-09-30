@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CButton,
@@ -29,25 +29,10 @@ const Login = () => {
     setFormdata((prev) => ({ ...prev, [name]: value }))
   }
 
-  // useEffect(() => {
-  //   AxiosInstance.get('/managers')
-  //     .then((res) => {
-  //       console.log(res.data.data)
-  //       const superAdmin = res.data.data.managers.filter((item) => item.is_superadmin == true)
-  //       console.log(superAdmin)
-  //       if (superAdmin.length > 0) {
-  //         setIsSuperAdmin(true)
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }, [])
-
   const handleLogin = () => {
     AxiosInstance.post('/auth/login', formdata)
       .then((res) => {
-        console.log(res.data.data.token)
+        console.log(res.data.data.manager)
         alert('ورود با موفقیت انجام شد')
         localStorage.setItem('token', res.data.data.token)
         localStorage.setItem('manager', JSON.stringify(res.data.data.manager))

@@ -22,27 +22,14 @@ const AppSidebar = () => {
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
   useEffect(() => {
-    AxiosInstance.get('/managers')
-      .then((res) => {
-        console.log(res.data.data)
-        const superAdmin = res.data.data.managers.filter((item) => item.is_superadmin == true)
-        console.log(superAdmin)
-        if (superAdmin.length > 0) {
-          setIsSuperAdmin(true)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    AxiosInstance.get('/roles')
-      .then((res) => {
-        console.log(res.data.data)
-        const roles = res.data.data.roles
-        console.log(roles)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    const manager = JSON.parse(localStorage.getItem('manager'))
+    if (manager) {
+      if (manager.is_superadmin === true) {
+        setIsSuperAdmin(true)
+      } else {
+        setIsSuperAdmin(false)
+      }
+    }
   }, [])
 
   return (
