@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
@@ -12,11 +12,38 @@ import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
 import navigation from '../_nav'
+import userNavigation from '../_userNav'
+import AxiosInstance from 'src/utils/AxiosInstance'
 
 const AppSidebar = () => {
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  useEffect(() => {
+    AxiosInstance.get('/managers')
+      .then((res) => {
+        console.log(res.data.data)
+        const superAdmin = res.data.data.managers.filter((item) => item.is_superadmin == true)
+        console.log(superAdmin)
+        if (superAdmin.length > 0) {
+          setIsSuperAdmin(true)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    AxiosInstance.get('/roles')
+      .then((res) => {
+        console.log(res.data.data)
+        const roles = res.data.data.roles
+        console.log(roles)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   return (
     <CSidebar
@@ -34,7 +61,12 @@ const AppSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={navigation} />
+          {/* <AppSidebarNav items={navigation} /> */}
+          {isSuperAdmin ? (
+            <AppSidebarNav items={navigation} />
+          ) : (
+            <AppSidebarNav items={userNavigation} />
+          )}
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler

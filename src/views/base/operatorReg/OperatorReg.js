@@ -26,6 +26,7 @@ import {
 const OperatorReg = () => {
   const [activekey, setActivekey] = useState(1)
   const [operatorList, setOperatorList] = useState([])
+  const [roles, setRoles] = useState([])
   const [formdata, setFormdata] = useState({
     national_code: '',
     firstname: '',
@@ -34,8 +35,9 @@ const OperatorReg = () => {
     username: '',
     password: '',
     accounting_code: '',
-    is_superadmin: true,
+    is_superadmin: false,
     status: '1',
+    role: [''],
   })
 
   useEffect(() => {
@@ -47,10 +49,22 @@ const OperatorReg = () => {
       .catch((err) => {
         console.log(err)
       })
+
+    AxiosInstance.get('/roles')
+      .then((res) => {
+        console.log(res.data.data)
+        setRoles(res.data.data.roles)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   const handleInputCahnge = (e) => {
     const { name, value } = e.target
+    if (name === 'role') {
+      setFormdata((prev) => ({ ...prev, roles: [value] }))
+    }
     setFormdata((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -111,6 +125,7 @@ const OperatorReg = () => {
                         <CTableHeaderCell>شماره تماس</CTableHeaderCell>
                         <CTableHeaderCell>نام کاربری</CTableHeaderCell>
                         <CTableHeaderCell>وضعیت</CTableHeaderCell>
+                        <CTableHeaderCell>نقش</CTableHeaderCell>
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -122,6 +137,7 @@ const OperatorReg = () => {
                           <CTableDataCell>{item.phone}</CTableDataCell>
                           <CTableDataCell>{item.username}</CTableDataCell>
                           <CTableDataCell>{item.status}</CTableDataCell>
+                          <CTableDataCell>{item.role}</CTableDataCell>
                           <CTableDataCell>
                             <CButton
                               color="primary"
@@ -137,6 +153,7 @@ const OperatorReg = () => {
                                   is_superadmin: item.is_superadmin,
                                   accounting_code: item.accounting_code,
                                   status: item.status,
+                                  // role: item.role,
                                 })
                                 setActivekey(2)
                               }}
@@ -244,6 +261,35 @@ const OperatorReg = () => {
                         <option value="">انتخاب کنید</option>
                         <option value="1">فعال</option>
                         <option value="0">غیرفعال</option>
+                      </CFormSelect>
+                    </CCol>
+                    <CCol md={6}>
+                      <CFormSelect
+                        name="role"
+                        label="نقش"
+                        value={formdata.role}
+                        onChange={handleInputCahnge}
+                      >
+                        <option value="">انتخاب کنید</option>
+                        {roles.map((role) => {
+                          return (
+                            <option value={role.id} key={role.id}>
+                              {role.name}
+                            </option>
+                          )
+                        })}
+                      </CFormSelect>
+                    </CCol>
+                    <CCol md={6}>
+                      <CFormSelect
+                        name="is_superadmin"
+                        label="مدیر کل"
+                        value={formdata.is_superadmin}
+                        onChange={handleInputCahnge}
+                      >
+                        <option value="">انتخاب کنید</option>
+                        <option value={true}>بله</option>
+                        <option value={false}>خیر</option>
                       </CFormSelect>
                     </CCol>
                     <CCol md={12}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CButton,
@@ -22,11 +22,27 @@ const Login = () => {
     username: '',
     password: '',
   })
+  // const [isSuperAdmin, setIsSuperAdmin] = useState(false)
 
   const handleInputCahnge = (e) => {
     const { name, value } = e.target
     setFormdata((prev) => ({ ...prev, [name]: value }))
   }
+
+  // useEffect(() => {
+  //   AxiosInstance.get('/managers')
+  //     .then((res) => {
+  //       console.log(res.data.data)
+  //       const superAdmin = res.data.data.managers.filter((item) => item.is_superadmin == true)
+  //       console.log(superAdmin)
+  //       if (superAdmin.length > 0) {
+  //         setIsSuperAdmin(true)
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }, [])
 
   const handleLogin = () => {
     AxiosInstance.post('/auth/login', formdata)
