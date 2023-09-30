@@ -138,7 +138,11 @@ const ChargeCredits = () => {
                             </CButton>
                           </CTableDataCell>
                           <CTableDataCell>
-                            <CButton color="danger" onClick={() => handleDeleteCredit(item.id)}>
+                            <CButton
+                              style={{ color: '#FFF' }}
+                              color="danger"
+                              onClick={() => handleDeleteCredit(item.id)}
+                            >
                               حذف
                             </CButton>
                           </CTableDataCell>
