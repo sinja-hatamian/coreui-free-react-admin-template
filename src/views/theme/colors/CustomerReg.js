@@ -157,7 +157,7 @@ const CustomerReg = () => {
                       />
                     </CCol>
                     <CCol md={8} xs={6}>
-                      <CButton color="info" onClick={fetchCustomerData}>
+                      <CButton color="info" onClick={fetchCustomerData} style={{ color: '#fff' }}>
                         بررسی کد ملی
                       </CButton>
                     </CCol>
@@ -277,6 +277,7 @@ const CustomerReg = () => {
                     <CCol md={12}>
                       <CButton
                         color="success"
+                        style={{ color: '#fff' }}
                         onClick={() => {
                           //if user field is full update user else create new user
                           if (formdata.id) {
