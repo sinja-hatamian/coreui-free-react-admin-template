@@ -16,7 +16,7 @@ const ChargCard = () => {
   const initialCardForm = {
     amount: '',
     type: '',
-    bank: '',
+    bank_id: '',
     card_number: '',
     transaction_id: '',
   }
@@ -33,7 +33,7 @@ const ChargCard = () => {
       ...updatedCardForms[index], // Copy the existing object
       [name]: formattedData, // Update the specific field
     }
-    if (name === 'transaction_id') {
+    if (name === 'transaction_id' || name === 'card_number') {
       updatedCardForms[index] = {
         ...updatedCardForms[index], // Copy the existing object
 
@@ -118,7 +118,7 @@ const ChargCard = () => {
                 <CCol md={6}>
                   <CFormInput
                     label="مبلغ"
-                    id={`amount-${index}`}
+                    // id={`amount-${index}`}
                     name="amount"
                     aria-label="amount"
                     onChange={(e) => handleInput(e, index)}
@@ -129,7 +129,7 @@ const ChargCard = () => {
                 <CCol md={6}>
                   <CFormSelect
                     label="نوع"
-                    id={`type-${index}`}
+                    // id={`type-${index}`}
                     name="type"
                     aria-label="type"
                     onChange={(e) => handleTypeChange(e, index)}
@@ -148,11 +148,11 @@ const ChargCard = () => {
                     <CCol md={6}>
                       <CFormSelect
                         label="بانک"
-                        id={`bank-${index}`}
-                        name="bank"
-                        aria-label="bank"
+                        // id={`bank_id${index}`}
+                        name="bank_id"
+                        aria-label="bank_id"
                         onChange={(e) => handleInput(e, index)}
-                        value={cardForm.bank}
+                        value={cardForm.bank_id}
                         locale="fa-IR"
                       >
                         <option value="">انتخاب کنید</option>
@@ -162,7 +162,7 @@ const ChargCard = () => {
                     <CCol md={6}>
                       <CFormInput
                         label="شماره تراکنش"
-                        id={`transaction_id-${index}`}
+                        // id={`transaction_id-${index}`}
                         name="transaction_id"
                         aria-label="transaction_id"
                         onChange={(e) => handleInput(e, index)}
@@ -176,7 +176,7 @@ const ChargCard = () => {
                   <CCol md={6}>
                     <CFormInput
                       label="شماره کارت هدیه"
-                      id={`card_number-${index}`}
+                      // id={`card_number-${index}`}
                       name="card_number"
                       aria-label="card_number"
                       onChange={(e) => handleInput(e, index)}
