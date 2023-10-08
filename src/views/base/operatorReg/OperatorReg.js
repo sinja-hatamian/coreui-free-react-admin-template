@@ -37,7 +37,7 @@ const OperatorReg = () => {
     accounting_code: '',
     is_superadmin: false,
     status: '1',
-    role: [''],
+    roles: [''],
   })
 
   useEffect(() => {
@@ -62,7 +62,8 @@ const OperatorReg = () => {
 
   const handleInputCahnge = (e) => {
     const { name, value } = e.target
-    if (name === 'role') {
+    console.log(name, value)
+    if (name === 'roles') {
       setFormdata((prev) => ({ ...prev, roles: [value] }))
     }
     setFormdata((prev) => ({ ...prev, [name]: value }))
@@ -91,6 +92,7 @@ const OperatorReg = () => {
         console.log(err)
         alert('خطا در ویرایش اپراتور')
       })
+    console.log(formdata)
   }
 
   return (
@@ -125,7 +127,7 @@ const OperatorReg = () => {
                         <CTableHeaderCell>شماره تماس</CTableHeaderCell>
                         <CTableHeaderCell>نام کاربری</CTableHeaderCell>
                         <CTableHeaderCell>وضعیت</CTableHeaderCell>
-                        <CTableHeaderCell>نقش</CTableHeaderCell>
+                        {/* <CTableHeaderCell>نقش</CTableHeaderCell> */}
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -137,7 +139,7 @@ const OperatorReg = () => {
                           <CTableDataCell>{item.phone}</CTableDataCell>
                           <CTableDataCell>{item.username}</CTableDataCell>
                           <CTableDataCell>{item.status}</CTableDataCell>
-                          <CTableDataCell>{item.role}</CTableDataCell>
+                          {/* <CTableDataCell>{item.role}</CTableDataCell> */}
                           <CTableDataCell>
                             <CButton
                               color="primary"
@@ -265,9 +267,9 @@ const OperatorReg = () => {
                     </CCol>
                     <CCol md={6}>
                       <CFormSelect
-                        name="role"
+                        name="roles"
                         label="نقش"
-                        value={formdata.role}
+                        value={formdata.roles}
                         onChange={handleInputCahnge}
                       >
                         <option value="">انتخاب کنید</option>

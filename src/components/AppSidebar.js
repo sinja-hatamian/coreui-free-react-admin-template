@@ -13,10 +13,10 @@ import 'simplebar/dist/simplebar.min.css'
 // sidebar nav config
 import navigation from '../_nav'
 import userNavigation from '../_userNav'
-import AxiosInstance from 'src/utils/AxiosInstance'
+// import AxiosInstance from 'src/utils/AxiosInstance'
 
 const AppSidebar = () => {
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const [isSuperAdmin, setIsSuperAdmin] = useState()
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
