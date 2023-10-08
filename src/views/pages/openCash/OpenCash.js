@@ -86,6 +86,7 @@ const OpenCash = () => {
                   ))}
                 </CFormSelect>
               </CCol>
+              <p />
               <CCol md={6}>
                 <CButton color="success" onClick={handleOpenCash}>
                   پذیرش
