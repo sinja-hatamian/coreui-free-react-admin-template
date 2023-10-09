@@ -19,10 +19,12 @@ import {
   CTableHeaderCell,
   CTableDataCell,
   CFormInput,
+  CFormSelect,
 } from '@coreui/react'
 
 const Wristband = () => {
   const [activeKey, setActiveKey] = useState(1)
+  const [stage, setStage] = useState([])
   const [wristband, setWristband] = useState([])
   const [wrist, setWrist] = useState({
     number: '',
@@ -41,6 +43,15 @@ const Wristband = () => {
           console.log(err)
         })
     }
+
+    AxiosInstance.get('/stages')
+      .then((res) => {
+        setStage(res.data.data.stages)
+        console.log(res.data.data.stages)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   const handleInputChange = (e) => {
@@ -181,13 +192,20 @@ const Wristband = () => {
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CFormInput
+                      <CFormSelect
                         name="stage_id"
                         label="شماره سالن"
                         placeholder="شماره سالن"
                         value={wrist.stage_id}
                         onChange={handleInputChange}
-                      />
+                      >
+                        <option value="">انتخاب کنید</option>
+                        {stage.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.title}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={4} style={{ margin: 15 + 'px' }}>
                       <p></p>
