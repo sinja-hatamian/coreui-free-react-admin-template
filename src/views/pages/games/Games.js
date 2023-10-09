@@ -58,10 +58,12 @@ const Games = () => {
 
   const handleInput = (e) => {
     const { name, value } = e.target
-    if (name === 'name') {
+
+    if (name === 'type' && value === '1') {
       setGameData((prev) => ({
         ...prev,
-        name: value,
+        [name]: value,
+        extra_price: '0', // Set extra_price to '0' when the game type is '1'
       }))
     } else if (name === 'base_price' || name === 'extra_price') {
       const rawNumber = value.replace(/[^0-9]/g, '')
@@ -264,9 +266,10 @@ const Games = () => {
                           placeholder="هزینه اضافه"
                           name="extra_price"
                           aria-label="extra_price"
-                          value={0}
+                          value={'0'}
                           locale="fa-IR"
                           onChange={handleInput}
+                          disabled
                         />
                       ) : (
                         <CFormInput
