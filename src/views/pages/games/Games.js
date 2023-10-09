@@ -156,10 +156,10 @@ const Games = () => {
                           <CTableDataCell>{game.DeviceCode}</CTableDataCell>
                           <CTableDataCell>{game.AccountancyCod}</CTableDataCell>
                           <CTableDataCell>
-                            {game.BasePrice ? numberWithCommas(game.BasePrice) : ''}
+                            {game.BasePrice ? numberWithCommas(game.BasePrice) : '0'}
                           </CTableDataCell>
                           <CTableDataCell>
-                            {game.ExtraPrice ? numberWithCommas(game.ExtraPrice) : ''}
+                            {game.ExtraPrice ? numberWithCommas(game.ExtraPrice) : '0'}
                           </CTableDataCell>
                           <CTableDataCell>{game.stage_id}</CTableDataCell>
                           <CTableDataCell>{game.BaseTime}</CTableDataCell>
