@@ -54,6 +54,7 @@ const Banks = () => {
       })
       .catch((err) => {
         console.log(err)
+        alert(err.response.data.message)
       })
   }
 
@@ -67,7 +68,7 @@ const Banks = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ویرایش بانک')
+        alert(err.response.data.message)
       })
   }
 

@@ -64,11 +64,7 @@ const PosDevice = () => {
   }, [])
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setPos((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setPos((pos) => ({ ...pos, [e.target.name]: e.target.value }))
   }
 
   const handleAddPos = () => {
@@ -81,7 +77,7 @@ const PosDevice = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('دستگاه با خطا مواجه شد')
+        alert(err.response.data.message)
       })
   }
 
@@ -95,7 +91,7 @@ const PosDevice = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('ویرایش با خطا مواجه شد')
+        alert(err.response.data.message)
       })
   }
 

@@ -77,7 +77,7 @@ const OperatorReg = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ثبت اپراتور')
+        alert(err.response.data.message)
       })
   }
 
@@ -90,7 +90,7 @@ const OperatorReg = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ویرایش اپراتور')
+        alert(err.response.data.message)
       })
     console.log(formdata)
   }

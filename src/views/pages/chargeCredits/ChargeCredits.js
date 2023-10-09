@@ -60,7 +60,7 @@ const ChargeCredits = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در افزودن اعتبار')
+        alert(err.response.data.message)
       })
   }
 
@@ -79,7 +79,7 @@ const ChargeCredits = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ویرایش اعتبار')
+        alert(err.response.data.message)
       })
   }
 
@@ -128,8 +128,8 @@ const ChargeCredits = () => {
                               onClick={() => {
                                 setCharge({
                                   id: item.id,
-                                  charge_amount: item.charge_amount,
-                                  credit_amount: item.credit_amount,
+                                  charge_amount: numberWithCommas(item.charge_amount),
+                                  credit_amount: numberWithCommas(item.credit_amount),
                                 })
                                 setActiveKey(2)
                               }}

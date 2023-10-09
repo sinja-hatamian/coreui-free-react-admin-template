@@ -43,7 +43,7 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ورود ')
+        alert(err.response.data.message)
       })
   }
 

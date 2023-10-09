@@ -24,6 +24,7 @@ import {
 const Gates = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [gates, setGates] = useState([])
+  const [stage, setStage] = useState([])
   const [deviceCode, setDeviceCode] = useState('')
   const [gateData, setGateData] = useState({
     name: '',
@@ -54,6 +55,14 @@ const Gates = () => {
       .catch((err) => {
         console.log(err)
       })
+    AxiosInstance.get('/stages')
+      .then((res) => {
+        setStage(res.data.data.stages)
+        console.log(res.data.data.stages)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   const handleSaveGate = () => {
@@ -66,7 +75,7 @@ const Gates = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ثبت گیت')
+        alert(err.response.data.message)
       })
   }
   const handleUpdateGame = () => {
@@ -78,7 +87,7 @@ const Gates = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ویرایش گیت')
+        alert(err.response.data.message)
       })
   }
 
@@ -235,12 +244,22 @@ const Gates = () => {
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CFormInput
-                        label="شماره سالن"
+                      <CFormSelect
                         name="stage_id"
                         value={gateData.stage_id}
                         onChange={handleInputChange}
-                      />
+                        label="شماره سالن"
+                      >
+                        <option value="">انتخاب کنید</option>
+                        {
+                          //get stages from api
+                          stage.map((item) => (
+                            <option key={item.id} value={stage.id}>
+                              {item.title}
+                            </option>
+                          ))
+                        }
+                      </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={6}>
                       {/* <CFormInput

@@ -36,14 +36,13 @@ const Wristband = () => {
     if (activeKey === 1) {
       AxiosInstance.get('/wrist-bands')
         .then((res) => {
+          console.log(res.data)
           setWristband(res.data.data.wrist_bands)
-          console.log(res.data.data.wrist_bands)
         })
         .catch((err) => {
           console.log(err)
         })
     }
-
     AxiosInstance.get('/stages')
       .then((res) => {
         setStage(res.data.data.stages)
@@ -76,6 +75,7 @@ const Wristband = () => {
       .then((res) => {
         setWristband([...wristband, res.data.data.wrist_band])
         alert('دستبند با موفقیت ویرایش شد')
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -110,7 +110,7 @@ const Wristband = () => {
         </CNavItem>
       </CNav>
       <CTabContent>
-        <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 1}>
+        <CTabPane role="tabpanel" aria-label="home-tab" visible={activeKey === 1}>
           <CRow>
             <CCol xs={12}>
               <CCard className="mb-4">

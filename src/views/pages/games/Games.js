@@ -19,11 +19,13 @@ import {
   CTableDataCell,
   CFormInput,
   CButton,
+  CFormSelect,
 } from '@coreui/react'
 
 const Games = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [games, setGames] = useState([])
+  const [stage, setStage] = useState([])
   const [gameData, setGameData] = useState({
     name: '',
     type: '',
@@ -40,6 +42,14 @@ const Games = () => {
       .then((res) => {
         setGames(res.data.data.games)
         console.log(res.data.data.games)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    AxiosInstance.get('/stages')
+      .then((res) => {
+        setStage(res.data.data.stages)
+        console.log(res.data.data.stages)
       })
       .catch((err) => {
         console.log(err)
@@ -78,7 +88,7 @@ const Games = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در اضافه کردن بازی')
+        alert(err.response.data.message)
       })
   }
 
@@ -92,7 +102,7 @@ const Games = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ویرایش بازی')
+        alert(err.response.data.message)
       })
   }
 
@@ -201,15 +211,18 @@ const Games = () => {
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CFormInput
+                      <CFormSelect
                         label="نوع بازی"
-                        placeholder="نوع بازی"
                         name="type"
                         aria-label="type"
                         locale="fa-IR"
                         value={gameData.type}
                         onChange={handleInput}
-                      />
+                      >
+                        <option value="">انتخاب کنید</option>
+                        <option value="1">قیمت پایه</option>
+                        <option value="2">با تایم اضافه</option>
+                      </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={6}>
                       <CFormInput
@@ -245,26 +258,44 @@ const Games = () => {
                       />
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CFormInput
-                        label="قیمت اضافه"
-                        placeholder="قیمت اضافه"
-                        name="extra_price"
-                        aria-label="extra_price"
-                        value={gameData.extra_price}
-                        locale="fa-IR"
-                        onChange={handleInput}
-                      />
+                      {gameData.type == '1' ? (
+                        <CFormInput
+                          label=" هزینه اضافه"
+                          placeholder="هزینه اضافه"
+                          name="extra_price"
+                          aria-label="extra_price"
+                          value={0}
+                          locale="fa-IR"
+                          onChange={handleInput}
+                        />
+                      ) : (
+                        <CFormInput
+                          label="هزینه اضافه"
+                          placeholder=" هزینه اضافه"
+                          name="extra_price"
+                          aria-label="extra_price"
+                          locale="fa-IR"
+                          value={gameData.extra_price}
+                          onChange={handleInput}
+                        />
+                      )}
                     </CCol>
                     <CCol xs={12} md={6}>
-                      <CFormInput
+                      <CFormSelect
                         label="شماره سالن"
-                        placeholder="شماره سالن"
                         name="stage_id"
                         aria-label="stage_id"
                         locale="fa-IR"
                         value={gameData.stage_id}
                         onChange={handleInput}
-                      />
+                      >
+                        <option value="">انتخاب کنید</option>
+                        {stage.map((item) => (
+                          <option value={item.id} key={item.id}>
+                            {item.title}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={6}>
                       <CFormInput
