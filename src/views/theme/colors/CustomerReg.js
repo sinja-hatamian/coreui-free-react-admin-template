@@ -69,7 +69,7 @@ const CustomerReg = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ثبت کاربر')
+        alert(err.response.data.errors[0].msg)
       })
   }
   const fetchCustomerData = () => {
@@ -95,7 +95,7 @@ const CustomerReg = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ویرایش کاربر')
+        alert(err.response.data.errors[0].msg)
       })
   }
 

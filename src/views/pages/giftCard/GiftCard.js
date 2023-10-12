@@ -76,7 +76,7 @@ const GiftCard = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ثبت کارت')
+        alert(err.response.data.errors[0].msg)
       })
   }
 
@@ -96,7 +96,7 @@ const GiftCard = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ویرایش کارت')
+        alert(err.response.data.errors[0].msg)
       })
   }
 

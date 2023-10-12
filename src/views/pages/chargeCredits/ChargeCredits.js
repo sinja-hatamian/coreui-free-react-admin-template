@@ -60,7 +60,7 @@ const ChargeCredits = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.message)
+        alert(err.response.data.errors[0].msg)
       })
   }
 
@@ -79,7 +79,7 @@ const ChargeCredits = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.message)
+        alert(err.response.data.errors[0].msg)
       })
   }
 

@@ -54,7 +54,7 @@ const Stages = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در اضافه کردن')
+        alert(err.response.data.errors[0].msg)
       })
   }
 
@@ -69,7 +69,7 @@ const Stages = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ویرایش')
+        alert(err.response.data.errors[0].msg)
       })
   }
 

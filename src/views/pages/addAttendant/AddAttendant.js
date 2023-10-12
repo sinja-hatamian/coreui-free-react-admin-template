@@ -94,7 +94,7 @@ const AddAttendant = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ثبت همراه')
+        alert(err.response.data.errors[0].msg)
       })
   }
 
@@ -215,7 +215,7 @@ const AddAttendant = () => {
                   </CCol>
                   <CCol md={4}>
                     <CFormInput
-                      label="تگ"
+                      label="سریال دستبند"
                       name="tag"
                       aria-label="tag"
                       onChange={(event) => setTag(event.target.value)}
@@ -308,7 +308,7 @@ const AddAttendant = () => {
                   </CCol>
                   <CCol md={4}>
                     <CFormInput
-                      label="تگ"
+                      label="سریال دستبند"
                       name="tag"
                       aria-label="tag"
                       onChange={(event) => handleChange(event, index)}

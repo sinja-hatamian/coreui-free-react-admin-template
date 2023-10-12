@@ -58,6 +58,7 @@ const IntroductionWays = () => {
       })
       .catch((err) => {
         console.log(err)
+        alert(err.response.data.errors[0].msg)
       })
   }
 
@@ -78,6 +79,7 @@ const IntroductionWays = () => {
       })
       .catch((err) => {
         console.log(err)
+        alert(err.response.data.errors[0].msg)
       })
   }
 

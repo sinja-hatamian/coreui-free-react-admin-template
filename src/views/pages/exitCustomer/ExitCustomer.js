@@ -47,7 +47,7 @@ const ExitCustomer = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ثبت خروج')
+        alert(err.response.data.errors[0].msg)
       })
   }
   return (

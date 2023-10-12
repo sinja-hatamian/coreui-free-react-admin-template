@@ -44,7 +44,7 @@ const OpenCash = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در باز کردن صندوق')
+        alert(err.response.data.errors[0].msg)
       })
   }
 

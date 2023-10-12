@@ -66,7 +66,7 @@ const InfoCard = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در به روزرسانی')
+        alert(err.response.data.errors[0].msg)
       })
   }
 

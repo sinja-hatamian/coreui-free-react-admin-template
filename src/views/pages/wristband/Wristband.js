@@ -66,7 +66,7 @@ const Wristband = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('مشکلی در افزودن دستبند به وجود آمده است')
+        alert(err.response.data.errors[0].msg)
       })
   }
 
@@ -79,7 +79,7 @@ const Wristband = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('مشکلی در ویرایش دستبند به وجود آمده است')
+        alert(err.response.data.errors[0].msg)
       })
   }
 
@@ -91,7 +91,7 @@ const Wristband = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert('مشکلی در حذف دستبند به وجود آمده است')
+        alert(err.response.data.errors[0].msg)
       })
   }
 

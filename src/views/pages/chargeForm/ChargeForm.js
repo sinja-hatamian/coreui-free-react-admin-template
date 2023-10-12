@@ -59,9 +59,14 @@ const ChargeForm = () => {
         console.log(res.data)
         alert('صندوق با موفقیت بسته شد')
       })
-      .catch((error) => {
-        console.log(error)
-        alert('خطا در بستن صندوق')
+      .catch((err) => {
+        console.log(err)
+        // alert(err.response.data.errors[0].msg)
+        if (err.response.data.errors[0].msg) {
+          alert(err.response.data.errors[0].msg)
+        } else {
+          alert(err.response.data.errors)
+        }
       })
   }
 
