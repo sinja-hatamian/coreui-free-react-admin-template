@@ -65,8 +65,10 @@ const OperatorReg = () => {
     console.log(name, value)
     if (name === 'roles') {
       setFormdata((prev) => ({ ...prev, roles: [value] }))
+    } else {
+      setFormdata((prev) => ({ ...prev, [name]: value }))
     }
-    setFormdata((prev) => ({ ...prev, [name]: value }))
+    console.log(formdata)
   }
 
   const handleSaveOperator = () => {
@@ -74,6 +76,7 @@ const OperatorReg = () => {
       .then((res) => {
         console.log(res)
         alert('اپراتور با موفقیت ثبت شد')
+        setActivekey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -127,7 +130,7 @@ const OperatorReg = () => {
                         <CTableHeaderCell>شماره تماس</CTableHeaderCell>
                         <CTableHeaderCell>نام کاربری</CTableHeaderCell>
                         <CTableHeaderCell>وضعیت</CTableHeaderCell>
-                        {/* <CTableHeaderCell>نقش</CTableHeaderCell> */}
+                        <CTableHeaderCell>نقش</CTableHeaderCell>
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -139,7 +142,7 @@ const OperatorReg = () => {
                           <CTableDataCell>{item.phone}</CTableDataCell>
                           <CTableDataCell>{item.username}</CTableDataCell>
                           <CTableDataCell>{item.status}</CTableDataCell>
-                          {/* <CTableDataCell>{item.role}</CTableDataCell> */}
+                          <CTableDataCell>{item.role}</CTableDataCell>
                           <CTableDataCell>
                             <CButton
                               color="primary"
@@ -155,7 +158,7 @@ const OperatorReg = () => {
                                   is_superadmin: item.is_superadmin,
                                   accounting_code: item.accounting_code,
                                   status: item.status,
-                                  // role: item.role,
+                                  roles: item.roles,
                                 })
                                 setActivekey(2)
                               }}

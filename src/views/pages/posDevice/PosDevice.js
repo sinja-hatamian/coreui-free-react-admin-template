@@ -146,6 +146,7 @@ const PosDevice = () => {
                                 setPos({
                                   id: pos.id,
                                   title: pos.title,
+                                  bank_id: pos.bank_id,
                                   bank_title: pos.bank_title,
                                   stage_title: pos.stage_title,
                                   operator_ip: pos.operator_ip,
@@ -190,9 +191,9 @@ const PosDevice = () => {
                       <CFormSelect
                         label="بانک"
                         placeholder="بانک"
-                        value={pos.bank_title}
+                        value={pos.bank_id}
                         onChange={handleInputChange}
-                        name="bank_title"
+                        name="bank_id"
                       >
                         <option value="">انتخاب کنید</option>
                         {bankTitle.map((bank) => (

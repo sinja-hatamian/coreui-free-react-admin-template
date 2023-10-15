@@ -112,6 +112,7 @@ const Banks = () => {
                               color="primary"
                               onClick={() => {
                                 setBank({
+                                  id: bank.id,
                                   title: bank.title,
                                   accounting_code: bank.accounting_code,
                                 })

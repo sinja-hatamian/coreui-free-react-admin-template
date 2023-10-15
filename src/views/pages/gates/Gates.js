@@ -254,7 +254,7 @@ const Gates = () => {
                         {
                           //get stages from api
                           stage.map((item) => (
-                            <option key={item.id} value={stage.id}>
+                            <option key={item.id} value={item.id}>
                               {item.title}
                             </option>
                           ))

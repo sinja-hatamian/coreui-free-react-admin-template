@@ -64,7 +64,7 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         name="username"
-                        placeholder="Username"
+                        placeholder="نام کاربری"
                         autoComplete="username"
                         value={formdata.username}
                         onChange={handleInputCahnge}
@@ -77,7 +77,7 @@ const Login = () => {
                       <CFormInput
                         name="password"
                         type="password"
-                        placeholder="Password"
+                        placeholder="پسورد"
                         autoComplete="current-password"
                         value={formdata.password}
                         onChange={handleInputCahnge}
