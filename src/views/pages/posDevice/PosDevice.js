@@ -197,7 +197,7 @@ const PosDevice = () => {
                       >
                         <option value="">انتخاب کنید</option>
                         {bankTitle.map((bank) => (
-                          <option key={bank.id} value={bank.title}>
+                          <option key={bank.id} value={bank.id}>
                             {bank.title}
                           </option>
                         ))}
@@ -207,13 +207,13 @@ const PosDevice = () => {
                       <CFormSelect
                         label=" سالن"
                         placeholder="سالن"
-                        value={pos.stage_title}
+                        value={pos.stage_id}
                         onChange={handleInputChange}
-                        name="stage_title"
+                        name="stage_id"
                       >
                         <option value="">انتخاب کنید</option>
                         {stage.map((stage) => (
-                          <option key={stage.id} value={stage.title}>
+                          <option key={stage.id} value={stage.id}>
                             {stage.title}
                           </option>
                         ))}
