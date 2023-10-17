@@ -275,8 +275,8 @@ const Gates = () => {
                         label="نوع گیت"
                       >
                         <option value="">انتخاب کنید</option>
-                        <option value="1">ورودی</option>
-                        <option value="2">خروجی</option>
+                        <option value={true}>ورودی</option>
+                        <option value={false}>خروجی</option>
                       </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={6}>
