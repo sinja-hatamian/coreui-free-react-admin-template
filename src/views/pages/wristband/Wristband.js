@@ -35,16 +35,14 @@ const Wristband = () => {
   })
 
   useEffect(() => {
-    if (activeKey === 1) {
-      AxiosInstance.get('/wrist-bands')
-        .then((res) => {
-          console.log(res.data)
-          setWristband(res.data.data.wrist_bands)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
+    AxiosInstance.get('/wrist-bands')
+      .then((res) => {
+        console.log(res.data)
+        setWristband(res.data.data.wrist_bands)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     AxiosInstance.get('/stages')
       .then((res) => {
         setStage(res.data.data.stages)
@@ -64,6 +62,11 @@ const Wristband = () => {
       .then((res) => {
         setWristband([...wristband, res.data.data.wrist_band])
         toast.success(res.data.message)
+        setWrist({
+          number: '',
+          tag: '',
+          stage_id: '',
+        })
       })
       .catch((err) => {
         console.log(err)
