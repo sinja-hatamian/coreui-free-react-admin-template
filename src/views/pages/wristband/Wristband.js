@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCol,
   CRow,
@@ -61,12 +63,11 @@ const Wristband = () => {
     AxiosInstance.post('/wrist-bands', wrist)
       .then((res) => {
         setWristband([...wristband, res.data.data.wrist_band])
-        alert('دستبند با موفقیت افزوده شد')
-        setActiveKey(1)
+        toast.success(res.data.message)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -74,12 +75,12 @@ const Wristband = () => {
     AxiosInstance.put(`/wrist-bands/${id}`, wrist)
       .then((res) => {
         setWristband([...wristband, res.data.data.wrist_band])
-        alert('دستبند با موفقیت ویرایش شد')
+        toast.success(res.data.message)
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -91,7 +92,7 @@ const Wristband = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        alert('دستبند حذف نشد')
       })
   }
 
@@ -225,6 +226,17 @@ const Wristband = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }
