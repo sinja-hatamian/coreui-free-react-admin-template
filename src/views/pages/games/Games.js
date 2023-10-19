@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
@@ -84,13 +86,13 @@ const Games = () => {
     AxiosInstance.post('/games', gameData)
       .then((res) => {
         console.log(res.data.data)
-        alert('بازی با موفقیت اضافه شد')
+        toast.success('بازی با موفقیت افزوده شد')
         setGames([...games, res.data.data.game])
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -98,13 +100,13 @@ const Games = () => {
     AxiosInstance.put(`/games/${gameData.id}`, gameData)
       .then((res) => {
         console.log(res.data.data)
-        alert('بازی با موفقیت ویرایش شد')
+        toast.success('بازی با موفقیت ویرایش شد')
         setGames([...games.filter((item) => item.id != gameData.id), res.data.data.game])
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -326,6 +328,17 @@ const Games = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }

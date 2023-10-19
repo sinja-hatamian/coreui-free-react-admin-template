@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
@@ -55,12 +57,12 @@ const ChargeCredits = () => {
       .then((res) => {
         console.log(res.data.data)
         setCredit([...credit, res.data.data.charge_credit])
-        alert('اعتبار با موفقیت افزوده شد')
+        toast.success('اعتبار با موفقیت ثبت شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -74,12 +76,12 @@ const ChargeCredits = () => {
       .then((res) => {
         console.log(res.data.data)
         setCredit([...credit.filter((item) => item.id !== charge.id), res.data.data.charge_credit])
-        alert('اعتبار با موفقیت ویرایش شد')
+        toast.success('اعتبار با موفقیت ویرایش شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -201,6 +203,17 @@ const ChargeCredits = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }

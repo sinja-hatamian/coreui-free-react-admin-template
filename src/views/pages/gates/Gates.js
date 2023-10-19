@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
@@ -70,42 +72,42 @@ const Gates = () => {
       .then((res) => {
         console.log(res)
         setGates([...gates, res.data.data.gate])
-        alert('گیت با موفقیت ثبت شد')
+        toast.success('گیت با موفقیت ثبت شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
   const handleUpdateGame = () => {
     AxiosInstance.put(`/gates/${gateData.id}`, gateData)
       .then((res) => {
         console.log(res)
-        alert('گیت با موفقیت ویرایش شد')
+        toast.success('گیت با موفقیت ویرایش شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
   const handleIpSend = () => {
     // Check if deviceCode (IP) is empty
     if (!deviceCode) {
-      alert('لطفاً یک آدرس IP معتبر را وارد کنید')
+      toast.error('لطفاً یک آدرس IP معتبر را وارد کنید')
       return
     }
 
     AxiosInstance.post('/gates/open', { ip: deviceCode }) // Send "ip" in the request body
       .then((res) => {
         console.log(res)
-        alert('دستور ارسال شد')
+        toast.success('دستور ارسال شد')
       })
       .catch((err) => {
         console.log(err)
-        alert('خطا در ارسال دستور')
+        toast.error('خطا در ارسال دستور')
       })
   }
   const numberWithCommas = (x) => {
@@ -295,6 +297,17 @@ const Gates = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }

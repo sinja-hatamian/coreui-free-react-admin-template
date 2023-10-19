@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
@@ -49,12 +51,12 @@ const Stages = () => {
         console.log(res.data.data)
         setStageList([...stageList, res.data.data.stage])
         setStage({ title: '' })
-        alert('با موفقیت اضافه شد')
+        toast.success('با موفقیت اضافه شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -64,12 +66,12 @@ const Stages = () => {
         console.log(res.data.data)
         setStageList(stageList.map((item) => (item.id === stage.id ? stage : item)))
         setStage({ title: '' })
-        alert('با موفقیت  ویرایش شد')
+        toast.success('با موفقیت ویرایش شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -165,6 +167,17 @@ const Stages = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }

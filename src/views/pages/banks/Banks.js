@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCol,
@@ -48,13 +50,13 @@ const Banks = () => {
     AxiosInstance.post('/banks', bank)
       .then((res) => {
         console.log(res.data.data)
-        alert('بانک با موفقیت اضافه شد')
+        toast.success('بانک با موفقیت اضافه شد')
         setBankslist([...bankslist, res.data.data.bank])
         setActtiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -63,12 +65,12 @@ const Banks = () => {
       .then((res) => {
         console.log(res.data.data)
         setBankslist([...bankslist.filter((item) => item.id != bank.id), res.data.data.bank])
-        alert('بانک با موفقیت ویرایش شد')
+        toast.success('بانک با موفقیت ویرایش شد')
         setActtiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -177,6 +179,17 @@ const Banks = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }

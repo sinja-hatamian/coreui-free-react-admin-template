@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
@@ -71,13 +73,13 @@ const PosDevice = () => {
     AxiosInstance.post('/pos-devices', pos)
       .then((res) => {
         console.log(res.data.data)
-        alert('دستگاه با موفقیت اضافه شد')
+        toast.success('دستگاه با موفقیت اضافه شد')
         setPosList([...posList, res.data.data.pos_device])
         setActtiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -85,13 +87,13 @@ const PosDevice = () => {
     AxiosInstance.put(`/pos-devices/${pos.id}`, pos)
       .then((res) => {
         console.log(res.data.data)
-        alert('ویرایش با موفقیت انجام شد')
+        toast.success('دستگاه با موفقیت ویرایش شد')
         setPosList([...posList.filter((item) => item.id != pos.id), res.data.data.pos_device])
         setActtiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -258,6 +260,17 @@ const PosDevice = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }
