@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CNav,
   CNavItem,
@@ -65,11 +67,11 @@ const CustomerReg = () => {
       .then((res) => {
         localStorage.setItem('customer', JSON.stringify(res.data.data.user))
         console.log(res)
-        alert('کاربر با موفقیت ثبت شد')
+        toast.success('کاربر با موفقیت ثبت شد')
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
   const fetchCustomerData = () => {
@@ -83,7 +85,7 @@ const CustomerReg = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert(' کاربر موجود نیست')
+        toast.error('کاربری با این کد ملی وجود ندارد')
       })
   }
 
@@ -91,11 +93,11 @@ const CustomerReg = () => {
     AxiosInstance.put(`/users/${formdata.id}`, formdata)
       .then((res) => {
         console.log(res)
-        alert('کاربر با موفقیت ویرایش شد')
+        toast.success('کاربر با موفقیت ویرایش شد')
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -306,6 +308,17 @@ const CustomerReg = () => {
           {activeKey === 6 ? <AddAttendant /> : null}
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }

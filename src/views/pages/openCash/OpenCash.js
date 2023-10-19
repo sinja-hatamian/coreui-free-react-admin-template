@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CButton,
   CCard,
@@ -39,15 +41,14 @@ const OpenCash = () => {
     })
       .then((res) => {
         console.log(res.data.data)
-        alert('صندوق با موفقیت باز شد')
+        toast.success('صندوق با موفقیت باز شد')
         navigate('/theme/CustomerReg')
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
-
   return (
     <CCol xs={12}>
       <CCard className="mb-4">
@@ -96,6 +97,17 @@ const OpenCash = () => {
           </CForm>
         </CCardBody>
       </CCard>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </CCol>
   )
 }

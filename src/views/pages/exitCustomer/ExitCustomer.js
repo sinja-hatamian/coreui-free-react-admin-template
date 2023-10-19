@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCol,
   CRow,
@@ -43,11 +45,11 @@ const ExitCustomer = () => {
         setTag({
           tag: '',
         })
-        alert('خروج با موفقیت ثبت شد')
+        toast.success('خروج با موفقیت ثبت شد')
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
   return (
@@ -111,6 +113,17 @@ const ExitCustomer = () => {
           </CTable>
         </CRow>
       </CCol>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </CRow>
   )
 }
