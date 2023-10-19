@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
@@ -75,12 +77,12 @@ const OperatorReg = () => {
     AxiosInstance.post('/managers', formdata)
       .then((res) => {
         console.log(res)
-        alert('اپراتور با موفقیت ثبت شد')
+        toast.success(res.data.message)
         setActivekey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -88,12 +90,12 @@ const OperatorReg = () => {
     AxiosInstance.put(`/managers/${formdata.id}`, formdata)
       .then((res) => {
         console.log(res)
-        alert('اپراتور با موفقیت ویرایش شد')
+        toast.success(res.data.message)
         setActivekey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
     console.log(formdata)
   }
@@ -301,16 +303,12 @@ const OperatorReg = () => {
                       <CButton
                         color="info"
                         onClick={() => {
-                          if (formdata.id) {
-                            handleUpdateOperator()
-                          } else {
-                            handleSaveOperator()
-                          }
+                          if (formdata.id ? handleUpdateOperator() : handleSaveOperator())
+                            setActivekey(1)
                         }}
                       >
                         ثبت
                       </CButton>
-                      {/* <CButton color="success">افزودن</CButton> */}
                     </CCol>
                   </CForm>
                 </CCardBody>
@@ -318,6 +316,17 @@ const OperatorReg = () => {
             </CCol>
           </CRow>
         </CTabPane>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={true}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </CTabContent>
     </>
   )

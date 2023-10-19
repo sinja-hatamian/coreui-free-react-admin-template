@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
@@ -53,12 +54,12 @@ const IntroductionWays = () => {
       .then((res) => {
         console.log(res.data.data)
         setIntroductionWaysList([...introductionWaysList, res.data.data.introduction_way])
-        alert('روش آشنایی با موفقیت افزوده شد')
+        toast.success('روش آشنایی با موفقیت ثبت شد')
         setActivekey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -74,12 +75,12 @@ const IntroductionWays = () => {
             return introductionWay
           }),
         )
-        alert('روش آشنایی با موفقیت ویرایش شد')
+        toast.success('روش آشنایی با موفقیت ویرایش شد')
         setActivekey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -180,6 +181,17 @@ const IntroductionWays = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }
