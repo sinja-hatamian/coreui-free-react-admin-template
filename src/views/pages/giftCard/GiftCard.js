@@ -73,12 +73,12 @@ const GiftCard = () => {
       .then((res) => {
         console.log(res)
         setCard([...card, res.data.data.gift_card])
-        alert('کارت با موفقیت ثبت شد')
+        toast.success('کارت با موفقیت ثبت شد')
         setActiveKey(2)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -93,12 +93,12 @@ const GiftCard = () => {
       .then((res) => {
         console.log(res)
         setCard([...card.filter((item) => item.id !== formdata.id), res.data.data.gift_card])
-        alert('کارت با موفقیت ویرایش شد')
+        toast.success('کارت با موفقیت ویرایش شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
@@ -274,6 +274,17 @@ const GiftCard = () => {
           </CCard>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }
