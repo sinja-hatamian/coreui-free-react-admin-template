@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CButton,
   CCard,
@@ -43,7 +45,7 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error('نام کاربری یا رمز عبور اشتباه است')
       })
   }
 
@@ -97,6 +99,17 @@ const Login = () => {
           </CCol>
         </CRow>
       </CContainer>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
 }
