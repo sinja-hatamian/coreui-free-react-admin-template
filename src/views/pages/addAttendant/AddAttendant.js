@@ -385,6 +385,17 @@ const AddAttendant = () => {
           </CButton>
         </CModalFooter>
       </CModal>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </CRow>
   )
 }
