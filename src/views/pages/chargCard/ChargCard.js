@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CButton,
   CRow,
@@ -89,11 +91,11 @@ const ChargCard = () => {
       })
         .then((res) => {
           console.log(res)
-          alert('شارژ با موفقیت انجام شد')
+          toast.success('کارت با موفقیت شارژ شد')
         })
         .catch((err) => {
           console.log(err)
-          alert('خطا در شارژ کارت')
+          toast.error('خطا در شارژ کارت')
         })
     }
   }
@@ -238,6 +240,17 @@ const ChargCard = () => {
           </CCardBody>
         </CCard>
       </CCol>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </CRow>
   )
 }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CRow,
   CCol,
@@ -87,14 +89,14 @@ const AddAttendant = () => {
         console.log(res)
         const newAttendant = res.data.data
         setAttendant([...attendant, newAttendant])
-        alert('همراه با موفقیت ثبت شد')
+        toast.success('همراه با موفقیت ثبت شد')
         if (res.data.data.qrcode) {
           setQrcode(res.data.data.qrcode)
         }
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
