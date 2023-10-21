@@ -246,7 +246,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'گزارشات گردش حساب مشتری',
-    to: '/theme/color',
+    to: '/logs/CustomerLog',
     icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
   },
   {

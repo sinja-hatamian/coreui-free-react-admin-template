@@ -25,6 +25,7 @@ const Wristband = React.lazy(() => import('./views/pages/wristband/Wristband'))
 const AccountingDetails = React.lazy(() =>
   import('./views/pages/accountingDetails/AccountingDetails'),
 )
+const customerLog = React.lazy(() => import('./views/pages/logs/CustomerLog'))
 
 //Forms
 const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
@@ -45,7 +46,6 @@ const Alerts = React.lazy(() => import('./views/notifications/alerts/Alerts'))
 const Badges = React.lazy(() => import('./views/notifications/badges/Badges'))
 const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
-
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
@@ -97,6 +97,7 @@ const routes = [
     element: AccountingDetails,
     exact: true,
   },
+  { path: '/pages/logs', name: 'logs', element: customerLog, exact: true },
 ]
 
 export default routes
