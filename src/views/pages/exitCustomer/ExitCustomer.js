@@ -49,7 +49,7 @@ const ExitCustomer = () => {
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.errors[0].msg)
+        toast.error('مشکلی در انجام درخواست پیش امده است')
       })
   }
   return (
