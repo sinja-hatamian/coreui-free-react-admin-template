@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import {
   CButton,
@@ -23,6 +23,7 @@ const ChargCard = () => {
 
   const [cardForm, setCardForm] = useState([initialCardForm])
   const [selectedTypes, setSelectedTypes] = useState([''])
+  const [banks, setBanks] = useState([])
 
   const handleInput = (e, index) => {
     const { name, value } = e.target
@@ -58,6 +59,17 @@ const ChargCard = () => {
     }
     setCardForm(updatedCardForms)
   }
+
+  useEffect(() => {
+    AxiosInstance.get('/banks')
+      .then((res) => {
+        setBanks(res.data.data.banks)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
   const handleForm = () => {
     if (localStorage.getItem('customer')) {
       const customer = JSON.parse(localStorage.getItem('customer'))
@@ -146,7 +158,7 @@ const ChargCard = () => {
                 {cardForm.type === '2' ? (
                   <>
                     <CCol md={6}>
-                      <CFormSelect
+                      {/* <CFormSelect
                         label="بانک"
                         // id={`bank_id${index}`}
                         name="bank_id"
@@ -157,6 +169,21 @@ const ChargCard = () => {
                       >
                         <option value="">انتخاب کنید</option>
                         <option value="1">بانک ملی</option>
+                      </CFormSelect> */}
+                      <CFormSelect
+                        label="بانک"
+                        name="bank_id"
+                        aria-label="bank_id"
+                        onChange={(e) => handleInput(e, index)}
+                        value={cardForm.bank_id}
+                        locale="fa-IR"
+                      >
+                        <option value="">انتخاب کنید</option>
+                        {banks.map((bank) => (
+                          <option key={bank.id} value={bank.id}>
+                            {bank.title}
+                          </option>
+                        ))}
                       </CFormSelect>
                     </CCol>
                     <CCol md={6}>
