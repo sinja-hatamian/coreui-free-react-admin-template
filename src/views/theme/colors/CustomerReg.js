@@ -68,6 +68,7 @@ const CustomerReg = () => {
         localStorage.setItem('customer', JSON.stringify(res.data.data.user))
         console.log(res)
         toast.success('کاربر با موفقیت ثبت شد')
+        setActiveKey(2)
       })
       .catch((err) => {
         console.log(err)
