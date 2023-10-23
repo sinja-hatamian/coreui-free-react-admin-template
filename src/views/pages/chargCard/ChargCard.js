@@ -202,7 +202,6 @@ const ChargCard = () => {
                     <CCol md={6}>
                       <CFormInput
                         label="شماره تراکنش"
-                        // id={`transaction_id-${index}`}
                         name="transaction_id"
                         aria-label="transaction_id"
                         onChange={(e) => handleInput(e, index)}
@@ -216,7 +215,6 @@ const ChargCard = () => {
                   <CCol md={6}>
                     <CFormInput
                       label="شماره کارت هدیه"
-                      // id={`card_number-${index}`}
                       name="card_number"
                       aria-label="card_number"
                       onChange={(e) => handleInput(e, index)}
@@ -225,7 +223,7 @@ const ChargCard = () => {
                     />
                   </CCol>
                 ) : null}
-                <CCol md={6}>
+                <CCol md={8}>
                   <CButton
                     style={{ color: '#fff' }}
                     color="danger"
