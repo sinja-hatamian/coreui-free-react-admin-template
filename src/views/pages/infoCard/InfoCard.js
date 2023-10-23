@@ -12,6 +12,7 @@ import {
   CTableBody,
   CTableHead,
   CTableHeaderCell,
+  CTableDataCell,
   CTableRow,
   CButton,
   CForm,
@@ -24,7 +25,7 @@ const InfoCard = () => {
   const [cardForm, setCardForm] = useState({
     number: '',
     password: '',
-    received_card: false,
+    recived_card: false,
   })
   const [editing, setEditing] = useState(false)
 
@@ -37,7 +38,7 @@ const InfoCard = () => {
           setCardForm({
             number: res.data.data.card.number,
             // password: res.data.data.card.password,
-            received_card: res.data.data.card.received_card,
+            recived_card: res.data.data.card.recived_card,
           })
         })
         .catch((err) => {
@@ -53,23 +54,24 @@ const InfoCard = () => {
 
   const handleUpdate = () => {
     const customer = JSON.parse(localStorage.getItem('customer'))
-    AxiosInstance.put('/cards', {
-      user_id: customer.id,
-      ...cardForm,
+    AxiosInstance.put('/cards', cardForm, {
+      params: {
+        user_id: customer.id,
+      },
     })
       .then((res) => {
+        toast.success('اطلاعات کارت با موفقیت ویرایش شد')
         setCard(res.data.data.card)
         setCardForm({
           number: res.data.data.card.number,
-          password: res.data.data.card.password,
-          received_card: res.data.data.card.received_card,
+          // password: res.data.data.card.password,
+          recived_card: res.data.data.card.recived_card,
         })
         setEditing(false)
-        toast.success('اطلاعات کارت با موفقیت ویرایش شد')
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.errors[0].msg)
+        toast.error('خطا در ویرایش اطلاعات کارت')
       })
   }
 
@@ -96,13 +98,13 @@ const InfoCard = () => {
               </CTableHead>
               <CTableBody>
                 <CTableRow>
-                  <CTableHeaderCell>{card.number}</CTableHeaderCell>
-                  <CTableHeaderCell>
+                  <CTableDataCell>{cardForm.number}</CTableDataCell>
+                  <CTableDataCell>
                     {card.balance ? numberWithCommas(card.balance) : 0}
-                  </CTableHeaderCell>
-                  <CTableHeaderCell>
-                    {card.received_card === true ? 'دریافت شده' : 'دریافت نشده'}
-                  </CTableHeaderCell>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    {cardForm.recived_card ? 'دریافت شده' : 'دریافت نشده'}
+                  </CTableDataCell>
                   <CTableHeaderCell>
                     {editing ? (
                       <CForm>
@@ -126,15 +128,15 @@ const InfoCard = () => {
                           </CCol>
                           <CCol md={6}>
                             <CFormSelect
-                              name="received_card"
-                              aria-label="received_card"
-                              value={cardForm.received_card}
+                              name="recived_card"
+                              aria-label="recived_card"
+                              // value={cardForm.recived_card}
                               onChange={handleInputChange}
                               label="وضعیت دریافت کارت"
                             >
                               <option value="">انتخاب کنید</option>
-                              <option value={true}>دریافت شده</option>
-                              <option value={false}>دریافت نشده</option>
+                              <option value="true">دریافت شده</option>
+                              <option value="false">دریافت نشده</option>
                             </CFormSelect>
                           </CCol>
                         </div>
