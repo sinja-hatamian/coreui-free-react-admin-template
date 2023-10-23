@@ -88,7 +88,6 @@ const CustomerReg = () => {
         console.log(err)
         toast.error('کاربری با این کد ملی وجود ندارد')
         setFormdata({
-          national_code: '',
           firstname: '',
           lastname: '',
           introduction_way: '',
