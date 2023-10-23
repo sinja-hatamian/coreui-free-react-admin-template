@@ -24,7 +24,7 @@ const InfoCard = () => {
   const [cardForm, setCardForm] = useState({
     number: '',
     password: '',
-    received_card: '',
+    received_card: false,
   })
   const [editing, setEditing] = useState(false)
 
@@ -36,7 +36,7 @@ const InfoCard = () => {
           setCard(res.data.data.card)
           setCardForm({
             number: res.data.data.card.number,
-            password: res.data.data.card.password,
+            // password: res.data.data.card.password,
             received_card: res.data.data.card.received_card,
           })
         })
@@ -58,8 +58,14 @@ const InfoCard = () => {
       ...cardForm,
     })
       .then((res) => {
-        console.log(res)
-        toast.success('به روزرسانی با موفقیت انجام شد') // Exit editing mode after successful update
+        setCard(res.data.data.card)
+        setCardForm({
+          number: res.data.data.card.number,
+          password: res.data.data.card.password,
+          received_card: res.data.data.card.received_card,
+        })
+        setEditing(false)
+        toast.success('اطلاعات کارت با موفقیت ویرایش شد')
       })
       .catch((err) => {
         console.log(err)
@@ -95,7 +101,7 @@ const InfoCard = () => {
                     {card.balance ? numberWithCommas(card.balance) : 0}
                   </CTableHeaderCell>
                   <CTableHeaderCell>
-                    {card.received_card ? 'دریافت شده' : 'دریافت نشده'}
+                    {card.received_card === true ? 'دریافت شده' : 'دریافت نشده'}
                   </CTableHeaderCell>
                   <CTableHeaderCell>
                     {editing ? (

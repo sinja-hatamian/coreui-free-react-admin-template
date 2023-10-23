@@ -25,6 +25,7 @@ const ChargCard = () => {
 
   const [cardForm, setCardForm] = useState([initialCardForm])
   const [selectedTypes, setSelectedTypes] = useState([''])
+  const [selectCharge, setSelectCharge] = useState([''])
   const [banks, setBanks] = useState([])
 
   const handleInput = (e, index) => {
@@ -66,6 +67,13 @@ const ChargCard = () => {
     AxiosInstance.get('/banks')
       .then((res) => {
         setBanks(res.data.data.banks)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    AxiosInstance.get('/charge-credits')
+      .then((res) => {
+        setSelectCharge(res.data.data.charge_credits)
       })
       .catch((err) => {
         console.log(err)
@@ -130,9 +138,24 @@ const ChargCard = () => {
             {cardForm.map((cardForm, index) => (
               <CForm className="row g-3" key={index}>
                 <CCol md={6}>
+                  <CFormSelect
+                    name="amount"
+                    label="اعتبارات"
+                    onChange={(e) => handleInput(e, index)}
+                    value={cardForm.amount}
+                    locale="fa-IR"
+                  >
+                    <option value="">انتخاب کنید</option>
+                    {selectCharge.map((charge) => (
+                      <option key={charge.id} value={charge.charge_amount}>
+                        {charge.charge_amount}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </CCol>
+                <CCol md={6}>
                   <CFormInput
-                    label="مبلغ"
-                    // id={`amount-${index}`}
+                    label="سایر مبالغ"
                     name="amount"
                     aria-label="amount"
                     onChange={(e) => handleInput(e, index)}
@@ -160,18 +183,6 @@ const ChargCard = () => {
                 {cardForm.type === '2' ? (
                   <>
                     <CCol md={6}>
-                      {/* <CFormSelect
-                        label="بانک"
-                        // id={`bank_id${index}`}
-                        name="bank_id"
-                        aria-label="bank_id"
-                        onChange={(e) => handleInput(e, index)}
-                        value={cardForm.bank_id}
-                        locale="fa-IR"
-                      >
-                        <option value="">انتخاب کنید</option>
-                        <option value="1">بانک ملی</option>
-                      </CFormSelect> */}
                       <CFormSelect
                         label="بانک"
                         name="bank_id"
