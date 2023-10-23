@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
@@ -14,6 +16,7 @@ import {
   CButton,
   CForm,
   CFormInput,
+  CFormSelect,
 } from '@coreui/react'
 
 const InfoCard = () => {
@@ -39,39 +42,32 @@ const InfoCard = () => {
         })
         .catch((err) => {
           console.log(err)
-          alert('خطا در دریافت اطلاعات کارت')
+          toast.error('خطا در دریافت اطلاعات کارت')
         })
     }
   }, [])
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    const rawNumber = value.replace(/[^0-9]/g, '')
-    const formattedData = numberWithCommas(rawNumber)
-    setCardForm({
-      ...cardForm,
-      [name]: formattedData,
-    })
+    setCardForm({ ...cardForm, [e.target.name]: e.target.value })
   }
 
   const handleUpdate = () => {
     const customer = JSON.parse(localStorage.getItem('customer'))
-    AxiosInstance.put(`/manager/cards`, {
+    AxiosInstance.put('/cards', {
       user_id: customer.id,
       ...cardForm,
     })
       .then((res) => {
         console.log(res)
-        alert('به روزرسانی با موفقیت انجام شد')(false) // Exit editing mode after successful update
+        toast.success('به روزرسانی با موفقیت انجام شد') // Exit editing mode after successful update
       })
       .catch((err) => {
         console.log(err)
-        alert(err.response.data.errors[0].msg)
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
   const numberWithCommas = (x) => {
-    //add comma to each 3 digit
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
@@ -98,7 +94,9 @@ const InfoCard = () => {
                   <CTableHeaderCell>
                     {card.balance ? numberWithCommas(card.balance) : 0}
                   </CTableHeaderCell>
-                  <CTableHeaderCell>{card.received_card}</CTableHeaderCell>
+                  <CTableHeaderCell>
+                    {card.received_card ? 'دریافت شده' : 'دریافت نشده'}
+                  </CTableHeaderCell>
                   <CTableHeaderCell>
                     {editing ? (
                       <CForm>
@@ -116,17 +114,25 @@ const InfoCard = () => {
                               name="password"
                               value={cardForm.password}
                               onChange={handleInputChange}
-                              label="پسورد"
+                              label="رمز کارت(4 رقم)"
+                              type="password"
                             />
                           </CCol>
                           <CCol md={6}>
-                            <CFormInput
+                            <CFormSelect
                               name="received_card"
+                              aria-label="received_card"
                               value={cardForm.received_card}
                               onChange={handleInputChange}
-                            />
+                              label="وضعیت دریافت کارت"
+                            >
+                              <option value="">انتخاب کنید</option>
+                              <option value={true}>دریافت شده</option>
+                              <option value={false}>دریافت نشده</option>
+                            </CFormSelect>
                           </CCol>
                         </div>
+                        <p />
                         {/* Add other input fields for password, received_card, etc. */}
                         <CButton color="success" onClick={handleUpdate}>
                           ذخیره

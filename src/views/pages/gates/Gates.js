@@ -264,12 +264,6 @@ const Gates = () => {
                       </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={6}>
-                      {/* <CFormInput
-                        label="نوع گیت"
-                        name="is_enter"
-                        value={gateData.is_enter}
-                        onChange={handleInputChange}
-                      /> */}
                       <CFormSelect
                         name="is_enter"
                         value={gateData.is_enter}
