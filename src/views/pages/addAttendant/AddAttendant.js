@@ -96,7 +96,7 @@ const AddAttendant = () => {
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.errors[0].msg)
+        toast.error('خطا در ثبت همراه')
       })
   }
 
@@ -234,7 +234,11 @@ const AddAttendant = () => {
                   <hr />
                   <CCol md={6}>
                     <CFormInput
-                      label="نام"
+                      label={
+                        <>
+                          نام <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
                       id="firstname"
                       name="firstname"
                       aria-label="firstname"
@@ -246,7 +250,11 @@ const AddAttendant = () => {
                   </CCol>
                   <CCol md={6}>
                     <CFormInput
-                      label="نام خانوادگی"
+                      label={
+                        <>
+                          نام خانوادگی <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
                       id="lastname"
                       name="lastname"
                       aria-label="lastname"
@@ -258,7 +266,7 @@ const AddAttendant = () => {
                   </CCol>
                   <CCol md={6}>
                     <CFormInput
-                      label="کد ملی"
+                      label="کد ملی "
                       id="national_code"
                       name="national_code"
                       aria-label="national_code"
@@ -285,10 +293,9 @@ const AddAttendant = () => {
                       <p>تاریخ تولد</p>
                       <DatePicker
                         value={value}
-                        label="تاریخ تولد"
                         onChange={(newDate) => handleDate(newDate, index)}
                         calendarPosition="bottom-right"
-                        inputPlaceholder="تاریخ تولد"
+                        inputPlaceholder="تاریخ تولد "
                         locale={persian_fa}
                         calendar={persian}
                       />
@@ -296,7 +303,11 @@ const AddAttendant = () => {
                   </CCol>
                   <CCol md={4}>
                     <CFormSelect
-                      label="جنسیت"
+                      label={
+                        <>
+                          جنسیت <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
                       name="gender"
                       aria-label="gender"
                       onChange={(event) => handleChange(event, index)}
