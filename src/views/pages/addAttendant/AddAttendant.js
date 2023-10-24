@@ -217,7 +217,11 @@ const AddAttendant = () => {
                   </CCol>
                   <CCol md={4}>
                     <CFormInput
-                      label="سریال دستبند"
+                      label={
+                        <>
+                          سریال دستبند <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
                       name="tag"
                       aria-label="tag"
                       onChange={(event) => setTag(event.target.value)}
@@ -321,7 +325,11 @@ const AddAttendant = () => {
                   </CCol>
                   <CCol md={4}>
                     <CFormInput
-                      label="سریال دستبند"
+                      label={
+                        <>
+                          سریال دستبند <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
                       name="tag"
                       aria-label="tag"
                       onChange={(event) => handleChange(event, index)}
