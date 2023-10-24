@@ -25,7 +25,7 @@ const InfoCard = () => {
   const [cardForm, setCardForm] = useState({
     number: '',
     password: '',
-    recived_card: false,
+    received_card: false,
   })
   const [editing, setEditing] = useState(false)
 
@@ -38,7 +38,7 @@ const InfoCard = () => {
           setCardForm({
             number: res.data.data.card.number,
             // password: res.data.data.card.password,
-            recived_card: res.data.data.card.recived_card,
+            received_card: res.data.data.card.received_card,
           })
         })
         .catch((err) => {
@@ -65,7 +65,7 @@ const InfoCard = () => {
         setCardForm({
           number: res.data.data.card.number,
           // password: res.data.data.card.password,
-          recived_card: res.data.data.card.recived_card,
+          received_card: res.data.data.card.received_card,
         })
         setEditing(false)
       })
@@ -103,7 +103,7 @@ const InfoCard = () => {
                     {card.balance ? numberWithCommas(card.balance) : 0}
                   </CTableDataCell>
                   <CTableDataCell>
-                    {cardForm.recived_card ? 'دریافت شده' : 'دریافت نشده'}
+                    {cardForm.received_card ? 'دریافت شده' : 'دریافت نشده'}
                   </CTableDataCell>
                   <CTableHeaderCell>
                     {editing ? (
@@ -128,8 +128,8 @@ const InfoCard = () => {
                           </CCol>
                           <CCol md={6}>
                             <CFormSelect
-                              name="recived_card"
-                              aria-label="recived_card"
+                              name="received_card"
+                              aria-label="received_card"
                               // value={cardForm.recived_card}
                               onChange={handleInputChange}
                               label="وضعیت دریافت کارت"
