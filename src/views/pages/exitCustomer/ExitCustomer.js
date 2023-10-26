@@ -83,7 +83,7 @@ const ExitCustomer = () => {
             <CTableBody>
               {customers.map((customer, index) => (
                 <CTableRow key={index}>
-                  <CTableDataCell>{customer.number}</CTableDataCell>
+                  <CTableDataCell>{customer.tagSerial}</CTableDataCell>
                   <CTableDataCell>
                     {Intl.DateTimeFormat('fa-IR', {
                       year: 'numeric',

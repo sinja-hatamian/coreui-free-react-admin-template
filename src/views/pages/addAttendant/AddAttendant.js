@@ -130,6 +130,12 @@ const AddAttendant = () => {
     )
   }
 
+  const closeModals = () => {
+    setQrcode(null)
+    localStorage.removeItem('customer')
+    window.location.href = '/#/theme/CustomerReg'
+  }
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -399,7 +405,7 @@ const AddAttendant = () => {
           <img src={qrcode} alt="qrcode" />
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setQrcode(null)}>
+          <CButton color="secondary" onClick={closeModals}>
             بستن
           </CButton>
         </CModalFooter>
