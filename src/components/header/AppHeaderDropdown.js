@@ -1,29 +1,33 @@
-import React from 'react'
-// import { useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import { CAvatar, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
-import { cilLockLocked } from '@coreui/icons'
+import { cilLockLocked, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-
 import avatar2 from './../../assets/images/avatars/2.jpg'
 
 const AppHeaderDropdown = () => {
+  const [formData, setFormData] = useState({})
+
+  //get firstname of manager from localstorage
+  useEffect(() => {
+    if (localStorage.getItem('manager')) {
+      const manager = JSON.parse(localStorage.getItem('manager'))
+      setFormData({
+        firstname: manager.firstname,
+        lastname: manager.lastname,
+      })
+    }
+  }, [])
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
         <CAvatar src={avatar2} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        {/* <CDropdownHeader className="bg-light fw-semibold py-2">تنظیمات</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem>
           <CIcon icon={cilUser} className="me-2" />
-          پروفایل
+          {formData.firstname} {formData.lastname}
         </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilSettings} className="me-2" />
-          تنظیمات
-        </CDropdownItem>
-        <CDropdownDivider />
-  */}
         <CDropdownItem
           href="#/login"
           onClick={() => {

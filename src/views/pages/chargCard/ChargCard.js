@@ -191,7 +191,7 @@ const ChargCard = () => {
                         value={cardForm.bank_id}
                         locale="fa-IR"
                       >
-                        <option value="">انتخاب کنید</option>
+                        <option>انتخاب کنید</option>
                         {banks.map((bank) => (
                           <option key={bank.id} value={bank.id}>
                             {bank.title}
@@ -201,7 +201,11 @@ const ChargCard = () => {
                     </CCol>
                     <CCol md={6}>
                       <CFormInput
-                        label="شماره تراکنش"
+                        label={
+                          <>
+                            شماره تراکنش<span style={{ color: 'red' }}>*</span>
+                          </>
+                        }
                         name="transaction_id"
                         aria-label="transaction_id"
                         onChange={(e) => handleInput(e, index)}

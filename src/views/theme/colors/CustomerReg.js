@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import ChargCard from 'src/views/pages/chargCard/ChargCard'
+import AddAttendant from 'src/views/pages/addAttendant/AddAttendant'
+import InfoCard from 'src/views/pages/infoCard/InfoCard'
+import DatePicker, { Calendar } from 'react-multi-date-picker'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
 import {
   CNav,
   CNavItem,
@@ -18,12 +25,6 @@ import {
   CFormSelect,
   CButton,
 } from '@coreui/react'
-import ChargCard from 'src/views/pages/chargCard/ChargCard'
-import AddAttendant from 'src/views/pages/addAttendant/AddAttendant'
-import InfoCard from 'src/views/pages/infoCard/InfoCard'
-import DatePicker, { Calendar } from 'react-multi-date-picker'
-import persian from 'react-date-object/calendars/persian'
-import persian_fa from 'react-date-object/locales/persian_fa'
 
 const CustomerReg = () => {
   const [formdata, setFormdata] = useState({
@@ -33,17 +34,30 @@ const CustomerReg = () => {
     introduction_way: '',
     password: '',
     phone: '',
-    state: '',
-    city: '',
+    state_id: '',
+    city_id: '',
     gender: '',
     birthday: '',
   })
   const [activeKey, setActiveKey] = useState(1)
   const [value, setValue] = useState(new Date())
   const [introductionWays, setIntroductionWays] = useState([])
+  const [state, setState] = useState([])
+  const [city, setCity] = useState([])
+  const [card_number, setCard_number] = useState('')
 
   const handleInputCahnge = (e) => {
     const { name, value } = e.target
+    if (name === 'state_id') {
+      axios
+        .get(`http://192.168.11.11:3000/api/states/${value}/cities`)
+        .then((res) => {
+          setCity(res.data.data.cities)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
     setFormdata((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -55,6 +69,17 @@ const CustomerReg = () => {
       .then((res) => {
         console.log(res)
         setIntroductionWays(res.data.data.introduction_ways)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    axios
+      .get('http://192.168.11.11:3000/api/states')
+      .then((res) => {
+        console.log(res)
+        setState(res.data.data.states)
+        console.log(state)
       })
       .catch((err) => {
         console.log(err)
@@ -80,7 +105,10 @@ const CustomerReg = () => {
       .then((res) => {
         const customerData = res.data.data.user
         console.log(customerData)
-        setFormdata((prev) => ({ ...prev, ...customerData }))
+        setFormdata((prev) => ({
+          ...prev,
+          ...customerData,
+        }))
         localStorage.setItem('customer', JSON.stringify(customerData))
         setActiveKey(2)
       })
@@ -93,8 +121,68 @@ const CustomerReg = () => {
           introduction_way: '',
           password: '',
           phone: '',
-          state: '',
-          city: '',
+          state_id: '',
+          city_id: '',
+          gender: '',
+          birthday: '',
+        })
+        localStorage.removeItem('customer')
+      })
+  }
+
+  const fetchDataWithPhone = () => {
+    AxiosInstance.get(`/users/phone/${formdata.phone}`)
+      .then((res) => {
+        const customerData = res.data.data.user
+        console.log(customerData)
+        setFormdata((prev) => ({
+          ...prev,
+          ...customerData,
+        }))
+        localStorage.setItem('customer', JSON.stringify(customerData))
+        setActiveKey(2)
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error('کاربری با این شماره تلفن وجود ندارد')
+        setFormdata({
+          firstname: '',
+          lastname: '',
+          introduction_way: '',
+          password: '',
+          phone: '',
+          state_id: '',
+          city_id: '',
+          gender: '',
+          birthday: '',
+        })
+      })
+  }
+
+  const fetchDataWithCardNumber = () => {
+    AxiosInstance.get(`/users/card-number/${card_number}`)
+      .then((res) => {
+        const customerData = res.data.data.user
+        console.log(customerData)
+        setFormdata((prev) => ({
+          ...prev,
+          ...customerData,
+        }))
+        localStorage.setItem('customer', JSON.stringify(customerData))
+        setActiveKey(2)
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error('کاربری با این شماره کارت وجود ندارد')
+        setFormdata({
+          national_code: '',
+          firstname: '',
+          lastname: '',
+          introduction_way: '',
+          password: '',
+          phone: '',
+          state_id: '',
+          city_id: '',
           gender: '',
           birthday: '',
         })
@@ -134,15 +222,10 @@ const CustomerReg = () => {
         </CNavItem>
         <CNavItem>
           <CNavLink active={activeKey === 3} onClick={() => setActiveKey(3)}>
-            شارژ کارت
+            شارژ
           </CNavLink>
         </CNavItem>
 
-        <CNavItem>
-          <CNavLink active={activeKey === 4} onClick={() => setActiveKey(4)}>
-            انتقال وجه
-          </CNavLink>
-        </CNavItem>
         <CNavItem>
           <CNavLink active={activeKey === 6} onClick={() => setActiveKey(6)}>
             تخصیص دستبند
@@ -159,7 +242,7 @@ const CustomerReg = () => {
                 </CCardHeader>
                 <CCardBody>
                   <CRow>
-                    <CCol md={6}>
+                    <CCol md={4}>
                       <CFormInput
                         label="کدملی"
                         name="national_code"
@@ -169,13 +252,58 @@ const CustomerReg = () => {
                         value={formdata.national_code}
                         onChange={handleInputCahnge}
                       />
-                    </CCol>
-                    <CCol md={8} xs={6}>
-                      <CButton color="info" onClick={fetchCustomerData} style={{ color: '#fff' }}>
+                      <CButton
+                        color="info"
+                        onClick={fetchCustomerData}
+                        style={{ color: '#fff' }}
+                        className="mt-2"
+                      >
                         بررسی کد ملی
                       </CButton>
                     </CCol>
+                    <p />
+                    <CCol md={4}>
+                      <CFormInput
+                        type="phone"
+                        label="شماره تلفن"
+                        name="phone"
+                        aria-label="phone"
+                        locale="fa-IR"
+                        value={formdata.phone}
+                        onChange={handleInputCahnge}
+                      />
+
+                      <CButton
+                        color="info"
+                        onClick={fetchDataWithPhone}
+                        style={{ color: '#fff' }}
+                        className="mt-2"
+                      >
+                        بررسی شماره تلفن
+                      </CButton>
+                    </CCol>
+                    <p />
+                    <CCol md={4}>
+                      <CFormInput
+                        label="شماره کارت"
+                        name="card_number"
+                        placeholder="شماره کارت"
+                        aria-label="card_number"
+                        locale="fa-IR"
+                        value={card_number}
+                        onChange={(e) => setCard_number(e.target.value)}
+                      />
+                      <CButton
+                        color="info"
+                        onClick={fetchDataWithCardNumber}
+                        style={{ color: '#fff' }}
+                        className="mt-2"
+                      >
+                        بررسی شماره کارت
+                      </CButton>
+                    </CCol>
                   </CRow>
+                  <p />
                   <CForm className="row g-3">
                     <CCol md={6}>
                       <CCol xs>
@@ -222,7 +350,7 @@ const CustomerReg = () => {
                     <CCol md={6}>
                       <CFormInput
                         type="password"
-                        label=" پسورد"
+                        label="پسورد اکانت"
                         name="password"
                         aria-label="password"
                         locale="fa-IR"
@@ -231,37 +359,36 @@ const CustomerReg = () => {
                       />
                     </CCol>
                     <CCol md={6}>
-                      <CFormInput
-                        type="phone"
-                        label="شماره تلفن"
-                        name="phone"
-                        aria-label="phone"
-                        locale="fa-IR"
-                        value={formdata.phone}
-                        onChange={handleInputCahnge}
-                      />
-                    </CCol>
-                    <CCol md={6}>
-                      <CFormInput
-                        type="state"
+                      <CFormSelect
+                        name="state_id"
                         label="استان"
-                        name="state"
-                        aria-label="state"
+                        aria-label="state_id"
                         locale="fa-IR"
-                        value={formdata.state}
                         onChange={handleInputCahnge}
-                      />
+                      >
+                        <option>انتخاب کنید</option>
+                        {state.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                     <CCol md={6}>
-                      <CFormInput
-                        type="city"
+                      <CFormSelect
+                        name="city_id"
                         label="شهر"
-                        name="city"
-                        aria-label="city"
+                        aria-label="city_id"
                         locale="fa-IR"
-                        value={formdata.city}
                         onChange={handleInputCahnge}
-                      />
+                      >
+                        <option>انتخاب کنید</option>
+                        {city.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                     <CCol md={6}>
                       <p>تاریخ تولد</p>

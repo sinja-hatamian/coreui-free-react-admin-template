@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Typewriter from 'typewriter-effect'
 import {
   CButton,
   CCard,

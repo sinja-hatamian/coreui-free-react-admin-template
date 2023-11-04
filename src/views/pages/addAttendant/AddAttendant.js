@@ -35,6 +35,7 @@ const AddAttendant = () => {
   const [serverTag, setServerTag] = useState(null)
   const [qrcode, setQrcode] = useState(null)
   const [value, setValue] = useState(new Date())
+  const [card, setCard] = useState({})
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
@@ -52,6 +53,14 @@ const AddAttendant = () => {
             setTag(res.data.data.attendant.tag)
             setServerTag(res.data.data.attendant.tag)
           }
+        })
+
+        .catch((err) => {
+          console.log(err)
+        })
+      AxiosInstance.get(`/cards/${parsedCustomer.id}`)
+        .then((res) => {
+          setCard(res.data.data.card)
         })
 
         .catch((err) => {
@@ -96,7 +105,11 @@ const AddAttendant = () => {
       })
       .catch((err) => {
         console.log(err)
-        toast.error('خطا در ثبت همراه')
+        toast.error(
+          err.response.data.errors[0].msg
+            ? err.response.data.errors[0].msg
+            : err.response.data.message,
+        )
       })
   }
 
@@ -120,20 +133,24 @@ const AddAttendant = () => {
 
   const handleDate = (newDate, index) => {
     setValue(newDate.valueOf())
-    setAttendant(
+    setAttendant([
       ...attendant.map((item, i) => {
         if (i === index) {
           return { ...item, birthday: newDate.valueOf() }
         }
         return item
       }),
-    )
+    ])
   }
 
   const closeModals = () => {
     setQrcode(null)
     localStorage.removeItem('customer')
-    window.location.href = '/#/theme/CustomerReg'
+    window.location.reload(true) // Navigate to the current URL
+  }
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   return (
@@ -376,6 +393,7 @@ const AddAttendant = () => {
                 <CTableHeaderCell>نام</CTableHeaderCell>
                 <CTableHeaderCell>نام خانوادگی</CTableHeaderCell>
                 <CTableHeaderCell> شماره دستبند</CTableHeaderCell>
+                <CTableHeaderCell>موجودی</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -384,6 +402,9 @@ const AddAttendant = () => {
                   <CTableHeaderCell>{customer.firstname}</CTableHeaderCell>
                   <CTableHeaderCell>{customer.lastname}</CTableHeaderCell>
                   <CTableHeaderCell>{tag}</CTableHeaderCell>
+                  <CTableHeaderCell>
+                    {card.balance ? numberWithCommas(card.balance) : 0}
+                  </CTableHeaderCell>
                 </CTableRow>
               ) : null}
               {fixedData.map((item) => (
@@ -397,18 +418,13 @@ const AddAttendant = () => {
           </CTable>
         </CCard>
       </CCol>
-      <CModal visible={qrcode !== null} onClose={() => setQrcode(null)} color="primary" size="lg">
+      <CModal visible={qrcode !== null} onClose={() => closeModals()} color="primary" size="lg">
         <CModalHeader closeButton>
           <CModalTitle>لطفا اسکن کنید</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <img src={qrcode} alt="qrcode" />
         </CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" onClick={closeModals}>
-            بستن
-          </CButton>
-        </CModalFooter>
       </CModal>
       <ToastContainer
         position="bottom-right"

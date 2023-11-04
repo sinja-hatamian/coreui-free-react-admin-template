@@ -46,10 +46,15 @@ const ExitCustomer = () => {
           tag: '',
         })
         toast.success('خروج با موفقیت ثبت شد')
+        localStorage.removeItem('customer')
       })
       .catch((err) => {
         console.log(err)
-        toast.error('مشکلی در انجام درخواست پیش امده است')
+        toast.error(err.response.data.message)
+      })
+
+      .finally(() => {
+        window.location.reload()
       })
   }
   return (
@@ -83,7 +88,7 @@ const ExitCustomer = () => {
             <CTableBody>
               {customers.map((customer, index) => (
                 <CTableRow key={index}>
-                  <CTableDataCell>{customer.tagSerial}</CTableDataCell>
+                  <CTableDataCell>{customer.TagSerial}</CTableDataCell>
                   <CTableDataCell>
                     {Intl.DateTimeFormat('fa-IR', {
                       year: 'numeric',
