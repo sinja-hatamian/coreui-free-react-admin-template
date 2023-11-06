@@ -42,7 +42,7 @@ const ExitCustomer = () => {
         if (res.data.data?.customers) {
           setCustomers(res.data.data.customers)
           if (!res.data.data.customers.find((customer) => customer.ExitTime == null)) {
-            window.location.reload()
+            // window.location.reload()
             localStorage.removeItem('customer')
           }
         }
