@@ -42,7 +42,7 @@ const ExitCustomer = () => {
         if (res.data.data?.customers) {
           setCustomers(res.data.data.customers)
           if (res.data.data.customers.find((customer) => customer.ExitTime == null)) {
-            window.location.reload()
+            // window.location.reload()
             localStorage.removeItem('customer')
           }
         }
@@ -50,11 +50,14 @@ const ExitCustomer = () => {
           tag: '',
         })
         toast.success('خروج با موفقیت ثبت شد')
-        localStorage.removeItem('customer')
+        // localStorage.removeItem('customer')
       })
       .catch((err) => {
         console.log(err)
         toast.error(err.response.data.message)
+      })
+      .finally(() => {
+        window.location.reload()
       })
   }
   return (
