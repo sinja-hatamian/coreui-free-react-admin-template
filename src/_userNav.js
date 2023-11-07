@@ -8,6 +8,7 @@ import {
   cilChartLine,
   cilBarChart,
   cilExitToApp,
+  cilNotes,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -39,6 +40,13 @@ const _userNav = [
     to: '/theme/CustomerReg',
     icon: <CIcon icon={cilCheckCircle} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: 'بررسی دستبند ',
+    to: '/pages/showByTag',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+  },
+
   {
     component: CNavItem,
     name: ' تسویه مشتریان',
