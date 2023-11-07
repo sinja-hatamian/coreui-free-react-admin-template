@@ -215,10 +215,11 @@ const ChargCard = () => {
                         name="bank_id"
                         aria-label="bank_id"
                         onChange={(e) => handleInput(e, index)}
-                        value={cardForm.bank_id}
+                        // value={cardForm.bank_id}
                         locale="fa-IR"
+                        required={true}
                       >
-                        <option>انتخاب کنید</option>
+                        <option value="">انتخاب کنید</option>
                         {banks.map((bank) => (
                           <option key={bank.id} value={bank.id}>
                             {bank.title}
@@ -238,6 +239,7 @@ const ChargCard = () => {
                         onChange={(e) => handleInput(e, index)}
                         value={cardForm.transaction_id}
                         locale="fa-IR"
+                        required={true}
                       />
                     </CCol>
                   </>
