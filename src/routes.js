@@ -26,6 +26,7 @@ const AccountingDetails = React.lazy(() =>
   import('./views/pages/accountingDetails/AccountingDetails'),
 )
 const customerLog = React.lazy(() => import('./views/pages/logs/CustomerLog'))
+const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
 //Forms
 const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
@@ -98,6 +99,12 @@ const routes = [
     exact: true,
   },
   { path: '/pages/logs', name: 'logs', element: customerLog, exact: true },
+  {
+    path: '/pages/showByTag',
+    name: 'showByTag',
+    element: showByTag,
+    exact: true,
+  },
 ]
 
 export default routes
