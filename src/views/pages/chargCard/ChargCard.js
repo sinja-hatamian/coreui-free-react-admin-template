@@ -34,6 +34,7 @@ const ChargCard = () => {
   const [selectCharge, setSelectCharge] = useState([''])
   const [banks, setBanks] = useState([])
   const [credit, setCredit] = useState([])
+  const [card, setCard] = useState({})
 
   const handleInput = (e, index) => {
     const { name, value } = e.target
@@ -89,6 +90,18 @@ const ChargCard = () => {
     AxiosInstance.get('/charge-credits').then((res) => {
       setCredit(res.data.data.charge_credits)
     })
+
+    if (localStorage.getItem('customer')) {
+      const customer = JSON.parse(localStorage.getItem('customer'))
+      AxiosInstance.get(`/cards/${customer.id}`)
+        .then((res) => {
+          setCard(res.data.data.card)
+        })
+        .catch((err) => {
+          console.log(err)
+          toast.error('خطا در دریافت اطلاعات کارت')
+        })
+    }
   }, [])
 
   const handleForm = () => {
@@ -144,6 +157,9 @@ const ChargCard = () => {
         <CCard className="mb-4">
           <CCardHeader>
             <strong>شارژ کارت</strong>
+            <strong style={{ float: 'left' }}>
+              {card.balance ? numberWithCommas(card.balance) : 0} ریال
+            </strong>
           </CCardHeader>
           <CCardBody>
             {cardForm.map((cardForm, index) => (
