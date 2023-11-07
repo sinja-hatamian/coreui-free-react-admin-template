@@ -12,6 +12,12 @@ import {
   CCol,
   CFormSelect,
   CCardHeader,
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableRow,
+  CTableHeaderCell,
+  CTableDataCell,
 } from '@coreui/react'
 
 const ChargCard = () => {
@@ -27,6 +33,7 @@ const ChargCard = () => {
   const [selectedTypes, setSelectedTypes] = useState([''])
   const [selectCharge, setSelectCharge] = useState([''])
   const [banks, setBanks] = useState([])
+  const [credit, setCredit] = useState([])
 
   const handleInput = (e, index) => {
     const { name, value } = e.target
@@ -78,6 +85,10 @@ const ChargCard = () => {
       .catch((err) => {
         console.log(err)
       })
+
+    AxiosInstance.get('/charge-credits').then((res) => {
+      setCredit(res.data.data.charge_credits)
+    })
   }, [])
 
   const handleForm = () => {
@@ -251,6 +262,46 @@ const ChargCard = () => {
               </CButton>
             </CCol>
           </CCardBody>
+          <CTable striped bordered>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell
+                  color="warning"
+                  style={{
+                    width: '45%',
+                    color: '#EE5A9F',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}
+                >
+                  میزان شارژ
+                </CTableHeaderCell>
+                <CTableHeaderCell
+                  color="primary"
+                  style={{
+                    width: '45%',
+                    color: '#EE5A9F',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}
+                >
+                  اعتبار
+                </CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {credit.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell style={{ textAlign: 'center' }}>
+                    {item.charge_amount}
+                  </CTableDataCell>
+                  <CTableDataCell style={{ textAlign: 'center' }}>
+                    {item.credit_amount}
+                  </CTableDataCell>
+                </CTableRow>
+              ))}
+            </CTableBody>
+          </CTable>
         </CCard>
       </CCol>
       <ToastContainer

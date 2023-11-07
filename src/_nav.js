@@ -253,6 +253,12 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'گزارشات مشتریان',
+    to: '/theme/color',
+    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'گزارشات گردش حساب مشتری',
     to: '/logs/CustomerLog',
     icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
@@ -268,12 +274,6 @@ const _nav = [
     name: 'گزارشات کارت‌های هدیه',
     to: '/theme/color',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'گزارشات مشتریان',
-    to: '/theme/color',
-    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
