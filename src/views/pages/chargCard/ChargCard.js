@@ -293,10 +293,10 @@ const ChargCard = () => {
               {credit.map((item, index) => (
                 <CTableRow key={index}>
                   <CTableDataCell style={{ textAlign: 'center' }}>
-                    {item.charge_amount}
+                    {numberWithCommas(item.charge_amount)}
                   </CTableDataCell>
                   <CTableDataCell style={{ textAlign: 'center' }}>
-                    {item.credit_amount}
+                    {numberWithCommas(item.credit_amount)}
                   </CTableDataCell>
                 </CTableRow>
               ))}
