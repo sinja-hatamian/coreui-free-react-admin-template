@@ -105,6 +105,22 @@ const ChargCard = () => {
   }, [])
 
   const handleForm = () => {
+    let hasError = false
+    cardForm.forEach((item) => {
+      if (
+        !item.amount ||
+        !item.type ||
+        (item.type === '2' && (!item.bank_id || !item.transaction_id))
+      ) {
+        hasError = true
+        toast.error('لطفا تمامی فیلد ها را پر کنید')
+        return
+      }
+    })
+    if (hasError) {
+      return
+    }
+
     if (localStorage.getItem('customer')) {
       const customer = JSON.parse(localStorage.getItem('customer'))
       AxiosInstance.post('/cards/charge', {

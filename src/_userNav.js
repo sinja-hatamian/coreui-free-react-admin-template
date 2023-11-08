@@ -64,12 +64,12 @@ const _userNav = [
     to: '/theme/color',
     icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'گزارشات مشتریان',
-    to: '/theme/color',
-    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'گزارشات مشتریان',
+  //   to: '/pages/customerFullLog',
+  //   icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'گزارشات گردش حساب مشتری',
