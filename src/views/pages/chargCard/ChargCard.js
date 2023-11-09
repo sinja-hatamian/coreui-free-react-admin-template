@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { BeatLoader } from 'react-spinners'
 import {
   CButton,
   CRow,
@@ -35,6 +36,8 @@ const ChargCard = () => {
   const [banks, setBanks] = useState([])
   const [credit, setCredit] = useState([])
   const [card, setCard] = useState({})
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false) // State for disabling button
+  const [isLoading, setIsLoading] = useState(false) // State for loading
 
   const handleInput = (e, index) => {
     const { name, value } = e.target
@@ -121,6 +124,9 @@ const ChargCard = () => {
       return
     }
 
+    setIsButtonDisabled(true) // Disable the button
+    setIsLoading(true) // Start loading spinner
+
     if (localStorage.getItem('customer')) {
       const customer = JSON.parse(localStorage.getItem('customer'))
       AxiosInstance.post('/cards/charge', {
@@ -144,6 +150,12 @@ const ChargCard = () => {
         .catch((err) => {
           console.log(err)
           toast.error('خطا در شارژ کارت')
+        })
+        .finally(() => {
+          setIsLoading(false) // Stop loading spinner
+          setTimeout(() => {
+            setIsButtonDisabled(false)
+          }, 3000)
         })
     }
   }
@@ -291,8 +303,13 @@ const ChargCard = () => {
             </CCol>
             <p />
             <CCol md={6}>
-              <CButton color="success" onClick={() => handleForm()}>
-                ثبت
+              <CButton color="success" onClick={() => handleForm()} disabled={isButtonDisabled}>
+                {isLoading ? (
+                  // Show the spinner while loading
+                  <BeatLoader color={'#ffffff'} loading={true} size={10} />
+                ) : (
+                  'ثبت'
+                )}
               </CButton>
             </CCol>
           </CCardBody>
@@ -340,7 +357,7 @@ const ChargCard = () => {
       </CCol>
       <ToastContainer
         position="bottom-right"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
