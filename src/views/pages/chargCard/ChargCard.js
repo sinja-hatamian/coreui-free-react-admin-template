@@ -145,7 +145,8 @@ const ChargCard = () => {
       })
         .then((res) => {
           console.log(res)
-          toast.success('کارت با موفقیت شارژ شد')
+          const totalAmount = numberWithCommas(res.data.data.total_amount)
+          toast.success(`شارژ با موفقیت انجام شد. مبلغ کل: ${totalAmount} ریال`)
         })
         .catch((err) => {
           console.log(err)
