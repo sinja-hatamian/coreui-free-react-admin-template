@@ -105,11 +105,7 @@ const AddAttendant = () => {
       })
       .catch((err) => {
         console.log(err)
-        toast.error(
-          err.response.data.errors[0].msg
-            ? err.response.data.errors[0].msg
-            : err.response.data.message,
-        )
+        toast.error(err.response.data.message ? err.response.data.message : 'خطایی رخ داده است')
       })
   }
 
