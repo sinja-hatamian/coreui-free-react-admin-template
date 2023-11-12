@@ -98,7 +98,7 @@ const ChargeForm = () => {
                   {chargeForm.map((item) => (
                     <CTableRow key={item.id}>
                       <CTableDataCell>
-                        {item.type == '2' ? 'پوز' : item.type == '3' ? ' نقدی ' : 'کارت هدیه'}
+                        {item.type == '2' ? 'پوز' : item.type == '3' ? ' نقدی ' : 'رایگان'}
                       </CTableDataCell>
                       <CTableDataCell>
                         {item.status == '1' ? 'تایید شده' : 'تایید نشده'}
