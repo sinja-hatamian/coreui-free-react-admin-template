@@ -90,6 +90,7 @@ const ChargeForm = () => {
                     <CTableHeaderCell>نوع پرداخت</CTableHeaderCell>
                     <CTableHeaderCell>وضعیت</CTableHeaderCell>
                     <CTableHeaderCell>مبلغ</CTableHeaderCell>
+                    <CTableHeaderCell>تاریخ</CTableHeaderCell>
                     <CTableHeaderCell>توضیحات</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -103,6 +104,8 @@ const ChargeForm = () => {
                         {item.status == '1' ? 'تایید شده' : 'تایید نشده'}
                       </CTableDataCell>
                       <CTableDataCell>{numberWithCommas(item.amount)}</CTableDataCell>
+                      <CTableDataCell>{item.created_at.split('T')[1].split('.')[0]}</CTableDataCell>
+
                       <CTableDataCell>{item.description}</CTableDataCell>
                     </CTableRow>
                   ))}
