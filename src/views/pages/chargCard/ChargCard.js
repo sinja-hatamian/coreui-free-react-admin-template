@@ -209,11 +209,7 @@ const ChargCard = () => {
                     <option value="">انتخاب کنید</option>
                     {selectCharge.map((charge) => (
                       <option key={charge.id} value={charge.charge_amount}>
-                        {numberWithCommas(charge.charge_amount) +
-                          'ریال ' +
-                          '-' +
-                          numberWithCommas(charge.credit_amount) +
-                          'اعتبار '}
+                        {numberWithCommas(charge.charge_amount) + ' ' + 'ریال '}
                       </option>
                     ))}
                   </CFormSelect>
