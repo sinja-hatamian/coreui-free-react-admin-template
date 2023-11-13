@@ -176,8 +176,13 @@ const ChargCard = () => {
   }
 
   const numberWithCommas = (x) => {
-    //add comma to each 3 digit
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    if (x !== undefined && x !== null) {
+      // add comma to each 3 digits
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    } else {
+      // handle the case where x is undefined or null
+      return ''
+    }
   }
 
   return (
@@ -204,14 +209,18 @@ const ChargCard = () => {
                     <option value="">انتخاب کنید</option>
                     {selectCharge.map((charge) => (
                       <option key={charge.id} value={charge.charge_amount}>
-                        {charge.charge_amount}
+                        {numberWithCommas(charge.charge_amount) +
+                          'ریال ' +
+                          '-' +
+                          numberWithCommas(charge.credit_amount) +
+                          'اعتبار '}
                       </option>
                     ))}
                   </CFormSelect>
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
-                    label="سایر مبالغ"
+                    label="سایر مبالغ (ریال)"
                     name="amount"
                     aria-label="amount"
                     onChange={(e) => handleInput(e, index)}
@@ -326,7 +335,7 @@ const ChargCard = () => {
                     textAlign: 'center',
                   }}
                 >
-                  میزان شارژ
+                  میزان شارژ (ریال)
                 </CTableHeaderCell>
                 <CTableHeaderCell
                   color="primary"
@@ -337,7 +346,7 @@ const ChargCard = () => {
                     textAlign: 'center',
                   }}
                 >
-                  اعتبار
+                  میزان اعتبار (ریال)
                 </CTableHeaderCell>
               </CTableRow>
             </CTableHead>
