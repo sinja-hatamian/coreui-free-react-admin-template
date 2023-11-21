@@ -120,6 +120,7 @@ const ShowByTag = () => {
         </CCol>
         <CCol xs="12" md="12" className="mb-4">
           <strong>اطلاعات همراهان</strong>
+          <p />
           <CTable>
             <CTableHead>
               <CTableRow>
