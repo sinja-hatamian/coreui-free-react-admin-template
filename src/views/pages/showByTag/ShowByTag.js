@@ -20,6 +20,7 @@ const ShowByTag = () => {
     tag: '',
   })
   const [customers, setCustomers] = useState([])
+  const [card, setCard] = useState({})
   const [fomedata, setFomedata] = useState({
     firstname: '',
     lastname: '',
@@ -53,6 +54,14 @@ const ShowByTag = () => {
         setTag({
           tag: '',
         })
+        AxiosInstance.get(`/cards/${customerData.id}`)
+          .then((res) => {
+            setCard(res.data.data.card)
+          })
+          .catch((err) => {
+            console.log(err)
+            toast.error('خطا در دریافت اطلاعات کارت')
+          })
       })
       .catch((err) => {
         console.log(err)
@@ -85,19 +94,40 @@ const ShowByTag = () => {
           <CTable>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col">نام</CTableHeaderCell>
-                <CTableHeaderCell scope="col">نام خانوادگی</CTableHeaderCell>
-                <CTableHeaderCell scope="col">کد ملی</CTableHeaderCell>
-                <CTableHeaderCell scope="col">شماره تماس</CTableHeaderCell>
+                <CTableHeaderCell>نام</CTableHeaderCell>
+                <CTableHeaderCell>نام خانوادگی</CTableHeaderCell>
+                <CTableHeaderCell>کد ملی</CTableHeaderCell>
+                <CTableHeaderCell>شماره تماس</CTableHeaderCell>
+                <CTableHeaderCell> موجودی حساب</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              <CTableRow>
+                <CTableDataCell>{fomedata.firstname}</CTableDataCell>
+                <CTableDataCell>{fomedata.lastname}</CTableDataCell>
+                <CTableDataCell>{fomedata.national_code}</CTableDataCell>
+                <CTableDataCell>{fomedata.phone}</CTableDataCell>
+                <CTableDataCell>{card.balance}</CTableDataCell>
+              </CTableRow>
+            </CTableBody>
+          </CTable>
+        </CCol>
+        <CCol xs="12" md="12" className="mb-4">
+          <strong>اطلاعات همراهان</strong>
+          <CTable>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
+                <CTableHeaderCell>زمان ورود </CTableHeaderCell>
+                <CTableHeaderCell> زمان خروج</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {customers.map((customer) => (
                 <CTableRow key={customer.id}>
-                  <CTableDataCell>{customer.firstname}</CTableDataCell>
-                  <CTableDataCell>{customer.lastname}</CTableDataCell>
-                  <CTableDataCell>{customer.national_code}</CTableDataCell>
-                  <CTableDataCell>{customer.phone}</CTableDataCell>
+                  <CTableDataCell>{customer.TagSerial}</CTableDataCell>
+                  <CTableDataCell>{customer.EnterTime}</CTableDataCell>
+                  <CTableDataCell>{customer.ExitTime}</CTableDataCell>
                 </CTableRow>
               ))}
             </CTableBody>
