@@ -13,7 +13,6 @@ import {
   CTableRow,
   CTableHeaderCell,
   CTableDataCell,
-  CForm,
 } from '@coreui/react'
 
 const ShowByTag = () => {

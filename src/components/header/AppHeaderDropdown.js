@@ -19,33 +19,43 @@ const AppHeaderDropdown = () => {
   }, [])
 
   return (
-    <CDropdown variant="nav-item">
-      <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar2} size="md" />
-      </CDropdownToggle>
-      <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem>
+    <>
+      <div
+        style={{
+          marginTop: '7px',
+          marginLeft: '5px',
+        }}
+      >
+        {formData.firstname} {formData.lastname}
+      </div>
+      <CDropdown variant="nav-item">
+        <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
+          <CAvatar src={avatar2} size="md" />
+        </CDropdownToggle>
+        <CDropdownMenu className="pt-0" placement="bottom-end">
+          {/* <CDropdownItem>
           <CIcon icon={cilUser} className="me-2" />
           {formData.firstname} {formData.lastname}
-        </CDropdownItem>
-        <CDropdownItem
-          href="#/login"
-          onClick={() => {
-            localStorage.removeItem('token')
-          }}
-        >
-          <CIcon
-            icon={cilLockLocked}
-            className="me-2"
+        </CDropdownItem> */}
+          <CDropdownItem
+            href="#/login"
             onClick={() => {
               localStorage.removeItem('token')
-              localStorage.removeItem('customer')
             }}
-          />
-          خروج
-        </CDropdownItem>
-      </CDropdownMenu>
-    </CDropdown>
+          >
+            <CIcon
+              icon={cilLockLocked}
+              className="me-2"
+              onClick={() => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('customer')
+              }}
+            />
+            خروج
+          </CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
+    </>
   )
 }
 
