@@ -111,7 +111,9 @@ const ShowByTag = () => {
                 <CTableDataCell>{fomedata.lastname}</CTableDataCell>
                 <CTableDataCell>{fomedata.national_code}</CTableDataCell>
                 <CTableDataCell>{fomedata.phone}</CTableDataCell>
-                <CTableDataCell>{card.balance ? numberWithCommas(card.balance) : 0}</CTableDataCell>
+                <CTableDataCell>
+                  {card.balance ? numberWithCommas(card.balance) : 0 + ' ریال'}
+                </CTableDataCell>
               </CTableRow>
             </CTableBody>
           </CTable>
