@@ -42,7 +42,7 @@ const ShowByTag = () => {
   }
 
   const handleShowTag = () => {
-    AxiosInstance.get(`/users/tag-serial/${tag.tag}`)
+    AxiosInstance.get(`/users/tag-serial/${tag}`)
       .then((res) => {
         const customerData = res.data.data.user
         setFomedata((prev) => ({
@@ -67,48 +67,52 @@ const ShowByTag = () => {
   }
 
   return (
-    <CRow>
-      <CCol xs="12" md="12" className="mb-4">
-        <CFormInput
-          name="tag"
-          placeholder="Tag"
-          value={tag.tag}
-          onChange={handleInputChange}
-          innerRef={inputRef}
+    <>
+      <CRow>
+        <CCol xs="12" md="12" className="mb-4">
+          <CFormInput
+            name="tag"
+            placeholder="Tag"
+            value={tag.tag}
+            onChange={handleInputChange}
+            innerRef={inputRef}
+          />
+          <CButton color="primary" className="mt-2" onClick={handleShowTag}>
+            نمایش
+          </CButton>
+        </CCol>
+        <CCol xs="12" md="12" className="mb-4">
+          <CTable>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell scope="col">نام</CTableHeaderCell>
+                <CTableHeaderCell scope="col">نام خانوادگی</CTableHeaderCell>
+                <CTableHeaderCell scope="col">کد ملی</CTableHeaderCell>
+                <CTableHeaderCell scope="col">شماره تماس</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {customers.map((customer) => (
+                <CTableRow key={customer.id}>
+                  <CTableDataCell>{customer.firstname}</CTableDataCell>
+                  <CTableDataCell>{customer.lastname}</CTableDataCell>
+                  <CTableDataCell>{customer.national_code}</CTableDataCell>
+                  <CTableDataCell>{customer.phone}</CTableDataCell>
+                </CTableRow>
+              ))}
+            </CTableBody>
+          </CTable>
+        </CCol>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          rtl={true}
+          pauseOnFocusLoss
         />
-        <CButton color="primary" className="mt-2" onClick={handleShowTag}>
-          نمایش
-        </CButton>
-      </CCol>
-      <CCol xs="12" md="12" className="mb-4">
-        <CTable>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope="col">نام</CTableHeaderCell>
-              <CTableHeaderCell scope="col">نام خانوادگی</CTableHeaderCell>
-              <CTableHeaderCell scope="col">کد ملی</CTableHeaderCell>
-              <CTableHeaderCell scope="col">شماره تماس</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            <CTableRow>
-              <CTableDataCell>{fomedata.firstname}</CTableDataCell>
-              <CTableDataCell>{fomedata.lastname}</CTableDataCell>
-              <CTableDataCell>{fomedata.national_code}</CTableDataCell>
-              <CTableDataCell>{fomedata.phone}</CTableDataCell>
-            </CTableRow>
-          </CTableBody>
-        </CTable>
-      </CCol>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        rtl={true}
-        pauseOnFocusLoss
-      />
-    </CRow>
+      </CRow>
+    </>
   )
 }
 export default ShowByTag
