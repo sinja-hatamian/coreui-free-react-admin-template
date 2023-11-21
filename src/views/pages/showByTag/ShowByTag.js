@@ -132,7 +132,11 @@ const ShowByTag = () => {
               {customers.map((customer) => (
                 <CTableRow key={customer.id}>
                   <CTableDataCell>{customer.TagSerial}</CTableDataCell>
-                  <CTableDataCell>{customer.EnterTime}</CTableDataCell>
+                  <CTableDataCell>
+                    {customer.EnterTime
+                      ? new Date(customer.EnterTime).toLocaleDateString('fa-IR')
+                      : ''}
+                  </CTableDataCell>
                   <CTableDataCell>{customer.ExitTime}</CTableDataCell>
                 </CTableRow>
               ))}
