@@ -134,7 +134,9 @@ const ShowByTag = () => {
                   <CTableDataCell>{customer.TagSerial}</CTableDataCell>
                   <CTableDataCell>
                     {customer.EnterTime
-                      ? new Date(customer.EnterTime).toLocaleDateString('fa-IR')
+                      ? new Date(customer.EnterTime).toLocaleDateString('fa-IR') +
+                        ' - ' +
+                        new Date(customer.EnterTime).toLocaleTimeString('fa-IR')
                       : ''}
                   </CTableDataCell>
                   <CTableDataCell>{customer.ExitTime}</CTableDataCell>
