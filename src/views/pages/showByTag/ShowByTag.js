@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { format } from 'date-fns'
 import {
   CCol,
   CRow,
@@ -133,10 +134,13 @@ const ShowByTag = () => {
                 <CTableRow key={customer.id}>
                   <CTableDataCell>{customer.TagSerial}</CTableDataCell>
                   <CTableDataCell>
-                    {customer.EnterTime
+                    {/* {customer.EnterTime
                       ? new Date(customer.EnterTime).toLocaleDateString('fa-IR') +
                         ' - ' +
                         new Date(customer.EnterTime).toLocaleTimeString('fa-IR')
+                      : ''} */}
+                    {customer.EnterTime
+                      ? format(new Date(customer.EnterTime), 'yyyy-MM-dd HH:mm:ss')
                       : ''}
                   </CTableDataCell>
                   <CTableDataCell>{customer.ExitTime}</CTableDataCell>
