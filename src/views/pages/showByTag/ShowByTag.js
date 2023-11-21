@@ -43,7 +43,7 @@ const ShowByTag = () => {
   }
 
   const handleShowTag = () => {
-    AxiosInstance.get(`/users/tag-serial/${tag}`)
+    AxiosInstance.get(`/users/tag-serial/${tag.tag}`)
       .then((res) => {
         const customerData = res.data.data.user
         setFomedata((prev) => ({
@@ -73,6 +73,10 @@ const ShowByTag = () => {
           national_code: '',
         })
       })
+  }
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   return (
@@ -107,7 +111,7 @@ const ShowByTag = () => {
                 <CTableDataCell>{fomedata.lastname}</CTableDataCell>
                 <CTableDataCell>{fomedata.national_code}</CTableDataCell>
                 <CTableDataCell>{fomedata.phone}</CTableDataCell>
-                <CTableDataCell>{card.balance}</CTableDataCell>
+                <CTableDataCell>{numberWithCommas(card.balance)}</CTableDataCell>
               </CTableRow>
             </CTableBody>
           </CTable>
