@@ -202,9 +202,11 @@ const CustomerReg = () => {
   }
 
   const handleDate = (newDate) => {
-    setValue(newDate.valueOf())
-    console.log(newDate.valueOf())
-    setFormdata((prev) => ({ ...prev, birthday: newDate.valueOf() }))
+    if (newDate) {
+      setValue(newDate.valueOf())
+      console.log(newDate.valueOf())
+      setFormdata((prev) => ({ ...prev, birthday: newDate.valueOf() }))
+    }
   }
 
   return (

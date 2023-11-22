@@ -128,15 +128,17 @@ const AddAttendant = () => {
   }
 
   const handleDate = (newDate, index) => {
-    setValue(newDate.valueOf())
-    setAttendant([
-      ...attendant.map((item, i) => {
-        if (i === index) {
-          return { ...item, birthday: newDate.valueOf() }
-        }
-        return item
-      }),
-    ])
+    if (newDate) {
+      setValue(newDate.valueOf())
+      setAttendant([
+        ...attendant.map((item, i) => {
+          if (i === index) {
+            return { ...item, birthday: newDate.valueOf() }
+          }
+          return item
+        }),
+      ])
+    }
   }
 
   const closeModals = () => {
