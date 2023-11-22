@@ -75,8 +75,8 @@ const ShowByTag = () => {
       })
   }
 
-  const handleExit = () => {
-    AxiosInstance.post('/attendants/exit', tag)
+  const handleExit = (TagSerial) => {
+    AxiosInstance.post('/attendants/exit', { tag: TagSerial })
       .then((res) => {
         console.log(res.data)
         if (res.data.data?.customers) {
@@ -86,9 +86,6 @@ const ShowByTag = () => {
             localStorage.removeItem('customer')
           }
         }
-        setTag({
-          tag: '',
-        })
         toast.success('خروج با موفقیت ثبت شد')
       })
       .catch((err) => {
@@ -161,7 +158,12 @@ const ShowByTag = () => {
                   </CTableDataCell>{' '}
                   <CTableDataCell>{customer.ExitTime}</CTableDataCell>
                   <CTableDataCell>
-                    <CButton onClick={handleExit(customer.TagSerial)} color="success">
+                    <CButton
+                      onClick={() => {
+                        return handleExit(customer.TagSerial)
+                      }}
+                      color="success"
+                    >
                       ثبت خروج
                     </CButton>
                   </CTableDataCell>
