@@ -19,6 +19,7 @@ const ShowByTag = () => {
   const [tag, setTag] = useState({
     tag: '',
   })
+  const [TagSerial, setTagSerial] = useState('')
   const [customers, setCustomers] = useState([])
   const [card, setCard] = useState({})
   const [fomedata, setFomedata] = useState({
@@ -76,7 +77,7 @@ const ShowByTag = () => {
   }
 
   const handleExit = () => {
-    AxiosInstance.post('/attendants/exit', tag)
+    AxiosInstance.post('/attendants/exit', TagSerial)
       .then((res) => {
         console.log(res.data)
         if (res.data.data?.customers) {
