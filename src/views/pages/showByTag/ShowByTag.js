@@ -161,7 +161,7 @@ const ShowByTag = () => {
                   </CTableDataCell>{' '}
                   <CTableDataCell>{customer.ExitTime}</CTableDataCell>
                   <CTableDataCell>
-                    <CButton onClick={handleExit} color="success">
+                    <CButton onClick={handleExit(customer.TagSerial)} color="success">
                       ثبت خروج
                     </CButton>
                   </CTableDataCell>
