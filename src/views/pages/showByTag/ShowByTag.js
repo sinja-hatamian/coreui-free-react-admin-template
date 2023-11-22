@@ -16,7 +16,9 @@ import {
 } from '@coreui/react'
 
 const ShowByTag = () => {
-  const [tag, setTag] = useState({})
+  const [tag, setTag] = useState({
+    tag: '',
+  })
   const [customers, setCustomers] = useState([])
   const [card, setCard] = useState({})
   const [fomedata, setFomedata] = useState({
@@ -41,7 +43,7 @@ const ShowByTag = () => {
   }
 
   const handleShowTag = () => {
-    AxiosInstance.get(`/users/tag-serial/${tag}`)
+    AxiosInstance.get(`/users/tag-serial/${tag.tag}`)
       .then((res) => {
         const customerData = res.data.data.user
         setFomedata((prev) => ({
@@ -49,6 +51,9 @@ const ShowByTag = () => {
           ...customerData,
         }))
         setCustomers(res.data.data.user.customers)
+        setTag({
+          tag: '',
+        })
         AxiosInstance.get(`/cards/${customerData.id}`)
           .then((res) => {
             setCard(res.data.data.card)
@@ -81,6 +86,9 @@ const ShowByTag = () => {
             localStorage.removeItem('customer')
           }
         }
+        setTag({
+          tag: '',
+        })
         toast.success('خروج با موفقیت ثبت شد')
       })
       .catch((err) => {
@@ -100,7 +108,7 @@ const ShowByTag = () => {
           <CFormInput
             name="tag"
             placeholder="Tag"
-            value={tag}
+            value={tag.tag}
             onChange={handleInputChange}
             innerRef={inputRef}
           />
