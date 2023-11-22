@@ -147,6 +147,9 @@ const ChargCard = () => {
           console.log(res)
           const totalAmount = numberWithCommas(res.data.data.total_amount)
           toast.success(`شارژ با موفقیت انجام شد. مبلغ کل: ${totalAmount} ریال`)
+          //clear form
+          setCardForm([initialCardForm])
+          setSelectedTypes([''])
         })
         .catch((err) => {
           console.log(err)
@@ -361,7 +364,7 @@ const ChargCard = () => {
           </CTable>
         </CCard>
       </CCol>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={2000}
         hideProgressBar={false}
@@ -371,7 +374,7 @@ const ChargCard = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      />
+      /> */}
     </CRow>
   )
 }
