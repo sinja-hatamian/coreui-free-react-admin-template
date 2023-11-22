@@ -30,7 +30,9 @@ const ShowByTag = () => {
     tag: '',
   })
   const [customers, setCustomers] = useState([])
-  const [card, setCard] = useState({})
+  const [card, setCard] = useState({
+    balance: '',
+  })
   const inputRef = useRef(null)
   const [fomedata, setFomedata] = useState({
     firstname: '',
@@ -135,6 +137,7 @@ const ShowByTag = () => {
           .catch((err) => {
             console.log(err)
             toast.error('خطا در دریافت اطلاعات کارت')
+            localStorage.removeItem('customer')
           })
       })
       .catch((err) => {
@@ -145,6 +148,9 @@ const ShowByTag = () => {
           lastname: '',
           phone: '',
           national_code: '',
+        })
+        setCard({
+          balance: '',
         })
       })
   }
@@ -225,6 +231,9 @@ const ShowByTag = () => {
             console.log(res)
             const totalAmount = numberWithCommas(res.data.data.total_amount)
             toast.success(`شارژ با موفقیت انجام شد. مبلغ کل: ${totalAmount} ریال`)
+            //clear form
+            setCardForm([initialCardForm])
+            setSelectedTypes([''])
           })
           .catch((err) => {
             console.log(err)
@@ -254,10 +263,6 @@ const ShowByTag = () => {
     setSelectedTypes(updatedSelectedTypes)
   }
 
-  // const numberWithCommas = (x) => {
-  //   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  // }
-
   const numberWithCommas = (x) => {
     if (x !== undefined && x !== null) {
       // add comma to each 3 digits
@@ -284,7 +289,7 @@ const ShowByTag = () => {
           </CButton>
         </CCol>
         <CCol xs="12" md="12" className="mb-4">
-          <CTable>
+          <CTable striped bordered style={{ textAlign: 'center' }}>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell>نام</CTableHeaderCell>
@@ -500,7 +505,7 @@ const ShowByTag = () => {
         <CCol xs="12" md="12" className="mb-4">
           <strong>اطلاعات همراهان</strong>
           <p />
-          <CTable>
+          <CTable striped bordered>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
