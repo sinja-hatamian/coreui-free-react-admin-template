@@ -75,6 +75,28 @@ const ShowByTag = () => {
       })
   }
 
+  const handleExit = () => {
+    AxiosInstance.post('/attendants/exit', tag)
+      .then((res) => {
+        console.log(res.data)
+        if (res.data.data?.customers) {
+          setCustomers(res.data.data.customers)
+          if (!res.data.data.customers.find((customer) => customer.ExitTime == null)) {
+            // window.location.reload()
+            localStorage.removeItem('customer')
+          }
+        }
+        setTag({
+          tag: '',
+        })
+        toast.success('خروج با موفقیت ثبت شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error(err.response.data.message)
+      })
+  }
+
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
@@ -127,6 +149,7 @@ const ShowByTag = () => {
                 <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
                 <CTableHeaderCell>زمان ورود </CTableHeaderCell>
                 <CTableHeaderCell> زمان خروج</CTableHeaderCell>
+                <CTableHeaderCell> ثبت خروج</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -137,6 +160,11 @@ const ShowByTag = () => {
                     {customer.EnterTime.split('T')[1].split(':').slice(0, 2).join(':')}
                   </CTableDataCell>{' '}
                   <CTableDataCell>{customer.ExitTime}</CTableDataCell>
+                  <CTableDataCell>
+                    <CButton onClick={handleExit} color="success">
+                      ثبت خروج
+                    </CButton>
+                  </CTableDataCell>
                 </CTableRow>
               ))}
             </CTableBody>
