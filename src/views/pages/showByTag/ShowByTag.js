@@ -55,6 +55,7 @@ const ShowByTag = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false) // State for disabling button
   const [isLoading, setIsLoading] = useState(false) // State for loading
   const [showModal, setShowModal] = useState(false) // State for showing modal
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     if (inputRef.current) {
@@ -122,6 +123,8 @@ const ShowByTag = () => {
     AxiosInstance.get(`/users/tag-serial/${tag.tag}`)
       .then((res) => {
         const customerData = res.data.data.user
+        setUser(customerData)
+        // console.log(customerData)
         setFomedata((prev) => ({
           ...prev,
           ...customerData,
@@ -204,48 +207,48 @@ const ShowByTag = () => {
       }
     })
     if (hasError) {
+      console.log('has error')
       return
     }
 
-    if (!hasError) {
-      setIsButtonDisabled(true) // Disable the button
-      setIsLoading(true) // Start loading spinner
+    setIsButtonDisabled(true) // Disable the button
+    setIsLoading(true) // Start loading spinner
 
-      if (localStorage.getItem('customer')) {
-        const customer = JSON.parse(localStorage.getItem('customer'))
-        AxiosInstance.post('/cards/charge', {
-          payments: [
-            ...cardForm.map((item) => {
-              Object.keys(item).forEach((key) => {
-                item[key] = item[key].replace(/[^0-9]/g, '')
-                if (item[key] === '') {
-                  delete item[key]
-                }
-              })
-              return item
-            }),
-          ],
-          user_id: customer.id,
+    if (user) {
+      // const customer = JSON.parse(localStorage.getItem('customer'))
+      // console.log(customer.id)
+      AxiosInstance.post('/cards/charge', {
+        payments: [
+          ...cardForm.map((item) => {
+            Object.keys(item).forEach((key) => {
+              item[key] = item[key].replace(/[^0-9]/g, '')
+              if (item[key] === '') {
+                delete item[key]
+              }
+            })
+            return item
+          }),
+        ],
+        user_id: user.id,
+      })
+        .then((res) => {
+          console.log(res)
+          const totalAmount = numberWithCommas(res.data.data.total_amount)
+          toast.success(`شارژ با موفقیت انجام شد. مبلغ کل: ${totalAmount} ریال`)
+          //clear form
+          setCardForm([initialCardForm])
+          setSelectedTypes([''])
         })
-          .then((res) => {
-            console.log(res)
-            const totalAmount = numberWithCommas(res.data.data.total_amount)
-            toast.success(`شارژ با موفقیت انجام شد. مبلغ کل: ${totalAmount} ریال`)
-            //clear form
-            setCardForm([initialCardForm])
-            setSelectedTypes([''])
-          })
-          .catch((err) => {
-            console.log(err)
-            toast.error('خطا در شارژ کارت')
-          })
-          .finally(() => {
-            setIsLoading(false) // Stop loading spinner
-            setTimeout(() => {
-              setIsButtonDisabled(false)
-            }, 3000)
-          })
-      }
+        .catch((err) => {
+          console.log(err)
+          toast.error('خطا در شارژ کارت')
+        })
+        .finally(() => {
+          setIsLoading(false) // Stop loading spinner
+          setTimeout(() => {
+            setIsButtonDisabled(false)
+          }, 3000)
+        })
     }
   }
 
