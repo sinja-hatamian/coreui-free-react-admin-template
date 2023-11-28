@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { BeatLoader } from 'react-spinners'
 import {
@@ -364,17 +364,6 @@ const ChargCard = () => {
           </CTable>
         </CCard>
       </CCol>
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      /> */}
     </CRow>
   )
 }
