@@ -20,7 +20,7 @@ const IntroductionWays = React.lazy(() => import('./views/pages/introductionWays
 const ChargeForm = React.lazy(() => import('./views/pages/chargeForm/ChargeForm'))
 const exitCustomer = React.lazy(() => import('./views/pages/exitCustomer/ExitCustomer'))
 const banks = React.lazy(() => import('./views/pages/banks/Banks'))
-// const customerFullLog = React.lazy(() => import('./views/pages/customerFullLog/CustomerFullLog'))
+const customerFullLog = React.lazy(() => import('./views/pages/customerFullLog/CustomerFullLog'))
 const posDevice = React.lazy(() => import('./views/pages/posDevice/PosDevice'))
 const Wristband = React.lazy(() => import('./views/pages/wristband/Wristband'))
 const AccountingDetails = React.lazy(() =>
@@ -105,12 +105,12 @@ const routes = [
   //   element: showByTag,
   //   exact: true,
   // },
-  // {
-  //   path: '/pages/customerFullLog',
-  //   name: 'customerFullLog',
-  //   element: customerFullLog,
-  //   exact: true,
-  // },
+  {
+    path: '/pages/customerFullLog',
+    name: 'customerFullLog',
+    element: customerFullLog,
+    exact: true,
+  },
 ]
 
 export default routes
