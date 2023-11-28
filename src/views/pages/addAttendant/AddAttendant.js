@@ -27,6 +27,7 @@ import {
 import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
+import { ta } from 'date-fns/locale'
 
 const AddAttendant = () => {
   const [attendant, setAttendant] = useState([])
@@ -108,8 +109,8 @@ const AddAttendant = () => {
     })
       .then((res) => {
         console.log(res)
-        // const newAttendant = res.data.data
-        // setAttendant([...attendant, newAttendant])
+        const newAttendant = res.data.data
+        setAttendant([...attendant, newAttendant])
         toast.success('همراه با موفقیت ثبت شد')
         if (res.data.data.qrcode) {
           setQrcode(res.data.data.qrcode)
@@ -161,6 +162,13 @@ const AddAttendant = () => {
   const removeAttendant = (index) => {
     setAttendant([...attendant.filter((item, i) => i !== index)])
     setTableData([...tableData.filter((item, i) => i !== index)])
+
+    if (index.tag === customer.tag) {
+      setCustomer({ ...customer, tag: '' })
+    }
+    if (index.tag === serverTag) {
+      setServerTag('')
+    }
   }
   // const cloneAttendant = () => {
   //   setAttendant([
@@ -491,13 +499,22 @@ const AddAttendant = () => {
                   <CTableHeaderCell>{item.tag}</CTableHeaderCell>
                 </CTableRow>
               ))} */}
-              {fixedData.map((item) => (
-                <CTableRow key={item.id}>
-                  <CTableDataCell>{item.firstname}</CTableDataCell>
-                  <CTableDataCell>{item.lastname}</CTableDataCell>
-                  <CTableDataCell>{item.tag}</CTableDataCell>
+              {tableData.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.tag}</CTableHeaderCell>
+                  <CTableHeaderCell></CTableHeaderCell>
                 </CTableRow>
               ))}
+              {/* {attendant.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.tag}</CTableHeaderCell>
+                  <CTableHeaderCell></CTableHeaderCell>
+                </CTableRow>
+              ))} */}
             </CTableBody>
           </CTable>
         </CCard>
