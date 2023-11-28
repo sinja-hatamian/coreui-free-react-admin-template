@@ -170,20 +170,6 @@ const AddAttendant = () => {
       setServerTag('')
     }
   }
-  // const cloneAttendant = () => {
-  //   setAttendant([
-  //     ...attendant,
-  //     {
-  //       firstname: '',
-  //       lastname: '',
-  //       national_code: '',
-  //       phone: '',
-  //       birthday: '',
-  //       gender: '',
-  //       tag: '',
-  //     },
-  //   ])
-  // }
 
   const cloneAttendant = () => {
     const clonedAttendant = {

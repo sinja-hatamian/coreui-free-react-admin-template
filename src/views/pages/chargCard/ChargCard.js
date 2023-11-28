@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { BeatLoader } from 'react-spinners'
 import {
@@ -27,7 +27,6 @@ const ChargCard = () => {
     type: '',
     bank_id: '',
     card_number: '',
-    transaction_id: '',
   }
 
   const [cardForm, setCardForm] = useState([initialCardForm])
@@ -48,7 +47,7 @@ const ChargCard = () => {
       ...updatedCardForms[index], // Copy the existing object
       [name]: formattedData, // Update the specific field
     }
-    if (name === 'transaction_id' || name === 'card_number') {
+    if (name === 'card_number') {
       updatedCardForms[index] = {
         ...updatedCardForms[index], // Copy the existing object
 
@@ -110,11 +109,7 @@ const ChargCard = () => {
   const handleForm = () => {
     let hasError = false
     cardForm.forEach((item) => {
-      if (
-        !item.amount ||
-        !item.type ||
-        (item.type === '2' && (!item.bank_id || !item.transaction_id))
-      ) {
+      if (!item.amount || !item.type || (item.type === '2' && !item.bank_id)) {
         hasError = true
         toast.error('لطفا تمامی فیلد ها را پر کنید')
         return
@@ -264,21 +259,6 @@ const ChargCard = () => {
                         ))}
                       </CFormSelect>
                     </CCol>
-                    <CCol md={6}>
-                      <CFormInput
-                        label={
-                          <>
-                            شماره تراکنش<span style={{ color: 'red' }}>*</span>
-                          </>
-                        }
-                        name="transaction_id"
-                        aria-label="transaction_id"
-                        onChange={(e) => handleInput(e, index)}
-                        value={cardForm.transaction_id}
-                        locale="fa-IR"
-                        required={true}
-                      />
-                    </CCol>
                   </>
                 ) : null}
                 {cardForm.type === '4' ? (
@@ -364,17 +344,6 @@ const ChargCard = () => {
           </CTable>
         </CCard>
       </CCol>
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      /> */}
     </CRow>
   )
 }

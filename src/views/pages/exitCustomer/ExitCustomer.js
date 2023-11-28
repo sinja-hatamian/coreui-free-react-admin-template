@@ -45,7 +45,6 @@ const ShowByTag = () => {
     type: '',
     bank_id: '',
     card_number: '',
-    transaction_id: '',
   }
   const [cardForm, setCardForm] = useState([initialCardForm])
   const [selectedTypes, setSelectedTypes] = useState([''])
@@ -109,7 +108,7 @@ const ShowByTag = () => {
       ...updatedCardForms[index], // Copy the existing object
       [name]: formattedData, // Update the specific field
     }
-    if (name === 'transaction_id' || name === 'card_number') {
+    if (name === 'card_number') {
       updatedCardForms[index] = {
         ...updatedCardForms[index], // Copy the existing object
 
@@ -196,11 +195,7 @@ const ShowByTag = () => {
     console.log('handle form called')
     let hasError = false
     cardForm.forEach((item) => {
-      if (
-        !item.amount ||
-        !item.type ||
-        (item.type === '2' && (!item.bank_id || !item.transaction_id))
-      ) {
+      if (!item.amount || !item.type || (item.type === '2' && !item.bank_id)) {
         hasError = true
         toast.error('لطفا تمامی فیلد ها را پر کنید')
         return
@@ -268,7 +263,6 @@ const ShowByTag = () => {
 
   const numberWithCommas = (x) => {
     if (x !== undefined && x !== null) {
-      // add comma to each 3 digits
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     } else {
       // handle the case where x is undefined or null
@@ -393,21 +387,6 @@ const ShowByTag = () => {
                                           </option>
                                         ))}
                                       </CFormSelect>
-                                    </CCol>
-                                    <CCol md={6}>
-                                      <CFormInput
-                                        label={
-                                          <>
-                                            شماره تراکنش<span style={{ color: 'red' }}>*</span>
-                                          </>
-                                        }
-                                        name="transaction_id"
-                                        aria-label="transaction_id"
-                                        onChange={(e) => handlePeymentChange(e, index)}
-                                        value={cardForm.transaction_id}
-                                        locale="fa-IR"
-                                        required={true}
-                                      />
                                     </CCol>
                                   </>
                                 ) : null}
@@ -553,139 +532,3 @@ const ShowByTag = () => {
   )
 }
 export default ShowByTag
-
-// import React, { useState, useRef, useEffect } from 'react'
-// import AxiosInstance from 'src/utils/AxiosInstance'
-// import { ToastContainer, toast } from 'react-toastify'
-// import 'react-toastify/dist/ReactToastify.css'
-// import {
-//   CCol,
-//   CRow,
-//   CButton,
-//   CFormInput,
-//   CTable,
-//   CTableBody,
-//   CTableHead,
-//   CTableRow,
-//   CTableHeaderCell,
-//   CTableDataCell,
-// } from '@coreui/react'
-
-// const ExitCustomer = () => {
-//   const [tag, setTag] = useState({
-//     tag: '',
-//   })
-//   const [customers, setCustomers] = useState([])
-//   const inputRef = useRef(null)
-
-//   useEffect(() => {
-//     if (inputRef.current) {
-//       inputRef.current.focus()
-//     }
-//   }, [])
-
-//   const handleInputChange = (e) => {
-//     setTag({
-//       ...tag,
-//       [e.target.name]: e.target.value,
-//     })
-//   }
-
-//   const handleExit = () => {
-//     AxiosInstance.post('/attendants/exit', tag)
-//       .then((res) => {
-//         console.log(res.data)
-//         if (res.data.data?.customers) {
-//           setCustomers(res.data.data.customers)
-//           if (!res.data.data.customers.find((customer) => customer.ExitTime == null)) {
-//             // window.location.reload()
-//             localStorage.removeItem('customer')
-//           }
-//         }
-//         setTag({
-//           tag: '',
-//         })
-//         toast.success('خروج با موفقیت ثبت شد')
-//       })
-//       .catch((err) => {
-//         console.log(err)
-//         toast.error(err.response.data.message)
-//       })
-//   }
-//   return (
-//     <CRow>
-//       <CCol xs="12">
-//         <CFormInput
-//           name="tag"
-//           placeholder="Tag"
-//           onChange={handleInputChange}
-//           value={tag.tag}
-//           ref={inputRef}
-//         />
-//       </CCol>
-//       <p></p>
-//       <CCol>
-//         <CButton color="primary" onClick={handleExit}>
-//           ثبت خروج
-//         </CButton>
-//       </CCol>
-//       <CCol xs="12">
-//         <CRow>
-//           <p />
-//           <CTable striped>
-//             <CTableHead>
-//               <CTableRow>
-//                 <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
-//                 <CTableHeaderCell>تاریخ ورود</CTableHeaderCell>
-//                 <CTableHeaderCell>تاریخ خروج</CTableHeaderCell>
-//               </CTableRow>
-//             </CTableHead>
-//             <CTableBody>
-//               {customers.map((customer, index) => (
-//                 <CTableRow key={index}>
-//                   <CTableDataCell>{customer.TagSerial}</CTableDataCell>
-//                   <CTableDataCell>
-//                     {Intl.DateTimeFormat('fa-IR', {
-//                       year: 'numeric',
-//                       month: '2-digit',
-//                       day: '2-digit',
-//                       hour: '2-digit',
-//                       minute: '2-digit',
-//                     }).format(new Date(customer.EnterTime.split('.')[0]))}
-//                   </CTableDataCell>
-//                   <CTableDataCell>
-//                     {customer.ExitTime
-//                       ? Intl.DateTimeFormat('fa-IR', {
-//                           year: 'numeric',
-//                           month: '2-digit',
-//                           day: '2-digit',
-//                           hour: '2-digit',
-//                           minute: '2-digit',
-//                         }).format(
-//                           new Date(customer.ExitTime.split('.')[0]),
-//                           // Helper.getIsoDateWithTimezone(new Date(customer.ExitTime).getTime()),
-//                         )
-//                       : '-'}
-//                   </CTableDataCell>
-//                 </CTableRow>
-//               ))}
-//             </CTableBody>
-//           </CTable>
-//         </CRow>
-//       </CCol>
-//       <ToastContainer
-//         position="bottom-right"
-//         autoClose={5000}
-//         hideProgressBar={false}
-//         newestOnTop={false}
-//         closeOnClick
-//         rtl={true}
-//         pauseOnFocusLoss
-//         draggable
-//         pauseOnHover
-//       />
-//     </CRow>
-//   )
-// }
-
-// export default ExitCustomer
