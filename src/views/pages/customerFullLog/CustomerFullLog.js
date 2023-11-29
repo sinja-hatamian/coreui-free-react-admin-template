@@ -41,6 +41,10 @@ const CustomerFullLog = () => {
       `/users/get-full-report/${customer.id}?start_date=${startDate}&end_date=${endDate}`,
     )
       .then((res) => {
+        if (res.data.data.report.length === 0) {
+          toast.error('گزارشی برای این بازه زمانی یافت نشد')
+        }
+
         setReport(res.data.data.report)
         setStartDate(res.data.data.start_date)
         setEndDate(res.data.data.end_date)
@@ -93,13 +97,15 @@ const CustomerFullLog = () => {
   const fetchDataWithPhone = () => {
     AxiosInstance.get(`/users/phone/${formdata.phone}`)
       .then((res) => {
-        const customerData = res.data.data.user
-        console.log(customerData)
-        setFormdata((prev) => ({
-          ...prev,
-          ...customerData,
-        }))
-        localStorage.setItem('customer', JSON.stringify(customerData))
+        setCustomer(res.data.data.user)
+        setFormdata({
+          firstname: res.data.data.user.firstname,
+          lastname: res.data.data.user.lastname,
+          national_code: res.data.data.user.national_code,
+          phone: res.data.data.user.phone,
+          card_number: res.data.data.user.card_number,
+        })
+        console.log(res.data.data.user)
       })
       .catch((err) => {
         console.log(err)
@@ -110,13 +116,15 @@ const CustomerFullLog = () => {
   const fetchDataWithCardNumber = () => {
     AxiosInstance.get(`/users/card-number/${card_number}`)
       .then((res) => {
-        const customerData = res.data.data.user
-        console.log(customerData)
-        setFormdata((prev) => ({
-          ...prev,
-          ...customerData,
-        }))
-        localStorage.setItem('customer', JSON.stringify(customerData))
+        setCustomer(res.data.data.user)
+        setFormdata({
+          firstname: res.data.data.user.firstname,
+          lastname: res.data.data.user.lastname,
+          national_code: res.data.data.user.national_code,
+          phone: res.data.data.user.phone,
+          card_number: res.data.data.user.card_number,
+        })
+        console.log(res.data.data.user)
       })
       .catch((err) => {
         console.log(err)

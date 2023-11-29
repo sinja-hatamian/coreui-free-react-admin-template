@@ -258,7 +258,7 @@ const CustomerFinanceLog = () => {
                         ? 'پوز'
                         : item.income_type === '4'
                         ? ' کارت هدیه '
-                        : item.income_type === ''
+                        : item.income_type === '5'
                         ? 'رایگان'
                         : '-'}
                     </CTableDataCell>
