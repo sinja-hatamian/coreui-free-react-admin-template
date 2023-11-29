@@ -70,12 +70,12 @@ const _userNav = [
     to: '/pages/customerFullLog',
     icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'گزارشات گردش حساب مشتری',
-  //   to: '/theme/color',
-  //   icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
-  // },
+  {
+    component: CNavItem,
+    name: 'گزارشات گردش حساب مشتری',
+    to: '/pages/customerFinanceLog',
+    icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
+  },
   // {
   //   component: CNavItem,
   //   name: 'گزارشات رزواسیون',

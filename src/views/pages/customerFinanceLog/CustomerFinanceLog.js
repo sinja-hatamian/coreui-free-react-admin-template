@@ -6,7 +6,6 @@ import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import { format } from 'date-fns'
-
 import {
   CCol,
   CRow,
@@ -23,7 +22,7 @@ import {
   CFormInput,
 } from '@coreui/react'
 
-const CustomerFullLog = () => {
+const CustomerFinanceLog = () => {
   const [report, setReport] = useState([])
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -38,7 +37,7 @@ const CustomerFullLog = () => {
 
   const handleGetReport = () => {
     AxiosInstance.get(
-      `/users/get-full-report/${customer.id}?start_date=${startDate}&end_date=${endDate}`,
+      `/users/get-report/${customer.id}?start_date=${startDate}&end_date=${endDate}`,
     )
       .then((res) => {
         setReport(res.data.data.report)
@@ -57,6 +56,7 @@ const CustomerFullLog = () => {
   const handleStartDate = (newDate) => {
     setStartDate(newDate.valueOf())
   }
+
   const handleEndDate = (newDate) => {
     setEndDate(newDate.valueOf())
   }
@@ -116,7 +116,6 @@ const CustomerFullLog = () => {
           ...prev,
           ...customerData,
         }))
-        localStorage.setItem('customer', JSON.stringify(customerData))
       })
       .catch((err) => {
         console.log(err)
@@ -237,36 +236,47 @@ const CustomerFullLog = () => {
             <CTable striped>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
-                  <CTableHeaderCell>نام بازی</CTableHeaderCell>
-                  <CTableHeaderCell>زمان ورود </CTableHeaderCell>
-                  <CTableHeaderCell>زمان خروج </CTableHeaderCell>
-                  <CTableHeaderCell> مبلغ هزینه شده (ریال) </CTableHeaderCell>
-                  <CTableHeaderCell> تایم اضافه </CTableHeaderCell>
+                  <CTableHeaderCell>میزان شارژ</CTableHeaderCell>
+                  <CTableHeaderCell>نوع شارژ </CTableHeaderCell>
+                  <CTableHeaderCell>میزان مصرف</CTableHeaderCell>
+                  <CTableHeaderCell>تاریخ شارژ</CTableHeaderCell>
+                  <CTableHeaderCell>تاریخ مصرف</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {report.map((item) => (
                   <CTableRow key={item.id}>
-                    <CTableDataCell>{item.customerTagSerial}</CTableDataCell>
-                    <CTableDataCell>{item.gameName ? item.gameName : '-'}</CTableDataCell>
                     <CTableDataCell>
-                      {item.inOutLogEnterTime
-                        ? format(new Date(item.inOutLogEnterTime), 'yyyy-MM-dd HH:mm:ss')
+                      {item.income
+                        ? item.income.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         : '-'}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {item.inOutLogExitTime
-                        ? format(new Date(item.inOutLogExitTime), 'yyyy-MM-dd HH:mm:ss')
+                      {item.income_type === '3'
+                        ? 'نقدی'
+                        : item.income_type === '2'
+                        ? 'پوز'
+                        : item.income_type === '4'
+                        ? ' کارت هدیه '
+                        : item.income_type === ''
+                        ? 'رایگان'
                         : '-'}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {/* show item.inOutLogPrice with number withcommas */}
-                      {item.inOutLogPrice
-                        ? item.inOutLogPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                      {item.outcome
+                        ? item.outcome.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         : '-'}
                     </CTableDataCell>
-                    <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
+                    <CTableDataCell>
+                      {item.income_date
+                        ? format(new Date(item.income_date), 'yyyy-MM-dd HH:mm:ss')
+                        : '-'}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      {item.outcome_date
+                        ? format(new Date(item.outcome_date), 'yyyy-MM-dd HH:mm:ss')
+                        : '-'}
+                    </CTableDataCell>
                   </CTableRow>
                 ))}
               </CTableBody>
@@ -285,4 +295,4 @@ const CustomerFullLog = () => {
   )
 }
 
-export default CustomerFullLog
+export default CustomerFinanceLog

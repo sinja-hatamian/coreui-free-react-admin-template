@@ -23,21 +23,6 @@ import {
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
-  // {
-  //   component: CNavItem,
-  //   name: 'داشبورد',
-  //   to: '/dashboard',
-  //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //   },
-  // },
-  // {
-  //   component: CDropdownItem,
-  //   name: 'خروج',
-  //   to: '/login',
-  //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-  // },
   {
     component: CNavTitle,
     name: 'مدیریت ',
@@ -67,12 +52,6 @@ const _nav = [
     to: '/pages/banks',
     icon: <CIcon icon={cilBank} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'مدیریت اسناد',
-  //   to: '/pages/accountingDetails',
-  //   icon: <CIcon icon={cilFile} customClassName="nav-icon" />,
-  // },
   {
     component: CNavItem,
     name: 'مدیریت دستگاه پوز',
@@ -103,109 +82,12 @@ const _nav = [
     to: '/pages/Wristband',
     icon: <CIcon icon={cilColorBorder} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Forms',
-  //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Form Control',
-  //       to: '/forms/form-control',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Select',
-  //       to: '/forms/select',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Checks & Radios',
-  //       to: '/forms/checks-radios',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Range',
-  //       to: '/forms/range',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Input Group',
-  //       to: '/forms/input-group',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Floating Labels',
-  //       to: '/forms/floating-labels',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Layout',
-  //       to: '/forms/layout',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Validation',
-  //       to: '/forms/validation',
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   component: CNavItem,
-  //   name: 'حذف کارت',
-  //   to: '/charts',
-  //   icon: <CIcon icon={cilDelete} customClassName="nav-icon" />,
-  // },
   {
     component: CNavItem,
     name: 'ثبت کارت هدیه',
     to: '/pages/giftCard',
     icon: <CIcon icon={cilGift} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'هزینه صدور و تعویض کارت',
-  //   to: '/charts',
-  //   icon: <CIcon icon={cilCreditCard} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Notifications',
-  //   icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Alerts',
-  //       to: '/notifications/alerts',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Badges',
-  //       to: '/notifications/badges',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Modal',
-  //       to: '/notifications/modals',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Toasts',
-  //       to: '/notifications/toasts',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Widgets',
-  //   to: '/widgets',
-  //   icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //     text: 'NEW',
-  //   },
-  // },
   {
     component: CNavTitle,
     name: 'پذیرش',
@@ -260,7 +142,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'گزارشات گردش حساب مشتری',
-    to: '/logs/CustomerLog',
+    to: '/pages/customerFinanceLog',
     icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
   },
   {

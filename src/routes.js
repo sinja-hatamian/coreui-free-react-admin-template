@@ -21,6 +21,9 @@ const ChargeForm = React.lazy(() => import('./views/pages/chargeForm/ChargeForm'
 const exitCustomer = React.lazy(() => import('./views/pages/exitCustomer/ExitCustomer'))
 const banks = React.lazy(() => import('./views/pages/banks/Banks'))
 const customerFullLog = React.lazy(() => import('./views/pages/customerFullLog/CustomerFullLog'))
+const customerFinanceLog = React.lazy(() =>
+  import('./views/pages/customerFinanceLog/CustomerFinanceLog'),
+)
 const posDevice = React.lazy(() => import('./views/pages/posDevice/PosDevice'))
 const Wristband = React.lazy(() => import('./views/pages/wristband/Wristband'))
 const AccountingDetails = React.lazy(() =>
@@ -109,6 +112,12 @@ const routes = [
     path: '/pages/customerFullLog',
     name: 'customerFullLog',
     element: customerFullLog,
+    exact: true,
+  },
+  {
+    path: '/pages/customerFinanceLog',
+    name: 'customerFinanceLog',
+    element: customerFinanceLog,
     exact: true,
   },
 ]
