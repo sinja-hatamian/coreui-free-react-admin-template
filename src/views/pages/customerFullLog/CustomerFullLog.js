@@ -210,7 +210,14 @@ const CustomerFullLog = () => {
             </CRow>
             <CRow>
               <CCol xs="12" md="12">
-                <strong>لطفا بازه زمانی گزارش را مشخص نمایید</strong>
+                <strong
+                  style={{
+                    display: 'flex',
+                    color: 'red',
+                  }}
+                >
+                  لطفا بازه زمانی گزارش را مشخص نمایید.
+                </strong>
                 <p />
               </CCol>
               <CCol xs="12" md="6">
