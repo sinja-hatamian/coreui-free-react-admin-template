@@ -6,7 +6,6 @@ import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import { format } from 'date-fns'
-
 import {
   CCol,
   CRow,
@@ -53,8 +52,17 @@ const CustomerFullLog = () => {
         console.log(endDate)
       })
       .catch((error) => {
-        toast.error(error.response.data.message)
-        console.log(error.response.data.message)
+        //Check customer choose
+        if (customer.id === undefined) {
+          toast.error('لطفا مشتری را انتخاب کنید')
+        }
+        //Check date choose
+        else if (startDate === '' || endDate === '') {
+          toast.error('لطفا بازه زمانی را مشخص کنید')
+        } else {
+          toast.error(error.response.data.message)
+          console.log(error.response.data.message)
+        }
       })
   }
 
