@@ -253,7 +253,14 @@ const CustomerFullLog = () => {
         <CCard>
           <CCardHeader>
             <strong>
-              مشخصات مشتری: {formdata.firstname} {formdata.lastname}
+              نام مشتری:{' '}
+              <strong
+                style={{
+                  color: 'green',
+                }}
+              >
+                {formdata.firstname} {formdata.lastname}
+              </strong>
             </strong>
           </CCardHeader>
           <CCardBody>
