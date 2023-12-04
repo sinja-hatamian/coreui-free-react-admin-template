@@ -58,6 +58,9 @@ const ShowByTag = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
+    if (!customers.find((customer) => customer.ExitTime == null)) {
+      localStorage.removeItem('customer')
+    }
     if (inputRef.current) {
       inputRef.current.focus()
     }
@@ -91,7 +94,7 @@ const ShowByTag = () => {
           toast.error('خطا در دریافت اطلاعات کارت')
         })
     }
-  }, [])
+  }, [customers])
 
   const handleInput = (e) => {
     setTag({
@@ -160,19 +163,28 @@ const ShowByTag = () => {
 
   const handleExit = (TagSerial) => {
     AxiosInstance.post('/attendants/exit', { tag: TagSerial })
+      // .then((res) => {
+      //   console.log(res.data)
+      //   if (res.data.data?.customers) {
+      //     setCustomers(res.data.data.customers)
+      //   }
+      //   toast.success('خروج با موفقیت ثبت شد')
+      //   console.log(res.data.data.customers)
+      // })
+      // .catch((err) => {
+      //   console.log(err)
+      //   toast.error(err.response.data.message)
+      // })
       .then((res) => {
-        console.log(res.data)
-        if (res.data.data?.customers) {
-          setCustomers(res.data.data.customers)
-          if (!res.data.data.customers.find((customer) => customer.ExitTime == null)) {
-            // window.location.reload()
-            localStorage.removeItem('customer')
-          }
+        if (res.data.data) {
+          const updatedCustomers = customers.map((customer) =>
+            customer.TagSerial === TagSerial ? res.data.data : customer,
+          )
+          setCustomers(updatedCustomers)
+          toast.success('خروج با موفقیت ثبت شد')
         }
-        toast.success('خروج با موفقیت ثبت شد')
       })
       .catch((err) => {
-        console.log(err)
         toast.error(err.response.data.message)
       })
   }
@@ -508,29 +520,39 @@ const ShowByTag = () => {
         <CCol xs="12" md="12" className="mb-4">
           <strong>اطلاعات همراهان</strong>
           <p />
-          <CTable striped bordered>
+          <CTable>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
                 <CTableHeaderCell>زمان ورود </CTableHeaderCell>
-                <CTableHeaderCell> زمان خروج</CTableHeaderCell>
+                {/* <CTableHeaderCell> زمان خروج</CTableHeaderCell> */}
                 <CTableHeaderCell> ثبت خروج</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {customers.map((customer) => (
-                <CTableRow key={customer.id}>
+                <CTableRow
+                  key={customer.id}
+                  style={{
+                    backgroundColor: customer.ExitTime !== null ? '#B31312' : '#2B2A4C',
+                    color: '#fff',
+                  }}
+                >
                   <CTableDataCell>{customer.TagSerial}</CTableDataCell>
                   <CTableDataCell>
-                    {customer.EnterTime.split('T')[1].split(':').slice(0, 2).join(':')}
+                    {customer.EnterTime
+                      ? customer.EnterTime.split('T')[1].split(':').slice(0, 2).join(':')
+                      : ''}
                   </CTableDataCell>{' '}
-                  <CTableDataCell>{customer.ExitTime}</CTableDataCell>
+                  {/* <CTableDataCell>{customer.ExitTime}</CTableDataCell> */}
                   <CTableDataCell>
                     <CButton
                       onClick={() => {
                         return handleExit(customer.TagSerial)
                       }}
                       color="success"
+                      // If the customer has already exited, disable the button
+                      disabled={customer.ExitTime !== null}
                     >
                       ثبت خروج
                     </CButton>
@@ -553,139 +575,3 @@ const ShowByTag = () => {
   )
 }
 export default ShowByTag
-
-// import React, { useState, useRef, useEffect } from 'react'
-// import AxiosInstance from 'src/utils/AxiosInstance'
-// import { ToastContainer, toast } from 'react-toastify'
-// import 'react-toastify/dist/ReactToastify.css'
-// import {
-//   CCol,
-//   CRow,
-//   CButton,
-//   CFormInput,
-//   CTable,
-//   CTableBody,
-//   CTableHead,
-//   CTableRow,
-//   CTableHeaderCell,
-//   CTableDataCell,
-// } from '@coreui/react'
-
-// const ExitCustomer = () => {
-//   const [tag, setTag] = useState({
-//     tag: '',
-//   })
-//   const [customers, setCustomers] = useState([])
-//   const inputRef = useRef(null)
-
-//   useEffect(() => {
-//     if (inputRef.current) {
-//       inputRef.current.focus()
-//     }
-//   }, [])
-
-//   const handleInputChange = (e) => {
-//     setTag({
-//       ...tag,
-//       [e.target.name]: e.target.value,
-//     })
-//   }
-
-//   const handleExit = () => {
-//     AxiosInstance.post('/attendants/exit', tag)
-//       .then((res) => {
-//         console.log(res.data)
-//         if (res.data.data?.customers) {
-//           setCustomers(res.data.data.customers)
-//           if (!res.data.data.customers.find((customer) => customer.ExitTime == null)) {
-//             // window.location.reload()
-//             localStorage.removeItem('customer')
-//           }
-//         }
-//         setTag({
-//           tag: '',
-//         })
-//         toast.success('خروج با موفقیت ثبت شد')
-//       })
-//       .catch((err) => {
-//         console.log(err)
-//         toast.error(err.response.data.message)
-//       })
-//   }
-//   return (
-//     <CRow>
-//       <CCol xs="12">
-//         <CFormInput
-//           name="tag"
-//           placeholder="Tag"
-//           onChange={handleInputChange}
-//           value={tag.tag}
-//           ref={inputRef}
-//         />
-//       </CCol>
-//       <p></p>
-//       <CCol>
-//         <CButton color="primary" onClick={handleExit}>
-//           ثبت خروج
-//         </CButton>
-//       </CCol>
-//       <CCol xs="12">
-//         <CRow>
-//           <p />
-//           <CTable striped>
-//             <CTableHead>
-//               <CTableRow>
-//                 <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
-//                 <CTableHeaderCell>تاریخ ورود</CTableHeaderCell>
-//                 <CTableHeaderCell>تاریخ خروج</CTableHeaderCell>
-//               </CTableRow>
-//             </CTableHead>
-//             <CTableBody>
-//               {customers.map((customer, index) => (
-//                 <CTableRow key={index}>
-//                   <CTableDataCell>{customer.TagSerial}</CTableDataCell>
-//                   <CTableDataCell>
-//                     {Intl.DateTimeFormat('fa-IR', {
-//                       year: 'numeric',
-//                       month: '2-digit',
-//                       day: '2-digit',
-//                       hour: '2-digit',
-//                       minute: '2-digit',
-//                     }).format(new Date(customer.EnterTime.split('.')[0]))}
-//                   </CTableDataCell>
-//                   <CTableDataCell>
-//                     {customer.ExitTime
-//                       ? Intl.DateTimeFormat('fa-IR', {
-//                           year: 'numeric',
-//                           month: '2-digit',
-//                           day: '2-digit',
-//                           hour: '2-digit',
-//                           minute: '2-digit',
-//                         }).format(
-//                           new Date(customer.ExitTime.split('.')[0]),
-//                           // Helper.getIsoDateWithTimezone(new Date(customer.ExitTime).getTime()),
-//                         )
-//                       : '-'}
-//                   </CTableDataCell>
-//                 </CTableRow>
-//               ))}
-//             </CTableBody>
-//           </CTable>
-//         </CRow>
-//       </CCol>
-//       <ToastContainer
-//         position="bottom-right"
-//         autoClose={5000}
-//         hideProgressBar={false}
-//         newestOnTop={false}
-//         closeOnClick
-//         rtl={true}
-//         pauseOnFocusLoss
-//         draggable
-//         pauseOnHover
-//       />
-//     </CRow>
-//   )
-// }
-
-// export default ExitCustomer

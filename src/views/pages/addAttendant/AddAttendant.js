@@ -338,7 +338,7 @@ const AddAttendant = () => {
                 </div>
               ) : null}
 
-              {attendant.map((item, index) => (
+              {/* {attendant.map((item, index) => (
                 <div className="col-12 row" key={index}>
                   <p />
                   <hr />
@@ -455,7 +455,7 @@ const AddAttendant = () => {
                     </CButton>
                   </CCol>
                 </div>
-              ))}
+              ))} */}
 
               <CButton
                 color="primary"
