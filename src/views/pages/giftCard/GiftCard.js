@@ -50,20 +50,9 @@ const GiftCard = () => {
   const handleInputCahnge = (e) => {
     const { name, value } = e.target
     if (name === 'numbers') {
-      setFormdata((prev) => ({
-        ...prev,
-        numbers: [value],
-      }))
-    } else if (name === 'amount') {
-      const rawNumber = value.replace(/[^0-9]/g, '')
-      const formattedData = numberWithCommas(rawNumber)
-      setFormdata({
-        ...formdata,
-        [name]: formattedData,
-      })
+      setFormdata({ ...formdata, [name]: [value] })
     } else {
-      setFormdata((prev) => ({ ...prev, [name]: value }))
-      console.log(name, value)
+      setFormdata({ ...formdata, [name]: value })
     }
   }
 
@@ -74,11 +63,17 @@ const GiftCard = () => {
         console.log(res)
         setCard([...card, res.data.data.gift_card])
         toast.success('کارت با موفقیت ثبت شد')
-        setActiveKey(2)
       })
       .catch((err) => {
         console.log(err)
         toast.error(err.response.data.errors[0].msg)
+        setFormdata({
+          numbers: [''],
+          amount: '',
+          directive: '',
+          description: '',
+          is_active: 'true',
+        })
       })
   }
 
@@ -137,7 +132,7 @@ const GiftCard = () => {
                         placeholder="کد کارت"
                         aria-label="numbers"
                         locale="fa-IR"
-                        value={formdata.numbers[0]}
+                        value={formdata && formdata.numbers ? formdata.numbers[0] : ''}
                         onChange={handleInputCahnge}
                       />
                     </CCol>
@@ -243,24 +238,72 @@ const GiftCard = () => {
                 <CTableBody>
                   {card.map((item) => (
                     <CTableRow key={item.id}>
-                      <CTableDataCell>{item.number}</CTableDataCell>
-                      <CTableDataCell>{numberWithCommas(item.amount)}</CTableDataCell>
-                      <CTableDataCell>{item.description}</CTableDataCell>
-                      <CTableDataCell>{item.is_active ? 'فعال' : 'غیرفعال'}</CTableDataCell>
-                      <CTableDataCell>{item.directive}</CTableDataCell>
+                      <CTableDataCell>
+                        {item &&
+                          item.numbers &&
+                          (Array.isArray(item.numbers)
+                            ? item.numbers.map((number) => (
+                                <div key={number}>
+                                  <span>{number}</span>
+                                  <br />
+                                </div>
+                              ))
+                            : typeof item.numbers === 'string' && (
+                                <div>
+                                  <span>{item.numbers}</span>
+                                  <br />
+                                </div>
+                              ))}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.amount !== undefined ? (
+                          numberWithCommas(item.amount)
+                        ) : (
+                          <span>Amount Not Available</span>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.description !== undefined ? (
+                          item.description
+                        ) : (
+                          <span>Description Not Available</span>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.is_active !== undefined ? (
+                          item.is_active ? (
+                            <span className="badge bg-success">فعال</span>
+                          ) : (
+                            <span className="badge bg-danger">غیر فعال</span>
+                          )
+                        ) : (
+                          <span>Active Not Available</span>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.directive !== undefined ? (
+                          item.directive
+                        ) : (
+                          <span>Directive Not Available</span>
+                        )}
+                      </CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="primary"
                           onClick={() => {
-                            setFormdata({
-                              id: item.id,
-                              numbers: [item.number],
-                              amount: item.amount,
-                              directive: item.directive,
-                              description: item.description,
-                              is_active: item.is_active,
-                            })
-                            setActiveKey(2)
+                            if (item) {
+                              setFormdata({
+                                id: item.id,
+                                numbers: [item.number],
+                                amount: item.amount,
+                                directive: item.directive,
+                                description: item.description,
+                                is_active: item.is_active,
+                              })
+                              setActiveKey(2)
+                            } else {
+                              console.log('Item is undefined')
+                            }
                           }}
                         >
                           ویرایش
