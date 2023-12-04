@@ -238,23 +238,7 @@ const GiftCard = () => {
                 <CTableBody>
                   {card.map((item) => (
                     <CTableRow key={item.id}>
-                      <CTableDataCell>
-                        {item &&
-                          item.numbers &&
-                          (Array.isArray(item.numbers)
-                            ? item.numbers.map((number) => (
-                                <div key={number}>
-                                  <span>{number}</span>
-                                  <br />
-                                </div>
-                              ))
-                            : typeof item.numbers === 'string' && (
-                                <div>
-                                  <span>{item.numbers}</span>
-                                  <br />
-                                </div>
-                              ))}
-                      </CTableDataCell>
+                      <CTableDataCell>{item.number}</CTableDataCell>
                       <CTableDataCell>
                         {item && item.amount !== undefined ? (
                           numberWithCommas(item.amount)
