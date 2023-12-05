@@ -163,24 +163,9 @@ const ShowByTag = () => {
 
   const handleExit = (TagSerial) => {
     AxiosInstance.post('/attendants/exit', { tag: TagSerial })
-      // .then((res) => {
-      //   console.log(res.data)
-      //   if (res.data.data?.customers) {
-      //     setCustomers(res.data.data.customers)
-      //   }
-      //   toast.success('خروج با موفقیت ثبت شد')
-      //   console.log(res.data.data.customers)
-      // })
-      // .catch((err) => {
-      //   console.log(err)
-      //   toast.error(err.response.data.message)
-      // })
       .then((res) => {
         if (res.data.data) {
-          const updatedCustomers = customers.map((customer) =>
-            customer.TagSerial === TagSerial ? res.data.data : customer,
-          )
-          setCustomers(updatedCustomers)
+          setCustomers(res.data.data.customers)
           toast.success('خروج با موفقیت ثبت شد')
         }
       })
