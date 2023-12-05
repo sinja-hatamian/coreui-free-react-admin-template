@@ -54,10 +54,14 @@ const CustomerFinanceLog = () => {
   }
 
   const handleStartDate = (newDate) => {
+    newDate = new Date(newDate)
+    newDate.setHours(0, 0, 0, 0)
     setStartDate(newDate.valueOf())
   }
 
   const handleEndDate = (newDate) => {
+    newDate = new Date(newDate)
+    newDate.setHours(23, 59, 59, 999)
     setEndDate(newDate.valueOf())
   }
 
