@@ -468,7 +468,7 @@ const ShowByTag = () => {
                               </CButton>
                             </CCol>
                           </CCardBody>
-                          <CTable striped bordered>
+                          {/* <CTable striped bordered>
                             <CTableHead>
                               <CTableRow>
                                 <CTableHeaderCell
@@ -507,7 +507,7 @@ const ShowByTag = () => {
                                 </CTableRow>
                               ))}
                             </CTableBody>
-                          </CTable>
+                          </CTable> */}
                         </CCard>
                       </CCol>
                     </CModalBody>

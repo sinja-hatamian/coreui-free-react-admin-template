@@ -61,12 +61,16 @@ const GiftCard = () => {
     AxiosInstance.post('/gift-cards', formdata)
       .then((res) => {
         console.log(res)
-        setCard([...card, res.data.data.gift_card])
+        setCard([...card, ...res.data.data.gift_cards])
         toast.success('کارت با موفقیت ثبت شد')
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
         toast.error(err.response.data.errors[0].msg)
+      })
+
+      .finally(() => {
         setFormdata({
           numbers: [''],
           amount: '',
