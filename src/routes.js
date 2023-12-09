@@ -20,17 +20,14 @@ const IntroductionWays = React.lazy(() => import('./views/pages/introductionWays
 const ChargeForm = React.lazy(() => import('./views/pages/chargeForm/ChargeForm'))
 const exitCustomer = React.lazy(() => import('./views/pages/exitCustomer/ExitCustomer'))
 const banks = React.lazy(() => import('./views/pages/banks/Banks'))
-const customerFullLog = React.lazy(() => import('./views/pages/customerFullLog/CustomerFullLog'))
-const customerFinanceLog = React.lazy(() =>
-  import('./views/pages/customerFinanceLog/CustomerFinanceLog'),
-)
+// const customerFullLog = React.lazy(() => import('./views/pages/customerFullLog/CustomerFullLog'))
 const posDevice = React.lazy(() => import('./views/pages/posDevice/PosDevice'))
 const Wristband = React.lazy(() => import('./views/pages/wristband/Wristband'))
 const AccountingDetails = React.lazy(() =>
   import('./views/pages/accountingDetails/AccountingDetails'),
 )
 
-const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
+// const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
 //Forms
 const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
@@ -102,42 +99,18 @@ const routes = [
     element: AccountingDetails,
     exact: true,
   },
-<<<<<<< HEAD
-<<<<<<< HEAD
   // {
   //   path: '/pages/showByTag',
   //   name: 'showByTag',
   //   element: showByTag,
   //   exact: true,
   // },
-  {
-    path: '/pages/customerFullLog',
-    name: 'customerFullLog',
-    element: customerFullLog,
-    exact: true,
-  },
-  {
-    path: '/pages/customerFinanceLog',
-    name: 'customerFinanceLog',
-    element: customerFinanceLog,
-    exact: true,
-  },
-=======
-=======
->>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
-  {
-    path: '/pages/showByTag',
-    name: 'showByTag',
-    element: showByTag,
-    exact: true,
-  },
   // {
   //   path: '/pages/customerFullLog',
   //   name: 'customerFullLog',
   //   element: customerFullLog,
   //   exact: true,
   // },
->>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
 ]
 
 export default routes

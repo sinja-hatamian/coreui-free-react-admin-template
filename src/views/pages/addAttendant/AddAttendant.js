@@ -21,9 +21,9 @@ import {
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CTableDataCell,
+  CModalFooter,
 } from '@coreui/react'
-import DatePicker from 'react-multi-date-picker'
+import DatePicker, { Calendar } from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 
@@ -36,17 +36,6 @@ const AddAttendant = () => {
   const [qrcode, setQrcode] = useState(null)
   const [value, setValue] = useState(new Date())
   const [card, setCard] = useState({})
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [tableData, setTableData] = useState([{}])
-  const [modalFormData, setModalFormData] = useState({
-    firstname: '',
-    lastname: '',
-    national_code: '',
-    phone: '',
-    birthday: '',
-    gender: '',
-    tag: '',
-  })
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
@@ -120,74 +109,22 @@ const AddAttendant = () => {
       })
   }
 
-  const hanldeAddingNewAttendant = () => {
-    // Validation checks for empty fields
-    switch (true) {
-      case !modalFormData.firstname:
-        toast.error('نام را وارد کنید')
-        return
-      case !modalFormData.lastname:
-        toast.error('نام خانوادگی را وارد کنید')
-        return
-      case !modalFormData.tag:
-        toast.error('شماره دستبند را وارد کنید')
-        return
-      case !modalFormData.gender:
-        toast.error('جنسیت را انتخاب کنید')
-        return
-      default:
-    }
-    // Check if the tag already exists in the attendant array or the main customer's tag
-    const isTagExist =
-      attendant.some((att) => att.tag === modalFormData.tag) ||
-      customer.tag === modalFormData.tag ||
-      serverTag === modalFormData.tag || // Check if the tag already exists in the server
-      tableData.some((att) => att.tag === modalFormData.tag) || // Check if the tag already exists in the table
-      fixedData.some((att) => att.tag === modalFormData.tag) // Check if the tag already exists in the fixedData
-
-    if (isTagExist) {
-      toast.error('شماره دستبند تکراری است')
-      return
-    }
-
-    //add new attendant to attendant array and show in table
-    setAttendant([...attendant, modalFormData])
-    setTableData([...tableData, modalFormData])
-    closeModal()
-    console.log(tableData)
+  const removeAttendant = (index) => {
+    setAttendant([...attendant.filter((item, i) => i !== index)])
   }
-
-  const removeAttendant = (tag) => {
-    setAttendant((prevAttendant) => prevAttendant.filter((item) => item.tag !== tag))
-    setTableData((prevTableData) => prevTableData.filter((item) => item.tag !== tag))
-
-    if (customer.tag === tag) {
-      setCustomer((prevCustomer) => ({ ...prevCustomer, tag: '' }))
-    }
-    if (serverTag === tag) {
-      setServerTag('')
-    }
-
-    // If customers is an object and you want to remove the property with the key equal to tag
-    setCustomer((prevCustomers) => {
-      const newCustomers = { ...prevCustomers }
-      delete newCustomers[tag]
-      return newCustomers
-    })
-  }
-
   const cloneAttendant = () => {
-    const clonedAttendant = {
-      firstname: '',
-      lastname: '',
-      national_code: '',
-      phone: '',
-      birthday: '',
-      gender: '',
-      tag: '',
-    }
-    setModalFormData(clonedAttendant)
-    openModal()
+    setAttendant([
+      ...attendant,
+      {
+        firstname: '',
+        lastname: '',
+        national_code: '',
+        phone: '',
+        birthday: '',
+        gender: '',
+        tag: '',
+      },
+    ])
   }
 
   const handleDate = (newDate, index) => {
@@ -208,21 +145,6 @@ const AddAttendant = () => {
     setQrcode(null)
     localStorage.removeItem('customer')
     window.location.reload(true) // Navigate to the current URL
-  }
-
-  const openModal = () => {
-    setIsModalOpen(true)
-  }
-  const closeModal = () => {
-    setIsModalOpen(false)
-  }
-
-  const handleModalChange = (e) => {
-    const { name, value } = e.target
-    setModalFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }))
   }
 
   const numberWithCommas = (x) => {
@@ -331,6 +253,125 @@ const AddAttendant = () => {
                 </div>
               ) : null}
 
+              {attendant.map((item, index) => (
+                <div className="col-12 row" key={index}>
+                  <p />
+                  <hr />
+                  <CCol md={6}>
+                    <CFormInput
+                      label={
+                        <>
+                          نام <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
+                      id="firstname"
+                      name="firstname"
+                      aria-label="firstname"
+                      placeholder="نام"
+                      onChange={(event) => handleChange(event, index)}
+                      value={item.firstname}
+                      locale="fa-IR"
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormInput
+                      label={
+                        <>
+                          نام خانوادگی <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
+                      id="lastname"
+                      name="lastname"
+                      aria-label="lastname"
+                      placeholder="نام خانوادگی"
+                      onChange={(event) => handleChange(event, index)}
+                      value={item.lastname}
+                      locale="fa-IR"
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormInput
+                      label="کد ملی "
+                      id="national_code"
+                      name="national_code"
+                      aria-label="national_code"
+                      placeholder="کد ملی"
+                      onChange={(event) => handleChange(event, index)}
+                      value={item.national_code}
+                      locale="fa-IR"
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormInput
+                      label="شماره تلفن"
+                      id="phone"
+                      aria-label="phone"
+                      name="phone"
+                      placeholder="شماره تلفن"
+                      onChange={(event) => handleChange(event, index)}
+                      value={item.phone}
+                      locale="fa-IR"
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <label>
+                      <p>تاریخ تولد</p>
+                      <DatePicker
+                        value={value}
+                        onChange={(newDate) => handleDate(newDate, index)}
+                        calendarPosition="bottom-right"
+                        inputPlaceholder="تاریخ تولد "
+                        locale={persian_fa}
+                        calendar={persian}
+                      />
+                    </label>
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormSelect
+                      label={
+                        <>
+                          جنسیت <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
+                      name="gender"
+                      aria-label="gender"
+                      onChange={(event) => handleChange(event, index)}
+                      value={item.gender}
+                      locale="fa-IR"
+                    >
+                      <option value={0}>انتخاب کنید</option>
+                      <option value="male">مرد</option>
+                      <option value="female">زن</option>
+                    </CFormSelect>
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormInput
+                      label={
+                        <>
+                          سریال دستبند <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
+                      name="tag"
+                      aria-label="tag"
+                      onChange={(event) => handleChange(event, index)}
+                      value={item.tag}
+                      locale="fa-IR"
+                    ></CFormInput>
+                  </CCol>
+                  <CCol md={4}>
+                    <CButton
+                      style={{ color: '#fff', marginTop: '2rem' }}
+                      color="danger"
+                      onClick={() => {
+                        removeAttendant(index)
+                      }}
+                    >
+                      حذف
+                    </CButton>
+                  </CCol>
+                </div>
+              ))}
+
               <CButton
                 color="primary"
                 onClick={() => {
@@ -339,21 +380,6 @@ const AddAttendant = () => {
               >
                 افزودن همراه
               </CButton>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <h4
-                  style={{
-                    color: 'red',
-                  }}
-                >
-                  پس از ثبت نام تمامی کاربران دکمه ثبت را بزنید
-                </h4>
-              </div>
               <CButton color="primary" onClick={handleAddAttendant}>
                 ثبت
               </CButton>
@@ -365,44 +391,25 @@ const AddAttendant = () => {
                 <CTableHeaderCell>نام</CTableHeaderCell>
                 <CTableHeaderCell>نام خانوادگی</CTableHeaderCell>
                 <CTableHeaderCell> شماره دستبند</CTableHeaderCell>
-                <CTableHeaderCell>حذف از لیست</CTableHeaderCell>
+                <CTableHeaderCell>موجودی</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {serverTag == null ? (
+              {serverTag !== null ? (
                 <CTableRow>
-                  <CTableDataCell>{customer.firstname}</CTableDataCell>
-                  <CTableDataCell>{customer.lastname}</CTableDataCell>
-                  <CTableDataCell>{tag}</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="danger" onClick={removeAttendant}>
-                      حذف
-                    </CButton>
-                  </CTableDataCell>
+                  <CTableHeaderCell>{customer.firstname}</CTableHeaderCell>
+                  <CTableHeaderCell>{customer.lastname}</CTableHeaderCell>
+                  <CTableHeaderCell>{tag}</CTableHeaderCell>
+                  <CTableHeaderCell>
+                    {card.balance ? numberWithCommas(card.balance) : 0}
+                  </CTableHeaderCell>
                 </CTableRow>
               ) : null}
-              {/* {tableData.map((item, index) => (
-                <CTableRow key={index}>
+              {fixedData.map((item) => (
+                <CTableRow key={item.id}>
                   <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
                   <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
                   <CTableHeaderCell>{item.tag}</CTableHeaderCell>
-                  <CTableHeaderCell>
-                    <CButton color="danger" onClick={() => removeAttendant(item.tag)}>
-                      حذف
-                    </CButton>
-                  </CTableHeaderCell>
-                </CTableRow>
-              ))} */}
-              {attendant.map((item, index) => (
-                <CTableRow key={index}>
-                  <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
-                  <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
-                  <CTableHeaderCell>{item.tag}</CTableHeaderCell>
-                  <CTableHeaderCell>
-                    <CButton color="danger" onClick={() => removeAttendant(item.tag)}>
-                      حذف
-                    </CButton>
-                  </CTableHeaderCell>
                 </CTableRow>
               ))}
             </CTableBody>
@@ -428,148 +435,6 @@ const AddAttendant = () => {
         draggable
         pauseOnHover
       />
-      <CModal visible={isModalOpen} onClose={closeModal} color="primary" size="xl">
-        <CModalHeader closeButton>
-          <CModalTitle>افزودن همراه جدید</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CForm className="row g-3">
-            <div className="col-12 row">
-              <CCol md={6}>
-                <CFormInput
-                  label={
-                    <>
-                      نام <span style={{ color: 'red' }}>*</span>
-                    </>
-                  }
-                  id="firstname"
-                  name="firstname"
-                  aria-label="firstname"
-                  placeholder="نام"
-                  onChange={handleModalChange}
-                  value={modalFormData.firstname}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={6}>
-                <CFormInput
-                  label={
-                    <>
-                      نام خانوادگی <span style={{ color: 'red' }}>*</span>
-                    </>
-                  }
-                  id="lastname"
-                  name="lastname"
-                  aria-label="lastname"
-                  placeholder="نام خانوادگی"
-                  onChange={handleModalChange}
-                  value={modalFormData.lastname}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={6}>
-                <CFormInput
-                  label="کد ملی "
-                  id="national_code"
-                  name="national_code"
-                  aria-label="national_code"
-                  placeholder="کد ملی"
-                  onChange={handleModalChange}
-                  value={modalFormData.national_code}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={6}>
-                <CFormInput
-                  label="شماره تلفن"
-                  id="phone"
-                  aria-label="phone"
-                  name="phone"
-                  placeholder="شماره تلفن"
-                  onChange={handleModalChange}
-                  value={modalFormData.phone}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <CCol md={6}>
-                <label>
-                  <p>تاریخ تولد</p>
-                  <DatePicker
-                    value={value}
-                    onChange={handleDate}
-                    calendarPosition="bottom-right"
-                    inputPlaceholder="تاریخ تولد "
-                    locale={persian_fa}
-                    calendar={persian}
-                  />
-                </label>
-              </CCol>
-
-              <CCol md={4}>
-                <CFormSelect
-                  label={
-                    <>
-                      جنسیت <span style={{ color: 'red' }}>*</span>
-                    </>
-                  }
-                  name="gender"
-                  aria-label="gender"
-                  onChange={handleModalChange}
-                  value={modalFormData.gender}
-                  locale="fa-IR"
-                >
-                  <option value={0}>انتخاب کنید</option>
-                  <option value="male">مرد</option>
-                  <option value="female">زن</option>
-                </CFormSelect>
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  label={
-                    <>
-                      سریال دستبند <span style={{ color: 'red' }}>*</span>
-                    </>
-                  }
-                  name="tag"
-                  aria-label="tag"
-                  onChange={handleModalChange}
-                  value={modalFormData.tag}
-                  locale="fa-IR"
-                />
-              </CCol>
-              <p />
-              <div
-                className="col-3 row-6"
-                style={{ display: 'flex', justifyContent: 'space-between ' }}
-              >
-                <CButton
-                  color="success"
-                  onClick={hanldeAddingNewAttendant}
-                  style={{
-                    marginRight: '1rem',
-                    padding: '0.5rem 1.5rem',
-                    fontSize: '1rem',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  ثبت
-                </CButton>
-                <CButton
-                  color="danger"
-                  onClick={closeModal}
-                  style={{
-                    marginRight: '1rem',
-                    fontSize: '1rem',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  انصراف
-                </CButton>
-              </div>
-            </div>
-          </CForm>
-        </CModalBody>
-      </CModal>
     </CRow>
   )
 }
