@@ -122,21 +122,20 @@ const AddAttendant = () => {
 
   const hanldeAddingNewAttendant = () => {
     // Validation checks for empty fields
-    if (!modalFormData.firstname) {
-      toast.error('نام را وارد کنید')
-      return
-    }
-    if (!modalFormData.lastname) {
-      toast.error('نام خانوادگی را وارد کنید')
-      return
-    }
-    if (!modalFormData.tag) {
-      toast.error('شماره دستبند را وارد کنید')
-      return
-    }
-    if (!modalFormData.gender) {
-      toast.error('جنسیت را انتخاب کنید')
-      return
+    switch (true) {
+      case !modalFormData.firstname:
+        toast.error('نام را وارد کنید')
+        return
+      case !modalFormData.lastname:
+        toast.error('نام خانوادگی را وارد کنید')
+        return
+      case !modalFormData.tag:
+        toast.error('شماره دستبند را وارد کنید')
+        return
+      case !modalFormData.gender:
+        toast.error('جنسیت را انتخاب کنید')
+        return
+      default:
     }
     // Check if the tag already exists in the attendant array or the main customer's tag
     const isTagExist =
@@ -147,10 +146,10 @@ const AddAttendant = () => {
       fixedData.some((att) => att.tag === modalFormData.tag) // Check if the tag already exists in the fixedData
 
     if (isTagExist) {
-      // If the tag already exists, show an error message and return to prevent adding the attendant
       toast.error('شماره دستبند تکراری است')
       return
     }
+
     //add new attendant to attendant array and show in table
     setAttendant([...attendant, modalFormData])
     setTableData([...tableData, modalFormData])
@@ -176,20 +175,6 @@ const AddAttendant = () => {
       return newCustomers
     })
   }
-  // const cloneAttendant = () => {
-  //   setAttendant([
-  //     ...attendant,
-  //     {
-  //       firstname: '',
-  //       lastname: '',
-  //       national_code: '',
-  //       phone: '',
-  //       birthday: '',
-  //       gender: '',
-  //       tag: '',
-  //     },
-  //   ])
-  // }
 
   const cloneAttendant = () => {
     const clonedAttendant = {
