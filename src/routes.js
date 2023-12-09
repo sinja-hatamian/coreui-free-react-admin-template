@@ -30,7 +30,7 @@ const AccountingDetails = React.lazy(() =>
   import('./views/pages/accountingDetails/AccountingDetails'),
 )
 
-// const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
+const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
 //Forms
 const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
@@ -102,6 +102,7 @@ const routes = [
     element: AccountingDetails,
     exact: true,
   },
+<<<<<<< HEAD
   // {
   //   path: '/pages/showByTag',
   //   name: 'showByTag',
@@ -120,6 +121,20 @@ const routes = [
     element: customerFinanceLog,
     exact: true,
   },
+=======
+  {
+    path: '/pages/showByTag',
+    name: 'showByTag',
+    element: showByTag,
+    exact: true,
+  },
+  // {
+  //   path: '/pages/customerFullLog',
+  //   name: 'customerFullLog',
+  //   element: customerFullLog,
+  //   exact: true,
+  // },
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
 ]
 
 export default routes

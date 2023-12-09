@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { BeatLoader } from 'react-spinners'
 import {
   CCol,
   CRow,
@@ -14,48 +13,14 @@ import {
   CTableRow,
   CTableHeaderCell,
   CTableDataCell,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
-  CFormSelect,
-  CCard,
-  CCardHeader,
-  CCardBody,
-  CForm,
 } from '@coreui/react'
 
-const ShowByTag = () => {
+const ExitCustomer = () => {
   const [tag, setTag] = useState({
     tag: '',
   })
   const [customers, setCustomers] = useState([])
-  const [card, setCard] = useState({
-    balance: '',
-  })
   const inputRef = useRef(null)
-  const [fomedata, setFomedata] = useState({
-    firstname: '',
-    lastname: '',
-    phone: '',
-    national_code: '',
-  })
-  const initialCardForm = {
-    amount: '',
-    type: '',
-    bank_id: '',
-    card_number: '',
-    transaction_id: '',
-  }
-  const [cardForm, setCardForm] = useState([initialCardForm])
-  const [selectedTypes, setSelectedTypes] = useState([''])
-  const [selectCharge, setSelectCharge] = useState([''])
-  const [banks, setBanks] = useState([])
-  const [credit, setCredit] = useState([])
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false) // State for disabling button
-  const [isLoading, setIsLoading] = useState(false) // State for loading
-  const [showModal, setShowModal] = useState(false) // State for showing modal
-  const [user, setUser] = useState(null)
 
   useEffect(() => {
     if (!customers.find((customer) => customer.ExitTime == null)) {
@@ -64,6 +29,7 @@ const ShowByTag = () => {
     if (inputRef.current) {
       inputRef.current.focus()
     }
+<<<<<<< HEAD
     AxiosInstance.get('/banks')
       .then((res) => {
         setBanks(res.data.data.banks)
@@ -95,185 +61,38 @@ const ShowByTag = () => {
         })
     }
   }, [customers])
+=======
+  }, [])
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
 
-  const handleInput = (e) => {
+  const handleInputChange = (e) => {
     setTag({
       ...tag,
       [e.target.name]: e.target.value,
     })
   }
 
-  const handlePeymentChange = (e, index) => {
-    const { name, value } = e.target
-    const rawNumber = value.replace(/[^0-9]/g, '')
-    const formattedData = numberWithCommas(rawNumber)
-    const updatedCardForms = [...cardForm]
-    updatedCardForms[index] = {
-      ...updatedCardForms[index], // Copy the existing object
-      [name]: formattedData, // Update the specific field
-    }
-    if (name === 'transaction_id' || name === 'card_number') {
-      updatedCardForms[index] = {
-        ...updatedCardForms[index], // Copy the existing object
-
-        [name]: rawNumber, // Update the specific field
-      }
-    }
-    setCardForm(updatedCardForms)
-  }
-
-  const handleShowTag = () => {
-    AxiosInstance.get(`/users/tag-serial/${tag.tag}`)
-      .then((res) => {
-        const customerData = res.data.data.user
-        setUser(customerData)
-        // console.log(customerData)
-        setFomedata((prev) => ({
-          ...prev,
-          ...customerData,
-        }))
-        setCustomers(res.data.data.user.customers)
-        setTag({
-          tag: '',
-        })
-        AxiosInstance.get(`/cards/${customerData.id}`)
-          .then((res) => {
-            setCard(res.data.data.card)
-          })
-          .catch((err) => {
-            console.log(err)
-            toast.error('خطا در دریافت اطلاعات کارت')
-            localStorage.removeItem('customer')
-          })
-      })
-      .catch((err) => {
-        console.log(err)
-        toast.error(err.response.data.message)
-        setFomedata({
-          firstname: '',
-          lastname: '',
-          phone: '',
-          national_code: '',
-        })
-        setCard({
-          balance: '',
-        })
-      })
-  }
-
-  const handleExit = (TagSerial) => {
-    AxiosInstance.post('/attendants/exit', { tag: TagSerial })
+  const handleExit = () => {
+    AxiosInstance.post('/attendants/exit', tag)
       .then((res) => {
         if (res.data.data) {
           setCustomers(res.data.data.customers)
           toast.success('خروج با موفقیت ثبت شد')
         }
+<<<<<<< HEAD
+=======
+        setTag({
+          tag: '',
+        })
+        toast.success('خروج با موفقیت ثبت شد')
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
       })
       .catch((err) => {
         toast.error(err.response.data.message)
       })
   }
-  const handleTypeChange = (e, index) => {
-    const { value } = e.target
-
-    const updatedSelectedTypes = [...selectedTypes]
-    updatedSelectedTypes[index] = value
-    setSelectedTypes(updatedSelectedTypes)
-
-    // Also update the type in the cardForms array
-    const updatedCardForms = [...cardForm]
-    updatedCardForms[index] = {
-      ...updatedCardForms[index],
-      type: value,
-    }
-    setCardForm(updatedCardForms)
-  }
-
-  const handleForm = () => {
-    console.log('handle form called')
-    let hasError = false
-    cardForm.forEach((item) => {
-      if (
-        !item.amount ||
-        !item.type ||
-        (item.type === '2' && (!item.bank_id || !item.transaction_id))
-      ) {
-        hasError = true
-        toast.error('لطفا تمامی فیلد ها را پر کنید')
-        return
-      }
-    })
-    if (hasError) {
-      console.log('has error')
-      return
-    }
-
-    setIsButtonDisabled(true) // Disable the button
-    setIsLoading(true) // Start loading spinner
-
-    if (user) {
-      // const customer = JSON.parse(localStorage.getItem('customer'))
-      // console.log(customer.id)
-      AxiosInstance.post('/cards/charge', {
-        payments: [
-          ...cardForm.map((item) => {
-            Object.keys(item).forEach((key) => {
-              item[key] = item[key].replace(/[^0-9]/g, '')
-              if (item[key] === '') {
-                delete item[key]
-              }
-            })
-            return item
-          }),
-        ],
-        user_id: user.id,
-      })
-        .then((res) => {
-          console.log(res)
-          const totalAmount = numberWithCommas(res.data.data.total_amount)
-          toast.success(`شارژ با موفقیت انجام شد. مبلغ کل: ${totalAmount} ریال`)
-          //clear form
-          setCardForm([initialCardForm])
-          setSelectedTypes([''])
-        })
-        .catch((err) => {
-          console.log(err)
-          toast.error('خطا در شارژ کارت')
-        })
-        .finally(() => {
-          setIsLoading(false) // Stop loading spinner
-          setTimeout(() => {
-            setIsButtonDisabled(false)
-          }, 3000)
-        })
-    }
-  }
-
-  const CloneForm = () => {
-    setCardForm([...cardForm, initialCardForm])
-    setSelectedTypes([...selectedTypes, ''])
-  }
-
-  const removeForm = (index) => {
-    const updatedCardForms = [...cardForm]
-    updatedCardForms.splice(index, 1)
-    setCardForm(updatedCardForms)
-    const updatedSelectedTypes = [...selectedTypes]
-    updatedSelectedTypes.splice(index, 1)
-    setSelectedTypes(updatedSelectedTypes)
-  }
-
-  const numberWithCommas = (x) => {
-    if (x !== undefined && x !== null) {
-      // add comma to each 3 digits
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    } else {
-      // handle the case where x is undefined or null
-      return ''
-    }
-  }
-
   return (
+<<<<<<< HEAD
     <>
       <CRow>
         <CCol xs="12" md="12" className="mb-4">
@@ -541,22 +360,85 @@ const ShowByTag = () => {
                     >
                       ثبت خروج
                     </CButton>
+=======
+    <CRow>
+      <CCol xs="12">
+        <CFormInput
+          name="tag"
+          placeholder="Tag"
+          onChange={handleInputChange}
+          value={tag.tag}
+          ref={inputRef}
+        />
+      </CCol>
+      <p></p>
+      <CCol>
+        <CButton color="primary" onClick={handleExit}>
+          ثبت خروج
+        </CButton>
+      </CCol>
+      <CCol xs="12">
+        <CRow>
+          <p />
+          <CTable striped>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
+                <CTableHeaderCell>تاریخ ورود</CTableHeaderCell>
+                <CTableHeaderCell>تاریخ خروج</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {customers.map((customer, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{customer.TagSerial}</CTableDataCell>
+                  <CTableDataCell>
+                    {Intl.DateTimeFormat('fa-IR', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    }).format(new Date(customer.EnterTime.split('.')[0]))}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    {customer.ExitTime
+                      ? Intl.DateTimeFormat('fa-IR', {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        }).format(
+                          new Date(customer.ExitTime.split('.')[0]),
+                          // Helper.getIsoDateWithTimezone(new Date(customer.ExitTime).getTime()),
+                        )
+                      : '-'}
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
                   </CTableDataCell>
                 </CTableRow>
               ))}
             </CTableBody>
           </CTable>
-        </CCol>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={true}
-          rtl={true}
-          pauseOnFocusLoss
-        />
-      </CRow>
-    </>
+        </CRow>
+      </CCol>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </CRow>
   )
 }
+<<<<<<< HEAD
 export default ShowByTag
+=======
+
+export default ExitCustomer
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)

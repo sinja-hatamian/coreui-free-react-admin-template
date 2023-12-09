@@ -122,12 +122,12 @@ const _nav = [
     to: '/pages/exitCustomer',
     icon: <CIcon icon={cilExitToApp} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'بررسی دستبند ',
-  //   to: '/pages/showByTag',
-  //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-  // },
+  {
+    component: CNavItem,
+    name: 'بررسی دستبند ',
+    to: '/pages/showByTag',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+  },
 
   {
     component: CNavTitle,
