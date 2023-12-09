@@ -30,6 +30,7 @@ const ExitCustomer = () => {
       inputRef.current.focus()
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     AxiosInstance.get('/banks')
       .then((res) => {
         setBanks(res.data.data.banks)
@@ -62,6 +63,8 @@ const ExitCustomer = () => {
     }
   }, [customers])
 =======
+=======
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
   }, [])
 >>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
 
@@ -75,12 +78,23 @@ const ExitCustomer = () => {
   const handleExit = () => {
     AxiosInstance.post('/attendants/exit', tag)
       .then((res) => {
+<<<<<<< HEAD
         if (res.data.data) {
           setCustomers(res.data.data.customers)
           toast.success('خروج با موفقیت ثبت شد')
         }
 <<<<<<< HEAD
 =======
+=======
+        console.log(res.data)
+        if (res.data.data?.customers) {
+          setCustomers(res.data.data.customers)
+          if (!res.data.data.customers.find((customer) => customer.ExitTime == null)) {
+            // window.location.reload()
+            localStorage.removeItem('customer')
+          }
+        }
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
         setTag({
           tag: '',
         })
@@ -92,6 +106,7 @@ const ExitCustomer = () => {
       })
   }
   return (
+<<<<<<< HEAD
 <<<<<<< HEAD
     <>
       <CRow>
@@ -402,6 +417,49 @@ const ExitCustomer = () => {
                     }).format(new Date(customer.EnterTime.split('.')[0]))}
                   </CTableDataCell>
                   <CTableDataCell>
+=======
+    <CRow>
+      <CCol xs="12">
+        <CFormInput
+          name="tag"
+          placeholder="Tag"
+          onChange={handleInputChange}
+          value={tag.tag}
+          ref={inputRef}
+        />
+      </CCol>
+      <p></p>
+      <CCol>
+        <CButton color="primary" onClick={handleExit}>
+          ثبت خروج
+        </CButton>
+      </CCol>
+      <CCol xs="12">
+        <CRow>
+          <p />
+          <CTable striped>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
+                <CTableHeaderCell>تاریخ ورود</CTableHeaderCell>
+                <CTableHeaderCell>تاریخ خروج</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {customers.map((customer, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{customer.TagSerial}</CTableDataCell>
+                  <CTableDataCell>
+                    {Intl.DateTimeFormat('fa-IR', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    }).format(new Date(customer.EnterTime.split('.')[0]))}
+                  </CTableDataCell>
+                  <CTableDataCell>
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
                     {customer.ExitTime
                       ? Intl.DateTimeFormat('fa-IR', {
                           year: 'numeric',
@@ -414,6 +472,9 @@ const ExitCustomer = () => {
                           // Helper.getIsoDateWithTimezone(new Date(customer.ExitTime).getTime()),
                         )
                       : '-'}
+<<<<<<< HEAD
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
+=======
 >>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
                   </CTableDataCell>
                 </CTableRow>
@@ -437,7 +498,12 @@ const ExitCustomer = () => {
   )
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default ShowByTag
+=======
+
+export default ExitCustomer
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
 =======
 
 export default ExitCustomer

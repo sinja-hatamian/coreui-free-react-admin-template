@@ -103,6 +103,7 @@ const routes = [
     exact: true,
   },
 <<<<<<< HEAD
+<<<<<<< HEAD
   // {
   //   path: '/pages/showByTag',
   //   name: 'showByTag',
@@ -122,6 +123,8 @@ const routes = [
     exact: true,
   },
 =======
+=======
+>>>>>>> parent of 2963ac7 (Change full page of exitCustomer)
   {
     path: '/pages/showByTag',
     name: 'showByTag',
