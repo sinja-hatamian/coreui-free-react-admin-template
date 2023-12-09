@@ -473,21 +473,6 @@ const AddAttendant = () => {
               >
                 افزودن همراه
               </CButton>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <h4
-                  style={{
-                    color: 'red',
-                  }}
-                >
-                  پس از ثبت نام تمامی کاربران دکمه ثبت را بزنید
-                </h4>
-              </div>
               <CButton color="primary" onClick={handleAddAttendant}>
                 ثبت
               </CButton>
