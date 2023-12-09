@@ -515,7 +515,7 @@ const AddAttendant = () => {
                   </CTableDataCell>
                 </CTableRow>
               ) : null}
-              {/* {tableData.map((item, index) => (
+              {tableData.map((item, index) => (
                 <CTableRow key={index}>
                   <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
                   <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
@@ -526,7 +526,7 @@ const AddAttendant = () => {
                     </CButton>
                   </CTableHeaderCell>
                 </CTableRow>
-              ))} */}
+              ))}
               {attendant.map((item, index) => (
                 <CTableRow key={index}>
                   <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
