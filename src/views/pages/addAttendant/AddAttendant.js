@@ -143,8 +143,7 @@ const AddAttendant = () => {
       attendant.some((att) => att.tag === modalFormData.tag) ||
       customer.tag === modalFormData.tag ||
       serverTag === modalFormData.tag || // Check if the tag already exists in the server
-      tableData.some((att) => att.tag === modalFormData.tag) || // Check if the tag already exists in the table
-      fixedData.some((att) => att.tag === modalFormData.tag) // Check if the tag already exists in the fixedData
+      tableData.some((att) => att.tag === modalFormData.tag)
 
     if (isTagExist) {
       // If the tag already exists, show an error message and return to prevent adding the attendant
@@ -158,23 +157,16 @@ const AddAttendant = () => {
     console.log(tableData)
   }
 
-  const removeAttendant = (tag) => {
-    setAttendant((prevAttendant) => prevAttendant.filter((item) => item.tag !== tag))
-    setTableData((prevTableData) => prevTableData.filter((item) => item.tag !== tag))
+  const removeAttendant = (index) => {
+    setAttendant([...attendant.filter((item, i) => i !== index)])
+    setTableData([...tableData.filter((item, i) => i !== index)])
 
-    if (customer.tag === tag) {
-      setCustomer((prevCustomer) => ({ ...prevCustomer, tag: '' }))
+    if (index.tag === customer.tag) {
+      setCustomer({ ...customer, tag: '' })
     }
-    if (serverTag === tag) {
+    if (index.tag === serverTag) {
       setServerTag('')
     }
-
-    // If customers is an object and you want to remove the property with the key equal to tag
-    setCustomer((prevCustomers) => {
-      const newCustomers = { ...prevCustomers }
-      delete newCustomers[tag]
-      return newCustomers
-    })
   }
   // const cloneAttendant = () => {
   //   setAttendant([
@@ -484,46 +476,53 @@ const AddAttendant = () => {
                 <CTableHeaderCell>نام</CTableHeaderCell>
                 <CTableHeaderCell>نام خانوادگی</CTableHeaderCell>
                 <CTableHeaderCell> شماره دستبند</CTableHeaderCell>
-                <CTableHeaderCell>حذف از لیست</CTableHeaderCell>
+                <CTableHeaderCell>موجودی</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {serverTag == null ? (
+              {serverTag !== null ? (
                 <CTableRow>
                   <CTableDataCell>{customer.firstname}</CTableDataCell>
                   <CTableDataCell>{customer.lastname}</CTableDataCell>
                   <CTableDataCell>{tag}</CTableDataCell>
                   <CTableDataCell>
-                    <CButton color="danger" onClick={removeAttendant}>
-                      حذف
-                    </CButton>
+                    {card.balance ? numberWithCommas(card.balance) : 0}
                   </CTableDataCell>
                 </CTableRow>
               ) : null}
+<<<<<<< HEAD
               {tableData.map((item, index) => (
                 <CTableRow key={index}>
+=======
+              {/* {fixedData.map((item) => (
+                <CTableRow key={item.id}>
+>>>>>>> parent of 1c58b89 (Add delete to add attendant page)
                   <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
                   <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
                   <CTableHeaderCell>{item.tag}</CTableHeaderCell>
-                  <CTableHeaderCell>
-                    <CButton color="danger" onClick={() => removeAttendant(item.tag)}>
-                      حذف
-                    </CButton>
-                  </CTableHeaderCell>
                 </CTableRow>
+<<<<<<< HEAD
               ))}
               {attendant.map((item, index) => (
+=======
+              ))} */}
+              {tableData.map((item, index) => (
+>>>>>>> parent of 1c58b89 (Add delete to add attendant page)
                 <CTableRow key={index}>
                   <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
                   <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
                   <CTableHeaderCell>{item.tag}</CTableHeaderCell>
-                  <CTableHeaderCell>
-                    <CButton color="danger" onClick={() => removeAttendant(item.tag)}>
-                      حذف
-                    </CButton>
-                  </CTableHeaderCell>
+                  <CTableHeaderCell></CTableHeaderCell>
                 </CTableRow>
               ))}
+              {/* {attendant.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.tag}</CTableHeaderCell>
+                  <CTableHeaderCell></CTableHeaderCell>
+                </CTableRow>
+              ))} */}
             </CTableBody>
           </CTable>
         </CCard>
