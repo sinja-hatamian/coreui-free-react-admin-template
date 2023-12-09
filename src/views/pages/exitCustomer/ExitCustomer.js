@@ -453,46 +453,6 @@ const ShowByTag = () => {
                               </CButton>
                             </CCol>
                           </CCardBody>
-                          {/* <CTable striped bordered>
-                            <CTableHead>
-                              <CTableRow>
-                                <CTableHeaderCell
-                                  color="warning"
-                                  style={{
-                                    width: '45%',
-                                    color: '#EE5A9F',
-                                    fontWeight: 'bold',
-                                    textAlign: 'center',
-                                  }}
-                                >
-                                  میزان شارژ (ریال)
-                                </CTableHeaderCell>
-                                <CTableHeaderCell
-                                  color="primary"
-                                  style={{
-                                    width: '45%',
-                                    color: '#EE5A9F',
-                                    fontWeight: 'bold',
-                                    textAlign: 'center',
-                                  }}
-                                >
-                                  میزان اعتبار (ریال)
-                                </CTableHeaderCell>
-                              </CTableRow>
-                            </CTableHead>
-                            <CTableBody>
-                              {credit.map((item, index) => (
-                                <CTableRow key={index}>
-                                  <CTableDataCell style={{ textAlign: 'center' }}>
-                                    {numberWithCommas(item.charge_amount)}
-                                  </CTableDataCell>
-                                  <CTableDataCell style={{ textAlign: 'center' }}>
-                                    {numberWithCommas(item.credit_amount)}
-                                  </CTableDataCell>
-                                </CTableRow>
-                              ))}
-                            </CTableBody>
-                          </CTable> */}
                         </CCard>
                       </CCol>
                     </CModalBody>
