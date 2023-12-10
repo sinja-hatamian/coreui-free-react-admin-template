@@ -26,6 +26,10 @@ const Wristband = React.lazy(() => import('./views/pages/wristband/Wristband'))
 const AccountingDetails = React.lazy(() =>
   import('./views/pages/accountingDetails/AccountingDetails'),
 )
+const customerFullLog = React.lazy(() => import('./views/pages/customerFullLog/CustomerFullLog'))
+const customerFinanceLog = React.lazy(() =>
+  import('./views/pages/customerFinanceLog/CustomerFinanceLog'),
+)
 
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
@@ -99,18 +103,18 @@ const routes = [
     element: AccountingDetails,
     exact: true,
   },
-  // {
-  //   path: '/pages/showByTag',
-  //   name: 'showByTag',
-  //   element: showByTag,
-  //   exact: true,
-  // },
-  // {
-  //   path: '/pages/customerFullLog',
-  //   name: 'customerFullLog',
-  //   element: customerFullLog,
-  //   exact: true,
-  // },
+  {
+    path: '/pages/customerFullLog',
+    name: 'customerFullLog',
+    element: customerFullLog,
+    exact: true,
+  },
+  {
+    path: '/pages/customerFinanceLog',
+    name: 'customerFinanceLog',
+    element: customerFinanceLog,
+    exact: true,
+  },
 ]
 
 export default routes

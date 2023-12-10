@@ -58,12 +58,6 @@ const _userNav = [
   },
   {
     component: CNavItem,
-    name: 'گزارشات صندوق',
-    to: '/theme/color',
-    icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
     name: 'گزارشات مشتریان',
     to: '/pages/customerFullLog',
     icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
@@ -73,6 +67,12 @@ const _userNav = [
     name: 'گزارشات گردش حساب مشتری',
     to: '/pages/customerFinanceLog',
     icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'گزارشات صندوق',
+    to: '/theme/color',
+    icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavItem,
