@@ -197,7 +197,14 @@ const CustomerFinanceLog = () => {
             </CRow>
             <CRow>
               <CCol xs="12" md="12">
-                <strong>لطفا بازه زمانی گزارش را مشخص نمایید</strong>
+                <strong
+                  style={{
+                    display: 'flex',
+                    color: 'red',
+                  }}
+                >
+                  لطفا بازه زمانی گزارش را مشخص نمایید.
+                </strong>
                 <p />
               </CCol>
               <CCol xs="12" md="6">
@@ -233,7 +240,14 @@ const CustomerFinanceLog = () => {
         <CCard>
           <CCardHeader>
             <strong>
-              مشخصات مشتری: {formdata.firstname} {formdata.lastname}
+              نام مشتری:{' '}
+              <strong
+                style={{
+                  color: 'green',
+                }}
+              >
+                {formdata.firstname} {formdata.lastname}
+              </strong>
             </strong>
           </CCardHeader>
           <CCardBody>
