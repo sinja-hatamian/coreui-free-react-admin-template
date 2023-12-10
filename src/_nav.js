@@ -123,13 +123,6 @@ const _nav = [
     icon: <CIcon icon={cilExitToApp} customClassName="nav-icon" />,
   },
   {
-    component: CNavItem,
-    name: 'بررسی دستبند ',
-    to: '/pages/showByTag',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-  },
-
-  {
     component: CNavTitle,
     name: 'گزارشات',
   },

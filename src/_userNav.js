@@ -1,14 +1,12 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilChartPie,
   cilDollar,
   cilCheckCircle,
   cilChart,
   cilChartLine,
   cilBarChart,
   cilExitToApp,
-  cilNotes,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
