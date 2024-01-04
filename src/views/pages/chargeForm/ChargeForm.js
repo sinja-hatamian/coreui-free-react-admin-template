@@ -91,6 +91,8 @@ const ChargeForm = () => {
                     <CTableHeaderCell>وضعیت</CTableHeaderCell>
                     <CTableHeaderCell>مبلغ</CTableHeaderCell>
                     <CTableHeaderCell>تاریخ</CTableHeaderCell>
+                    <CTableHeaderCell>نام مشتری</CTableHeaderCell>
+                    <CTableHeaderCell>کدملی مشتری</CTableHeaderCell>
                     <CTableHeaderCell>توضیحات</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -105,6 +107,8 @@ const ChargeForm = () => {
                       </CTableDataCell>
                       <CTableDataCell>{numberWithCommas(item.amount)}</CTableDataCell>
                       <CTableDataCell>{item.created_at.split('T')[1].split('.')[0]}</CTableDataCell>
+                      <CTableDataCell>{item.firstname + ' ' + item.lastname}</CTableDataCell>
+                      <CTableDataCell>{item.national_code}</CTableDataCell>
 
                       <CTableDataCell>{item.description}</CTableDataCell>
                     </CTableRow>
