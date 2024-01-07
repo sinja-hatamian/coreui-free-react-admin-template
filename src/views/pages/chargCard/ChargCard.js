@@ -122,6 +122,9 @@ const ChargCard = () => {
     setIsButtonDisabled(true) // Disable the button
     setIsLoading(true) // Start loading spinner
 
+    // Show a toast message
+    toast.info('لطفا کارت بکشید')
+
     if (localStorage.getItem('customer')) {
       const customer = JSON.parse(localStorage.getItem('customer'))
       AxiosInstance.post('/cards/charge', {
