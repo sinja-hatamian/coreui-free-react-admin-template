@@ -27,7 +27,6 @@ const ChargCard = () => {
     type: '',
     bank_id: '',
     card_number: '',
-    transaction_id: '',
   }
 
   const [cardForm, setCardForm] = useState([initialCardForm])
@@ -48,7 +47,7 @@ const ChargCard = () => {
       ...updatedCardForms[index], // Copy the existing object
       [name]: formattedData, // Update the specific field
     }
-    if (name === 'transaction_id' || name === 'card_number') {
+    if (name === 'card_number') {
       updatedCardForms[index] = {
         ...updatedCardForms[index], // Copy the existing object
 
@@ -110,33 +109,16 @@ const ChargCard = () => {
   const handleForm = () => {
     let hasError = false
     cardForm.forEach((item) => {
-      switch (item.type) {
-        case '2':
-          if (!item.amount || !item.bank_id || !item.transaction_id) {
-            hasError = true
-            toast.error('لطفا تمامی فیلد ها را پر کنید')
-          }
-          break
-        case '4':
-          if (!item.card_number) {
-            hasError = true
-            toast.error('لطفا تمامی فیلد ها را پر کنید')
-          }
-          break
-        default:
-          if (!item.amount) {
-            hasError = true
-            toast.error('لطفا تمامی فیلد ها را پر کنید')
-          }
-          break
-      }
-      if (hasError) {
+      if (!item.amount || !item.type || (item.type === '2' && !item.bank_id)) {
+        hasError = true
+        toast.error('لطفا تمامی فیلد ها را پر کنید')
         return
       }
     })
     if (hasError) {
       return
     }
+
     setIsButtonDisabled(true) // Disable the button
     setIsLoading(true) // Start loading spinner
 
@@ -215,34 +197,30 @@ const ChargCard = () => {
             {cardForm.map((cardForm, index) => (
               <CForm className="row g-3" key={index}>
                 <CCol md={6}>
-                  {cardForm.type !== '4' && (
-                    <CFormSelect
-                      name="amount"
-                      label="اعتبارات"
-                      onChange={(e) => handleInput(e, index)}
-                      value={cardForm.amount}
-                      locale="fa-IR"
-                    >
-                      <option value="">انتخاب کنید</option>
-                      {selectCharge.map((charge) => (
-                        <option key={charge.id} value={charge.charge_amount}>
-                          {numberWithCommas(charge.charge_amount) + ' ' + 'ریال '}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  )}
+                  <CFormSelect
+                    name="amount"
+                    label="اعتبارات"
+                    onChange={(e) => handleInput(e, index)}
+                    value={cardForm.amount}
+                    locale="fa-IR"
+                  >
+                    <option value="">انتخاب کنید</option>
+                    {selectCharge.map((charge) => (
+                      <option key={charge.id} value={charge.charge_amount}>
+                        {numberWithCommas(charge.charge_amount) + ' ' + 'ریال '}
+                      </option>
+                    ))}
+                  </CFormSelect>
                 </CCol>
                 <CCol md={6}>
-                  {cardForm.type !== '4' && (
-                    <CFormInput
-                      label="سایر مبالغ (ریال)"
-                      name="amount"
-                      aria-label="amount"
-                      onChange={(e) => handleInput(e, index)}
-                      value={cardForm.amount}
-                      locale="fa-IR"
-                    />
-                  )}
+                  <CFormInput
+                    label="سایر مبالغ (ریال)"
+                    name="amount"
+                    aria-label="amount"
+                    onChange={(e) => handleInput(e, index)}
+                    value={cardForm.amount}
+                    locale="fa-IR"
+                  />
                 </CCol>
                 <CCol md={6}>
                   <CFormSelect
@@ -280,21 +258,6 @@ const ChargCard = () => {
                           </option>
                         ))}
                       </CFormSelect>
-                    </CCol>
-                    <CCol md={6}>
-                      <CFormInput
-                        label={
-                          <>
-                            شماره تراکنش<span style={{ color: 'red' }}>*</span>
-                          </>
-                        }
-                        name="transaction_id"
-                        aria-label="transaction_id"
-                        onChange={(e) => handleInput(e, index)}
-                        value={cardForm.transaction_id}
-                        locale="fa-IR"
-                        required={true}
-                      />
                     </CCol>
                   </>
                 ) : null}
