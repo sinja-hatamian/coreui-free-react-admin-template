@@ -301,6 +301,16 @@ const CustomerFullLog = () => {
                         : '-'}
                     </CTableDataCell>
                     <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="info"
+                        style={{
+                          color: '#fff',
+                        }}
+                      >
+                        جزئیات
+                      </CButton>
+                    </CTableDataCell>
                   </CTableRow>
                 ))}
               </CTableBody>

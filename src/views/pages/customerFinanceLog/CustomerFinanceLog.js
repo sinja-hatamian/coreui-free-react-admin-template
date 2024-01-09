@@ -40,6 +40,9 @@ const CustomerFinanceLog = () => {
       `/users/get-report/${customer.id}?start_date=${startDate}&end_date=${endDate}`,
     )
       .then((res) => {
+        if (res.data.data.report.length === 0) {
+          toast.error('گزارشی برای این بازه زمانی یافت نشد')
+        }
         setReport(res.data.data.report)
         setStartDate(res.data.data.start_date)
         setEndDate(res.data.data.end_date)
