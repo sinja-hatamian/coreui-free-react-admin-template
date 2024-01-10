@@ -5,7 +5,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
-import { format } from 'date-fns'
+// import { format } from 'date-fns'
+import jalaali from 'jalaali-js'
 import {
   CCol,
   CRow,
@@ -257,45 +258,35 @@ const CustomerFinanceLog = () => {
             <CTable striped>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell>میزان شارژ</CTableHeaderCell>
-                  <CTableHeaderCell>نوع شارژ </CTableHeaderCell>
-                  <CTableHeaderCell>میزان مصرف</CTableHeaderCell>
-                  <CTableHeaderCell>تاریخ شارژ</CTableHeaderCell>
-                  <CTableHeaderCell>تاریخ مصرف</CTableHeaderCell>
+                  <CTableHeaderCell> مبلغ</CTableHeaderCell>
+                  <CTableHeaderCell>نوع عملکرد </CTableHeaderCell>
+                  <CTableHeaderCell>تاریخ </CTableHeaderCell>
+                  <CTableHeaderCell>ساعت </CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {report.map((item) => (
                   <CTableRow key={item.id}>
                     <CTableDataCell>
-                      {item.income
-                        ? item.income.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                      {item.amount
+                        ? item.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        : '-'}
+                    </CTableDataCell>
+                    <CTableDataCell>{item.type}</CTableDataCell>
+                    <CTableDataCell>
+                      {item.created_at
+                        ? jalaali.toJalaali(new Date(item.created_at)).jy +
+                          '/' +
+                          jalaali.toJalaali(new Date(item.created_at)).jm +
+                          '/' +
+                          jalaali.toJalaali(new Date(item.created_at)).jd
                         : '-'}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {item.income_type === '3'
-                        ? 'نقدی'
-                        : item.income_type === '2'
-                        ? 'پوز'
-                        : item.income_type === '4'
-                        ? ' کارت هدیه '
-                        : item.income_type === '5'
-                        ? 'رایگان'
-                        : '-'}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {item.outcome
-                        ? item.outcome.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                        : '-'}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {item.income_date
-                        ? format(new Date(item.income_date), 'yyyy-MM-dd HH:mm:ss')
-                        : '-'}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {item.outcome_date
-                        ? format(new Date(item.outcome_date), 'yyyy-MM-dd HH:mm:ss')
+                      {item.created_at
+                        ? new Date(item.created_at).getHours() +
+                          ':' +
+                          new Date(item.created_at).getMinutes()
                         : '-'}
                     </CTableDataCell>
                   </CTableRow>

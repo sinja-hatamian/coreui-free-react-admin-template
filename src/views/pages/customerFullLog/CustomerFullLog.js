@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
-import { format } from 'date-fns'
+import jalaali from 'jalaali-js'
 import {
   CCol,
   CRow,
@@ -37,17 +37,17 @@ const CustomerFullLog = () => {
 
   const handleGetReport = () => {
     AxiosInstance.get(
-      `/users/get-full-report/${customer.id}?start_date=${startDate}&end_date=${endDate}`,
+      `/users/group-customers?start_date=${startDate}&end_date=${endDate}&user_id=${customer.id}`,
     )
       .then((res) => {
-        if (res.data.data.report.length === 0) {
+        if (res.data.data.groupCustomers.length === 0) {
           toast.error('گزارشی برای این بازه زمانی یافت نشد')
         }
 
-        setReport(res.data.data.report)
+        setReport(res.data.data.groupCustomers)
         setStartDate(res.data.data.start_date)
         setEndDate(res.data.data.end_date)
-        console.log(res.data.data.report)
+        console.log(res.data.data.groupCustomers)
         console.log(startDate)
         console.log(endDate)
       })
@@ -60,8 +60,8 @@ const CustomerFullLog = () => {
         else if (startDate === '' || endDate === '') {
           toast.error('لطفا بازه زمانی را مشخص کنید')
         } else {
-          toast.error(error.response.data.message)
-          console.log(error.response.data.message)
+          toast.error(error.response.groupCustomers.message)
+          console.log(error.response.groupCustomers.message)
         }
       })
   }
@@ -271,16 +271,17 @@ const CustomerFullLog = () => {
             <CTable striped>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
-                  <CTableHeaderCell>نام بازی</CTableHeaderCell>
-                  <CTableHeaderCell>زمان ورود </CTableHeaderCell>
-                  <CTableHeaderCell>زمان خروج </CTableHeaderCell>
-                  <CTableHeaderCell> مبلغ هزینه شده (ریال) </CTableHeaderCell>
-                  <CTableHeaderCell> تایم اضافه </CTableHeaderCell>
+                  <CTableHeaderCell>کد ملی</CTableHeaderCell>
+                  <CTableHeaderCell>نام </CTableHeaderCell>
+                  <CTableHeaderCell>نام خانوادگی </CTableHeaderCell>
+                  <CTableHeaderCell> ورود </CTableHeaderCell>
+                  <CTableHeaderCell> خروج</CTableHeaderCell>
+                  <CTableHeaderCell> شارژ ورود (ریال)</CTableHeaderCell>
+                  <CTableHeaderCell> مانده شارژ (ریال)</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {report.map((item) => (
+                {/* {report.map((item) => (
                   <CTableRow key={item.id}>
                     <CTableDataCell>{item.customerTagSerial}</CTableDataCell>
                     <CTableDataCell>{item.gameName ? item.gameName : '-'}</CTableDataCell>
@@ -295,12 +296,58 @@ const CustomerFullLog = () => {
                         : '-'}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {/* show item.inOutLogPrice with number withcommas */}
                       {item.inOutLogPrice
                         ? item.inOutLogPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         : '-'}
                     </CTableDataCell>
                     <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="info"
+                        style={{
+                          color: '#fff',
+                        }}
+                      >
+                        جزئیات
+                      </CButton>
+                    </CTableDataCell>
+                  </CTableRow>
+                ))} */}
+                {report.map((item) => (
+                  <CTableRow key={item.id}>
+                    <CTableDataCell>{item.national_code}</CTableDataCell>
+                    <CTableDataCell>{item.firstname}</CTableDataCell>
+                    <CTableDataCell>{item.lastname}</CTableDataCell>
+                    <CTableDataCell>
+                      {jalaali.toJalaali(new Date(item.EnterTime)).jy}/
+                      {jalaali.toJalaali(new Date(item.EnterTime)).jm}/
+                      {jalaali.toJalaali(new Date(item.EnterTime)).jd}-
+                      {item.EnterTime
+                        ? new Date(item.EnterTime).getHours() +
+                          ':' +
+                          new Date(item.EnterTime).getMinutes() +
+                          ':' +
+                          new Date(item.EnterTime).getSeconds()
+                        : '--'}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      {jalaali.toJalaali(new Date(item.ExitTime)).jy}/
+                      {jalaali.toJalaali(new Date(item.ExitTime)).jm}/
+                      {jalaali.toJalaali(new Date(item.ExitTime)).jd}-
+                      {item.ExitTime
+                        ? new Date(item.ExitTime).getHours() +
+                          ':' +
+                          new Date(item.ExitTime).getMinutes() +
+                          ':' +
+                          new Date(item.ExitTime).getSeconds()
+                        : '--'}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      {item.AllCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      {item.RemainCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    </CTableDataCell>
                     <CTableDataCell>
                       <CButton
                         color="info"
