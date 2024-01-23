@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import DatePicker from 'react-multi-date-picker'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
 import {
   CCard,
   CCol,
@@ -20,10 +25,13 @@ import {
 
 const ChargeForm = () => {
   const [chargeForm, setChargeForm] = useState([])
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
   const [paymentHistories, setPaymentHistories] = useState({
     pos_amounts: {},
     gift_amount: '',
     cash_amount: '',
+    additional__amount: '',
   })
   const [cash, setCash] = useState({
     amount: '',
@@ -38,7 +46,7 @@ const ChargeForm = () => {
   }
 
   useEffect(() => {
-    AxiosInstance.get('/payment-histories/register')
+    AxiosInstance.get(`/payment-histories/register`)
       .then((res) => {
         console.log(res.data)
         setChargeForm(res.data.data.payment_histories)
@@ -46,12 +54,45 @@ const ChargeForm = () => {
           pos_amounts: res.data.data.pos_amounts,
           gift_amount: res.data.data.gift_amount,
           cash_amount: res.data.data.cash_amount,
+          additional__amount: res.data.data.additional__amount,
         })
       })
       .catch((error) => {
         console.log(error)
       })
   }, [])
+
+  const handleFilter = () => {
+    AxiosInstance.get(`/payment-histories/register?start_date=${startDate}&end_date=${endDate}`)
+      .then((res) => {
+        if (res.data.data.payment_histories.length === 0) {
+          toast.error('گزارشی برای این بازه زمانی وجود ندارد')
+        }
+        console.log(res.data)
+        setChargeForm(res.data.data.payment_histories)
+        setPaymentHistories({
+          pos_amounts: res.data.data.pos_amounts,
+          gift_amount: res.data.data.gift_amount,
+          cash_amount: res.data.data.cash_amount,
+          additional__amount: res.data.data.additional__amount,
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  const handleStartDate = (newDate) => {
+    newDate = new Date(newDate)
+    newDate.setHours(0, 0, 0, 0)
+    setStartDate(newDate.valueOf())
+  }
+
+  const handleEndDate = (newDate) => {
+    newDate = new Date(newDate)
+    newDate.setHours(23, 59, 59, 999)
+    setEndDate(newDate.valueOf())
+  }
 
   const handleCashSubmit = () => {
     AxiosInstance.post('/managers/close-register', cash)
@@ -77,6 +118,45 @@ const ChargeForm = () => {
   return (
     <>
       <CRow>
+        <CCol xs="12">
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong> انتخاب بازه زمانی اختیاری است</strong>
+            </CCardHeader>
+            <CCardBody>
+              <CRow>
+                <CCol xs="12" md="4">
+                  <DatePicker
+                    placeholder="تاریخ شروع"
+                    value={startDate}
+                    onChange={handleStartDate}
+                    calendarPosition="bottom-right"
+                    inputPlaceholder="تاریخ شروع"
+                    calendar={persian}
+                    locale={persian_fa}
+                  />
+                </CCol>
+                <CCol xs="12" md="4">
+                  <DatePicker
+                    placeholder="تاریخ پایان"
+                    value={endDate}
+                    onChange={handleEndDate}
+                    calendarPosition="bottom-right"
+                    inputPlaceholder="تاریخ پایان"
+                    calendar={persian}
+                    locale={persian_fa}
+                  />
+                </CCol>
+                <CCol xs="12" md="6">
+                  <p />
+                  <CButton color="primary" onClick={handleFilter}>
+                    اعمال فیلتر
+                  </CButton>
+                </CCol>
+              </CRow>
+            </CCardBody>
+          </CCard>
+        </CCol>
         {/* Show All amounts */}
         <CCol xs="12">
           <CCard className="mb-4">
@@ -160,6 +240,9 @@ const ChargeForm = () => {
                       <CListGroupItem>
                         مبلغ کارت هدیه : {numberWithCommas(paymentHistories.gift_amount)}
                       </CListGroupItem>
+                      <CListGroupItem>
+                        مبلغ اضافه شارژ : {numberWithCommas(paymentHistories.additional__amount)}
+                      </CListGroupItem>
                     </CListGroup>
                   </CCol>
                   <CCol xs="12" md="6">
@@ -191,6 +274,13 @@ const ChargeForm = () => {
           </CCol>
         </CCol>
       </CRow>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        rtl
+      />
     </>
   )
 }

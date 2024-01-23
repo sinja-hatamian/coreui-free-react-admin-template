@@ -45,6 +45,7 @@ const ShowByTag = () => {
     type: '',
     bank_id: '',
     card_number: '',
+    transaction_id: '',
   }
   const [cardForm, setCardForm] = useState([initialCardForm])
   const [selectedTypes, setSelectedTypes] = useState([''])
@@ -108,7 +109,7 @@ const ShowByTag = () => {
       ...updatedCardForms[index], // Copy the existing object
       [name]: formattedData, // Update the specific field
     }
-    if (name === 'card_number') {
+    if (name === 'transaction_id' || name === 'card_number') {
       updatedCardForms[index] = {
         ...updatedCardForms[index], // Copy the existing object
 
@@ -195,7 +196,11 @@ const ShowByTag = () => {
     console.log('handle form called')
     let hasError = false
     cardForm.forEach((item) => {
-      if (!item.amount || !item.type || (item.type === '2' && !item.bank_id)) {
+      if (
+        !item.amount ||
+        !item.type ||
+        (item.type === '2' && (!item.bank_id || !item.transaction_id))
+      ) {
         hasError = true
         toast.error('لطفا تمامی فیلد ها را پر کنید')
         return
@@ -388,6 +393,21 @@ const ShowByTag = () => {
                                           </option>
                                         ))}
                                       </CFormSelect>
+                                    </CCol>
+                                    <CCol md={6}>
+                                      <CFormInput
+                                        label={
+                                          <>
+                                            شماره تراکنش<span style={{ color: 'red' }}>*</span>
+                                          </>
+                                        }
+                                        name="transaction_id"
+                                        aria-label="transaction_id"
+                                        onChange={(e) => handlePeymentChange(e, index)}
+                                        value={cardForm.transaction_id}
+                                        locale="fa-IR"
+                                        required={true}
+                                      />
                                     </CCol>
                                   </>
                                 ) : null}

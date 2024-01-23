@@ -20,10 +20,21 @@ import {
   CTableRow,
   CTableDataCell,
   CFormInput,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
 } from '@coreui/react'
 
 const CustomerFullLog = () => {
   const [report, setReport] = useState([])
+  const [modal, setModal] = useState(false)
+  const [secondModal, setSecondModal] = useState(false)
+  const [customerReport, setCustomerReport] = useState([])
+  const [customerFullReport, setCustomerFullReport] = useState([])
+  // const [groupCustomerId, setGroupCustomerId] = useState([])
+  // const [customerId, setCustomerId] = useState(null)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [customer, setCustomer] = useState({})
@@ -36,28 +47,32 @@ const CustomerFullLog = () => {
   })
 
   const handleGetReport = () => {
+    if (customer.id === undefined) {
+      customer.id = ''
+    }
     AxiosInstance.get(
       `/users/group-customers?start_date=${startDate}&end_date=${endDate}&user_id=${customer.id}`,
     )
       .then((res) => {
-        if (res.data.data.groupCustomers.length === 0) {
+        if (
+          !res.data.data ||
+          !res.data.data.groupCustomers ||
+          res.data.data.groupCustomers.length === 0
+        ) {
           toast.error('گزارشی برای این بازه زمانی یافت نشد')
+        } else {
+          setReport(res.data.data.groupCustomers)
+          // setGroupCustomerId(res.data.data.groupCustomers[0].id)
+          setStartDate(res.data.data.start_date)
+          setEndDate(res.data.data.end_date)
+          console.log(res.data.data.groupCustomers)
+          console.log(startDate)
+          console.log(endDate)
         }
-
-        setReport(res.data.data.groupCustomers)
-        setStartDate(res.data.data.start_date)
-        setEndDate(res.data.data.end_date)
-        console.log(res.data.data.groupCustomers)
-        console.log(startDate)
-        console.log(endDate)
       })
       .catch((error) => {
-        //Check customer choose
-        if (customer.id === undefined) {
-          toast.error('لطفا مشتری را انتخاب کنید')
-        }
         //Check date choose
-        else if (startDate === '' || endDate === '') {
+        if (startDate === '' || endDate === '') {
           toast.error('لطفا بازه زمانی را مشخص کنید')
         } else {
           toast.error(error.response.groupCustomers.message)
@@ -66,6 +81,33 @@ const CustomerFullLog = () => {
       })
   }
 
+  const handleCustomerReport = (id) => {
+    AxiosInstance.get(`/users/group-customers/${id}`)
+      .then((res) => {
+        setCustomerReport(res.data.data.customers)
+        // if (res.data.data.customers.length > 0) {
+        //   setCustomerId(res.data.data.customers[0].id)
+        // }
+        console.log(res.data.data.customers)
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message)
+        console.log(error.response.data.message)
+      })
+  }
+
+  const handleCustomerFullReport = (id) => {
+    AxiosInstance.get(`/users/customers/${id}`)
+      .then((res) => {
+        console.log(res)
+        setCustomerFullReport(res.data.data.report)
+        console.log(customerFullReport)
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message)
+        console.log(error.response.data.message)
+      })
+  }
   const handleStartDate = (newDate) => {
     newDate = new Date(newDate)
     newDate.setHours(0, 0, 0, 0)
@@ -281,66 +323,28 @@ const CustomerFullLog = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {/* {report.map((item) => (
-                  <CTableRow key={item.id}>
-                    <CTableDataCell>{item.customerTagSerial}</CTableDataCell>
-                    <CTableDataCell>{item.gameName ? item.gameName : '-'}</CTableDataCell>
-                    <CTableDataCell>
-                      {item.inOutLogEnterTime
-                        ? format(new Date(item.inOutLogEnterTime), 'yyyy-MM-dd HH:mm:ss')
-                        : '-'}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {item.inOutLogExitTime
-                        ? format(new Date(item.inOutLogExitTime), 'yyyy-MM-dd HH:mm:ss')
-                        : '-'}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {item.inOutLogPrice
-                        ? item.inOutLogPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                        : '-'}
-                    </CTableDataCell>
-                    <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
-                    <CTableDataCell>
-                      <CButton
-                        color="info"
-                        style={{
-                          color: '#fff',
-                        }}
-                      >
-                        جزئیات
-                      </CButton>
-                    </CTableDataCell>
-                  </CTableRow>
-                ))} */}
                 {report.map((item) => (
                   <CTableRow key={item.id}>
                     <CTableDataCell>{item.national_code}</CTableDataCell>
                     <CTableDataCell>{item.firstname}</CTableDataCell>
                     <CTableDataCell>{item.lastname}</CTableDataCell>
                     <CTableDataCell>
-                      {jalaali.toJalaali(new Date(item.EnterTime)).jy}/
-                      {jalaali.toJalaali(new Date(item.EnterTime)).jm}/
-                      {jalaali.toJalaali(new Date(item.EnterTime)).jd}-
-                      {item.EnterTime
-                        ? new Date(item.EnterTime).getHours() +
-                          ':' +
-                          new Date(item.EnterTime).getMinutes() +
-                          ':' +
-                          new Date(item.EnterTime).getSeconds()
-                        : '--'}
+                      {(() => {
+                        const dateTime = new Date(item.EnterTime)
+                        const jalaliDate = jalaali.toJalaali(dateTime)
+                        const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
+                        const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
+                        return date + '-' + time
+                      })()}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {jalaali.toJalaali(new Date(item.ExitTime)).jy}/
-                      {jalaali.toJalaali(new Date(item.ExitTime)).jm}/
-                      {jalaali.toJalaali(new Date(item.ExitTime)).jd}-
-                      {item.ExitTime
-                        ? new Date(item.ExitTime).getHours() +
-                          ':' +
-                          new Date(item.ExitTime).getMinutes() +
-                          ':' +
-                          new Date(item.ExitTime).getSeconds()
-                        : '--'}
+                      {(() => {
+                        const dateTime = new Date(item.ExitTime)
+                        const jalaliDate = jalaali.toJalaali(dateTime)
+                        const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
+                        const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
+                        return date + '-' + time
+                      })()}
                     </CTableDataCell>
                     <CTableDataCell>
                       {item.AllCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -351,6 +355,11 @@ const CustomerFullLog = () => {
                     <CTableDataCell>
                       <CButton
                         color="info"
+                        onClick={() => {
+                          // setGroupCustomerId(item.id)
+                          handleCustomerReport(item.id)
+                          setModal(true)
+                        }}
                         style={{
                           color: '#fff',
                         }}
@@ -364,6 +373,148 @@ const CustomerFullLog = () => {
             </CTable>
           </CCardBody>
         </CCard>
+        {
+          <CModal
+            visible={modal}
+            onClose={() => setModal(false)}
+            color="info"
+            size="lg"
+            style={{ fontFamily: 'VazirD' }}
+          >
+            <CModalHeader closeButton>
+              <CModalTitle>گزارش کامل مشتری</CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+              <CTable striped>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>شماره دستبند </CTableHeaderCell>
+                    <CTableHeaderCell>زمان ورود </CTableHeaderCell>
+                    <CTableHeaderCell>زمان خروج </CTableHeaderCell>
+                    <CTableHeaderCell> مشاهده جزئیات </CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {customerReport.map((item) => (
+                    <CTableRow key={item.id}>
+                      <CTableDataCell>{item.TagSerial}</CTableDataCell>
+                      <CTableDataCell>
+                        {(() => {
+                          const dateTime = new Date(item.EnterTime)
+                          const jalaliDate = jalaali.toJalaali(dateTime)
+                          const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
+                          const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
+                          return date + '-' + time
+                        })()}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {(() => {
+                          const dateTime = new Date(item.ExitTime)
+                          const jalaliDate = jalaali.toJalaali(dateTime)
+                          const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
+                          const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
+                          return date + '-' + time
+                        })()}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <CButton
+                          color="info"
+                          onClick={() => {
+                            // setCustomerFullReport()
+                            handleCustomerFullReport(item.id)
+                            setSecondModal(true)
+                          }}
+                          style={{
+                            color: '#fff',
+                          }}
+                        >
+                          جزئیات
+                        </CButton>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            </CModalBody>
+            <CModalFooter
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                borderTop: 'none',
+              }}
+            >
+              <CButton color="danger" onClick={() => setModal(!modal)}>
+                بستن
+              </CButton>
+            </CModalFooter>
+          </CModal>
+        }
+        {
+          <CModal
+            visible={secondModal}
+            onClose={() => setSecondModal(false)}
+            color="info"
+            size="lg"
+            style={{ fontFamily: 'VazirD' }}
+          >
+            <CModalHeader closeButton>
+              <CModalTitle>گزارش کامل مشتری</CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+              <CTable striped>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>شماره دستبند </CTableHeaderCell>
+                    <CTableHeaderCell>زمان ورود </CTableHeaderCell>
+                    <CTableHeaderCell>زمان خروج </CTableHeaderCell>
+                    <CTableHeaderCell> نام بازی </CTableHeaderCell>
+                    <CTableHeaderCell> هزینه در بازی </CTableHeaderCell>
+                    <CTableHeaderCell> تایم اضافی در بازی </CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {customerFullReport.map((item) => (
+                    <CTableRow key={item.id}>
+                      <CTableDataCell>{item.customerTagSerial}</CTableDataCell>
+                      <CTableDataCell>
+                        {(() => {
+                          const dateTime = new Date(item.customerEnterTime)
+                          const jalaliDate = jalaali.toJalaali(dateTime)
+                          const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
+                          const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
+                          return date + '-' + time
+                        })()}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {(() => {
+                          const dateTime = new Date(item.customerExitTime)
+                          const jalaliDate = jalaali.toJalaali(dateTime)
+                          const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
+                          const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
+                          return date + '-' + time
+                        })()}
+                      </CTableDataCell>
+                      <CTableDataCell>{item.gameName}</CTableDataCell>
+                      <CTableDataCell>{item.inOutLogPrice}</CTableDataCell>
+                      <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            </CModalBody>
+            <CModalFooter
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                borderTop: 'none',
+              }}
+            >
+              <CButton color="danger" onClick={() => setModal(!modal)}>
+                بستن
+              </CButton>
+            </CModalFooter>
+          </CModal>
+        }
       </CCol>
       <ToastContainer
         position="bottom-right"
