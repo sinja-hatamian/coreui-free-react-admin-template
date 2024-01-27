@@ -33,8 +33,6 @@ const CustomerFullLog = () => {
   const [secondModal, setSecondModal] = useState(false)
   const [customerReport, setCustomerReport] = useState([])
   const [customerFullReport, setCustomerFullReport] = useState([])
-  // const [groupCustomerId, setGroupCustomerId] = useState([])
-  // const [customerId, setCustomerId] = useState(null)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [customer, setCustomer] = useState({})
