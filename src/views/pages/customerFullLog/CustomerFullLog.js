@@ -87,6 +87,7 @@ const CustomerFullLog = () => {
         //   setCustomerId(res.data.data.customers[0].id)
         // }
         console.log(res.data.data.customers)
+        console.log('first modal shows')
       })
       .catch((error) => {
         toast.error(error.response.data.message)
@@ -100,6 +101,7 @@ const CustomerFullLog = () => {
         console.log(res)
         setCustomerFullReport(res.data.data.report)
         console.log(customerFullReport)
+        console.log('second modal shows')
       })
       .catch((error) => {
         toast.error(error.response.data.message)
@@ -524,5 +526,5 @@ const CustomerFullLog = () => {
     </CRow>
   )
 }
-
+//SinjaDev
 export default CustomerFullLog

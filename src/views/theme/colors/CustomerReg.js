@@ -32,6 +32,7 @@ const CustomerReg = () => {
     firstname: '',
     lastname: '',
     introduction_way: '',
+    introduction_way_id: '',
     password: '',
     phone: '',
     state_id: '',
@@ -46,11 +47,22 @@ const CustomerReg = () => {
   const [city, setCity] = useState([])
   const [card_number, setCard_number] = useState('')
 
+  const fetchCity = (state_id) => {
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/states/${state_id}/cities`)
+      .then((res) => {
+        setCity(res.data.data.cities)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   const handleInputCahnge = (e) => {
     const { name, value } = e.target
     if (name === 'state_id') {
       axios
-        .get(`http://192.168.11.11:3000/api/states/${value}/cities`)
+        .get(`${process.env.REACT_APP_BACKEND_URL}/api/states/${value}/cities`)
         .then((res) => {
           setCity(res.data.data.cities)
         })
@@ -63,7 +75,15 @@ const CustomerReg = () => {
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
-      setFormdata(JSON.parse(localStorage.getItem('customer')))
+      const customerData = JSON.parse(localStorage.getItem('customer'))
+      fetchCity(customerData.state_id)
+      setValue(new Date(customerData.birthday))
+      setFormdata((prev) => ({
+        ...prev,
+        ...customerData,
+        birthday: new Date(customerData.birthday).valueOf(),
+        introduction_way: customerData.introduction_way_id,
+      }))
     }
     AxiosInstance.get('/introduction-ways')
       .then((res) => {
@@ -75,7 +95,7 @@ const CustomerReg = () => {
       })
 
     axios
-      .get('http://192.168.11.11:3000/api/states')
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/states`)
       .then((res) => {
         console.log(res)
         setState(res.data.data.states)
@@ -104,10 +124,14 @@ const CustomerReg = () => {
     AxiosInstance.get(`/users/national-code/${formdata.national_code}`)
       .then((res) => {
         const customerData = res.data.data.user
+        fetchCity(customerData.state_id)
+        setValue(new Date(customerData.birthday))
         console.log(customerData)
         setFormdata((prev) => ({
           ...prev,
           ...customerData,
+          birthday: new Date(customerData.birthday).valueOf(),
+          introduction_way: customerData.introduction_way_id,
         }))
         localStorage.setItem('customer', JSON.stringify(customerData))
         setActiveKey(2)
@@ -115,7 +139,8 @@ const CustomerReg = () => {
       .catch((err) => {
         console.log(err)
         toast.error('کاربری با این کد ملی وجود ندارد')
-        setFormdata({
+        setFormdata((prev) => ({
+          ...prev,
           firstname: '',
           lastname: '',
           introduction_way: '',
@@ -125,7 +150,7 @@ const CustomerReg = () => {
           city_id: '',
           gender: '',
           birthday: '',
-        })
+        }))
         localStorage.removeItem('customer')
       })
   }
@@ -134,10 +159,14 @@ const CustomerReg = () => {
     AxiosInstance.get(`/users/phone/${formdata.phone}`)
       .then((res) => {
         const customerData = res.data.data.user
+        fetchCity(customerData.state_id)
+        setValue(new Date(customerData.birthday))
         console.log(customerData)
         setFormdata((prev) => ({
           ...prev,
           ...customerData,
+          birthday: new Date(customerData.birthday).valueOf(),
+          introduction_way: customerData.introduction_way_id,
         }))
         localStorage.setItem('customer', JSON.stringify(customerData))
         setActiveKey(2)
@@ -145,7 +174,8 @@ const CustomerReg = () => {
       .catch((err) => {
         console.log(err)
         toast.error('کاربری با این شماره تلفن وجود ندارد')
-        setFormdata({
+        setFormdata((prev) => ({
+          ...prev,
           firstname: '',
           lastname: '',
           introduction_way: '',
@@ -155,7 +185,7 @@ const CustomerReg = () => {
           city_id: '',
           gender: '',
           birthday: '',
-        })
+        }))
       })
   }
 
@@ -163,10 +193,14 @@ const CustomerReg = () => {
     AxiosInstance.get(`/users/card-number/${card_number}`)
       .then((res) => {
         const customerData = res.data.data.user
+        fetchCity(customerData.state_id)
+        setValue(new Date(customerData.birthday))
         console.log(customerData)
         setFormdata((prev) => ({
           ...prev,
           ...customerData,
+          birthday: new Date(customerData.birthday).valueOf(),
+          introduction_way: customerData.introduction_way_id,
         }))
         localStorage.setItem('customer', JSON.stringify(customerData))
         setActiveKey(2)
@@ -174,7 +208,8 @@ const CustomerReg = () => {
       .catch((err) => {
         console.log(err)
         toast.error('کاربری با این شماره کارت وجود ندارد')
-        setFormdata({
+        setFormdata((prev) => ({
+          ...prev,
           national_code: '',
           firstname: '',
           lastname: '',
@@ -185,7 +220,7 @@ const CustomerReg = () => {
           city_id: '',
           gender: '',
           birthday: '',
-        })
+        }))
       })
   }
 
@@ -343,7 +378,11 @@ const CustomerReg = () => {
                       >
                         <option>انتخاب کنید</option>
                         {introductionWays.map((item) => (
-                          <option key={item.id} value={item.id}>
+                          <option
+                            key={item.id}
+                            value={item.id}
+                            selected={formdata.introduction_way_id === item.id}
+                          >
                             {item.title}
                           </option>
                         ))}
@@ -370,7 +409,11 @@ const CustomerReg = () => {
                       >
                         <option>انتخاب کنید</option>
                         {state.map((item) => (
-                          <option key={item.id} value={item.id}>
+                          <option
+                            key={item.id}
+                            value={item.id}
+                            selected={formdata.state_id === item.id}
+                          >
                             {item.name}
                           </option>
                         ))}
@@ -386,7 +429,11 @@ const CustomerReg = () => {
                       >
                         <option>انتخاب کنید</option>
                         {city.map((item) => (
-                          <option key={item.id} value={item.id}>
+                          <option
+                            key={item.id}
+                            value={item.id}
+                            selected={formdata.city_id === item.id}
+                          >
                             {item.name}
                           </option>
                         ))}
@@ -413,8 +460,12 @@ const CustomerReg = () => {
                         onChange={handleInputCahnge}
                       >
                         <option value="">انتخاب کنید</option>
-                        <option value="male">مرد</option>
-                        <option value="female">زن</option>
+                        <option value="male" selected={formdata.gender === 'male'}>
+                          مرد
+                        </option>
+                        <option value="female" selected={formdata.gender === 'female'}>
+                          زن
+                        </option>
                       </CFormSelect>
                     </CCol>
                     <CCol md={12}>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const AxiosInstance = axios.create({
-  baseURL: 'http://192.168.11.11:3000/api/manager',
+  baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/manager`,
   headers: {
     'Content-Type': 'application/json',
   },
