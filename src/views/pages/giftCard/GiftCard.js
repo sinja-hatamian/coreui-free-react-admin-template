@@ -51,6 +51,13 @@ const GiftCard = () => {
     const { name, value } = e.target
     if (name === 'numbers') {
       setFormdata({ ...formdata, [name]: [value] })
+    } else if (name === 'amount') {
+      const rawNumber = value.replace(/[^0-9]/g, '')
+      const formattedData = numberWithCommas(rawNumber)
+      setFormdata({
+        ...formdata,
+        [name]: formattedData,
+      })
     } else {
       setFormdata({ ...formdata, [name]: value })
     }
