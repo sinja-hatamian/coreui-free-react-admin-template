@@ -176,6 +176,7 @@ const ShowByTag = () => {
       .catch((err) => {
         console.log(err)
         toast.error(err.response.data.message)
+        localStorage.removeItem('customer')
       })
   }
   const handleTypeChange = (e, index) => {
