@@ -175,8 +175,7 @@ const ShowByTag = () => {
       })
       .catch((err) => {
         console.log(err)
-        toast.error('خروج ثبت شد')
-        localStorage.removeItem('customer')
+        toast.error(err.response.data.message)
       })
   }
   const handleTypeChange = (e, index) => {
