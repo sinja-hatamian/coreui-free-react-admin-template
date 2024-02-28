@@ -150,6 +150,7 @@ const CustomerReg = () => {
           city_id: '',
           gender: '',
           birthday: '',
+          id: '',
         }))
         localStorage.removeItem('customer')
       })
@@ -185,7 +186,9 @@ const CustomerReg = () => {
           city_id: '',
           gender: '',
           birthday: '',
+          id: '',
         }))
+        localStorage.removeItem('customer')
       })
   }
 
@@ -220,7 +223,9 @@ const CustomerReg = () => {
           city_id: '',
           gender: '',
           birthday: '',
+          id: '',
         }))
+        localStorage.removeItem('customer')
       })
   }
 
