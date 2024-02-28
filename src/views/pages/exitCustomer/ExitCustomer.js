@@ -170,10 +170,13 @@ const ShowByTag = () => {
           }
         }
         toast.success('خروج با موفقیت ثبت شد')
+        //remove customer from localstorage
+        localStorage.removeItem('customer')
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.message)
+        toast.error('خروج ثبت شد')
+        localStorage.removeItem('customer')
       })
   }
   const handleTypeChange = (e, index) => {
