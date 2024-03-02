@@ -476,20 +476,26 @@ const CustomerReg = () => {
                     <CCol md={12}>
                       <CButton
                         color="success"
-                        style={{ color: '#fff' }}
+                        style={{ color: '#fff', width: '100px' }}
                         onClick={handleSaveCustomer}
                       >
                         ذخیره
                       </CButton>
                     </CCol>
-                    <CCol md={12}>
+                    <p />
+                    <CCol md={12} style={{ display: 'flex', alignItems: 'baseline' }}>
                       <CButton
                         color="warning"
-                        style={{ color: '#fff' }}
+                        style={{ color: '#fff', width: '100px' }} // Add some margin to the right of the button
                         onClick={handleUpdateCustomer}
                       >
                         ویرایش کاربر
                       </CButton>
+
+                      <p style={{ marginRight: '10px', fontSize: '18px' }}>
+                        <strong style={{ color: 'red' }}>توجه:</strong> فقط برای اپدیت اطلاعات کاربر
+                        از گزینه ویرایش کاربر استفاده کنید
+                      </p>
                     </CCol>
                   </CForm>
                 </CCardBody>
