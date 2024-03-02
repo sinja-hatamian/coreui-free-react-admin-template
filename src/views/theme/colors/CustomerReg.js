@@ -477,16 +477,18 @@ const CustomerReg = () => {
                       <CButton
                         color="success"
                         style={{ color: '#fff' }}
-                        onClick={() => {
-                          //if user field is full update user else create new user
-                          if (formdata.id) {
-                            handleUpdateCustomer()
-                          } else {
-                            handleSaveCustomer()
-                          }
-                        }}
+                        onClick={handleSaveCustomer}
                       >
                         ذخیره
+                      </CButton>
+                    </CCol>
+                    <CCol md={12}>
+                      <CButton
+                        color="warning"
+                        style={{ color: '#fff' }}
+                        onClick={handleUpdateCustomer}
+                      >
+                        ویرایش کاربر
                       </CButton>
                     </CCol>
                   </CForm>
