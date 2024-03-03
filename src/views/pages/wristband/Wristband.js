@@ -211,17 +211,15 @@ const Wristband = () => {
                         ))}
                       </CFormSelect>
                     </CCol>
-                    <CCol xs={12} md={4} style={{ margin: 15 + 'px' }}>
-                      <p></p>
-                      <CButton
-                        color="success"
-                        onClick={() => {
-                          if (wrist.id ? handleUpdateWrist() : handleAddWrist()) setActiveKey(1)
-                        }}
-                      >
-                        افزودن دستبند
-                      </CButton>
-                    </CCol>
+                    <p></p>
+                    <CButton style={{ color: 'white' }} color="success" onClick={handleAddWrist}>
+                      افزودن دستبند
+                    </CButton>
+
+                    <p></p>
+                    <CButton style={{ color: 'white' }} color="info" onClick={handleUpdateWrist}>
+                      ویرایش دستبند
+                    </CButton>
                   </CRow>
                 </CCardBody>
               </CCard>
