@@ -379,7 +379,7 @@ const CustomerFullLog = () => {
             onClose={() => setModal(false)}
             color="info"
             size="lg"
-            style={{ fontFamily: 'VazirD', display: 'block !important' }}
+            style={{ fontFamily: 'VazirD', display: 'block' }}
           >
             <CModalHeader closeButton>
               <CModalTitle>گزارش کامل مشتری</CModalTitle>
