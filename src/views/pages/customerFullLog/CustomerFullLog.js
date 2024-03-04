@@ -436,7 +436,7 @@ const CustomerFullLog = () => {
                 </CTableBody>
               </CTable>
             </CModalBody>
-            <CModalFooter
+            {/* <CModalFooter
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -446,7 +446,7 @@ const CustomerFullLog = () => {
               <CButton color="danger" onClick={() => setModal(!modal)}>
                 بستن
               </CButton>
-            </CModalFooter>
+            </CModalFooter> */}
           </CModal>
         }
         {
@@ -502,7 +502,7 @@ const CustomerFullLog = () => {
                 </CTableBody>
               </CTable>
             </CModalBody>
-            <CModalFooter
+            {/* <CModalFooter
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -512,7 +512,7 @@ const CustomerFullLog = () => {
               <CButton color="danger" onClick={() => setModal(!modal)}>
                 بستن
               </CButton>
-            </CModalFooter>
+            </CModalFooter> */}
           </CModal>
         }
       </CCol>
