@@ -455,7 +455,7 @@ const CustomerFullLog = () => {
             onClose={() => setSecondModal(false)}
             color="info"
             size="lg"
-            style={{ fontFamily: 'VazirD' }}
+            style={{ fontFamily: 'VazirD', display: 'block' }}
           >
             <CModalHeader closeButton>
               <CModalTitle>گزارش کامل مشتری</CModalTitle>
