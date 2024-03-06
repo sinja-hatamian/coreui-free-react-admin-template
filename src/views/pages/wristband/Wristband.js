@@ -32,6 +32,7 @@ const Wristband = () => {
     number: '',
     tag: '',
     stage_id: '',
+    id: '',
   })
 
   useEffect(() => {
@@ -79,8 +80,8 @@ const Wristband = () => {
       .then((res) => {
         setWristband([...wristband, res.data.data.wrist_band])
         toast.success(res.data.message)
-        setActiveKey(1)
       })
+
       .catch((err) => {
         console.log(err)
         toast.error(err.response.data.errors[0].msg)
@@ -144,6 +145,7 @@ const Wristband = () => {
                                   number: item.number,
                                   tag: item.tag,
                                   stage_id: item.stage_id,
+                                  id: item.id,
                                 })
                                 setActiveKey(2)
                               }}
@@ -217,7 +219,11 @@ const Wristband = () => {
                     </CButton>
 
                     <p></p>
-                    <CButton style={{ color: 'white' }} color="info" onClick={handleUpdateWrist}>
+                    <CButton
+                      style={{ color: 'white' }}
+                      color="info"
+                      onClick={() => handleUpdateWrist(wrist.id)}
+                    >
                       ویرایش دستبند
                     </CButton>
                   </CRow>
