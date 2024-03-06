@@ -14,19 +14,50 @@ const AppHeaderDropdown = () => {
       setFormData({
         firstname: manager.firstname,
         lastname: manager.lastname,
+        stage_title: manager.stage_title,
       })
     }
   }, [])
 
   return (
     <>
-      <div
+      {/* <div
         style={{
           marginTop: '7px',
           marginLeft: '5px',
         }}
       >
         {formData.firstname} {formData.lastname}
+      </div>
+      <div>
+        <p>
+          صندوق:
+          {formData.stage_title}
+        </p>
+      </div> */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <div
+          style={{
+            marginTop: '7px',
+            marginLeft: '5px',
+          }}
+        >
+          {formData.firstname} {formData.lastname}
+          <p
+            style={{
+              fontSize: '14px',
+              color: 'gray',
+            }}
+          >
+            {formData.stage_title}
+          </p>
+        </div>
       </div>
       <CDropdown variant="nav-item">
         <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
