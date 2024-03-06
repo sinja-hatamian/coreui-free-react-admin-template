@@ -55,7 +55,7 @@ const AppHeaderDropdown = () => {
               color: 'gray',
             }}
           >
-            {formData.stage_title}
+            {formData.stage_title ?? ' '}
           </p>
         </div>
       </div>

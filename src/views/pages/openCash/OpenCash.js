@@ -41,6 +41,7 @@ const OpenCash = () => {
     })
       .then((res) => {
         console.log(res.data.data)
+        // localStorage.setItem('manager', JSON.stringify(res.data.data.manager))
         toast.success('صندوق با موفقیت باز شد')
         navigate('/theme/CustomerReg')
       })
