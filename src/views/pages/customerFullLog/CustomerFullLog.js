@@ -325,7 +325,7 @@ const CustomerFullLog = () => {
               <CTableBody>
                 {report.map((item) => (
                   <CTableRow key={item.id}>
-                    <CTableDataCell>{item.national_code}</CTableDataCell>
+                    <CTableDataCell>{item.national_code ?? 'ثبت نشده'}</CTableDataCell>
                     <CTableDataCell>{item.firstname}</CTableDataCell>
                     <CTableDataCell>{item.lastname}</CTableDataCell>
                     <CTableDataCell>
@@ -339,6 +339,10 @@ const CustomerFullLog = () => {
                     </CTableDataCell>
                     <CTableDataCell>
                       {(() => {
+                        if (item.ExitTime === null) {
+                          return 'خارج نشده'
+                        }
+
                         const dateTime = new Date(item.ExitTime)
                         const jalaliDate = jalaali.toJalaali(dateTime)
                         const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
