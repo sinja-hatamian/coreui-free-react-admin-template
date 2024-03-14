@@ -36,6 +36,7 @@ const AddAttendant = () => {
   const [qrcode, setQrcode] = useState(null)
   const [value, setValue] = useState(new Date())
   const [card, setCard] = useState({})
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
@@ -82,6 +83,7 @@ const AddAttendant = () => {
   }
 
   const handleAddAttendant = () => {
+    setIsButtonDisabled(true)
     AxiosInstance.post('/attendants/complete', {
       user_id: customer.id,
       tag: tag,
@@ -102,10 +104,16 @@ const AddAttendant = () => {
         if (res.data.data.qrcode) {
           setQrcode(res.data.data.qrcode)
         }
+        setTimeout(() => {
+          setIsButtonDisabled(false)
+        }, 2000)
       })
       .catch((err) => {
         console.log(err)
         toast.error(err.response.data.message ? err.response.data.message : 'خطایی رخ داده است')
+        setTimeout(() => {
+          setIsButtonDisabled(false)
+        }, 2000)
       })
   }
 
@@ -380,7 +388,7 @@ const AddAttendant = () => {
               >
                 افزودن همراه
               </CButton>
-              <CButton color="primary" onClick={handleAddAttendant}>
+              <CButton color="primary" onClick={handleAddAttendant} disabled={isButtonDisabled}>
                 ثبت
               </CButton>
             </CForm>
