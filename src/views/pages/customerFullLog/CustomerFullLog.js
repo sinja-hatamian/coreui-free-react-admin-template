@@ -413,6 +413,10 @@ const CustomerFullLog = () => {
                       </CTableDataCell>
                       <CTableDataCell>
                         {(() => {
+                          if (item.ExitTime === null) {
+                            return 'خارج نشده'
+                          }
+
                           const dateTime = new Date(item.ExitTime)
                           const jalaliDate = jalaali.toJalaali(dateTime)
                           const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
