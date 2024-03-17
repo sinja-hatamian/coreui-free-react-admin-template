@@ -37,6 +37,11 @@ const AddAttendant = () => {
   const [value, setValue] = useState(new Date())
   const [card, setCard] = useState({})
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  // const [suggest, setSuggest] = useState([{
+  //   firstname: '',
+  //   lastname: '',
+  //   gender: '',
+  // }])
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
@@ -134,6 +139,12 @@ const AddAttendant = () => {
       },
     ])
   }
+
+  // const handleSuggestion = () => {
+  //   AxiosInstance.get(`/attendants/${customer.id}/suggestions`)
+  //     .then((res) => {
+  //       console.log(res.data.data)
+  //       setSuggest(res.data.data.members)
 
   const handleDate = (newDate, index) => {
     if (newDate) {
