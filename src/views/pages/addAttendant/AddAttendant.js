@@ -37,11 +37,13 @@ const AddAttendant = () => {
   const [value, setValue] = useState(new Date())
   const [card, setCard] = useState({})
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
-  // const [suggest, setSuggest] = useState([{
-  //   firstname: '',
-  //   lastname: '',
-  //   gender: '',
-  // }])
+  const [suggest, setSuggest] = useState([
+    {
+      firstname: '',
+      lastname: '',
+      gender: '',
+    },
+  ])
 
   useEffect(() => {
     if (localStorage.getItem('customer')) {
@@ -140,11 +142,16 @@ const AddAttendant = () => {
     ])
   }
 
-  // const handleSuggestion = () => {
-  //   AxiosInstance.get(`/attendants/${customer.id}/suggestions`)
-  //     .then((res) => {
-  //       console.log(res.data.data)
-  //       setSuggest(res.data.data.members)
+  const handleSuggestion = () => {
+    AxiosInstance.get(`/attendants/${customer.id}/suggestions`)
+      .then((res) => {
+        console.log(res.data.data.members)
+        setSuggest(res.data.data.members)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   const handleDate = (newDate, index) => {
     if (newDate) {
@@ -433,6 +440,79 @@ const AddAttendant = () => {
               ))}
             </CTableBody>
           </CTable>
+        </CCard>
+        <CCard className="mb-4">
+          <CCardHeader>
+            <strong>همراهان مراجعه قبلی</strong>
+          </CCardHeader>
+          <CCardBody>
+            <CButton color="primary" onClick={handleSuggestion}>
+              نمایش همراهان قبلی
+            </CButton>
+            <div
+              style={{
+                marginTop: '1rem',
+              }}
+            >
+              <p>
+                <strong
+                  style={{
+                    color: 'red',
+                  }}
+                >
+                  توجه:
+                </strong>{' '}
+                برای مشتریانی که با همراهان قبلی مراجعه کرده اند، می‌توانید از همراهان قبلی استفاده
+                کنید.
+              </p>
+            </div>
+            <CTable
+              striped
+              style={{
+                borderCollapse: 'separate',
+                borderSpacing: '0 1em',
+              }}
+            >
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell>نام</CTableHeaderCell>
+                  <CTableHeaderCell>نام خانوادگی</CTableHeaderCell>
+                  <CTableHeaderCell>جنسیت</CTableHeaderCell>
+                  <CTableHeaderCell>انتخاب همراه</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {suggest.map((item, index) => (
+                  <CTableRow key={index}>
+                    <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
+                    <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
+                    <CTableHeaderCell>
+                      {' '}
+                      {item.gender === 'male' ? 'مرد' : item.gender === 'female' ? 'زن' : ''}
+                    </CTableHeaderCell>
+                    {item.firstname && item.lastname && item.gender ? (
+                      <CButton
+                        color="success"
+                        variant="outline"
+                        onClick={() => {
+                          setAttendant([
+                            ...attendant,
+                            {
+                              firstname: item.firstname,
+                              lastname: item.lastname,
+                              gender: item.gender,
+                            },
+                          ])
+                        }}
+                      >
+                        انتخاب
+                      </CButton>
+                    ) : null}
+                  </CTableRow>
+                ))}
+              </CTableBody>
+            </CTable>
+          </CCardBody>
         </CCard>
       </CCol>
       <CModal visible={qrcode !== null} onClose={() => closeModals()} color="primary" size="lg">
