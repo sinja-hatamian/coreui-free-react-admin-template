@@ -314,6 +314,7 @@ const CustomerFullLog = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell>کد ملی</CTableHeaderCell>
+                  <CTableHeaderCell>شماره همراه</CTableHeaderCell>
                   <CTableHeaderCell>نام </CTableHeaderCell>
                   <CTableHeaderCell>نام خانوادگی </CTableHeaderCell>
                   <CTableHeaderCell> ورود </CTableHeaderCell>
@@ -326,6 +327,7 @@ const CustomerFullLog = () => {
                 {report.map((item) => (
                   <CTableRow key={item.id}>
                     <CTableDataCell>{item.national_code ?? 'ثبت نشده'}</CTableDataCell>
+                    <CTableDataCell>{item.phone ?? 'ثبت نشده'}</CTableDataCell>
                     <CTableDataCell>{item.firstname}</CTableDataCell>
                     <CTableDataCell>{item.lastname}</CTableDataCell>
                     <CTableDataCell>
