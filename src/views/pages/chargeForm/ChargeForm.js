@@ -168,6 +168,7 @@ const ChargeForm = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell>نوع پرداخت</CTableHeaderCell>
+                    <CTableHeaderCell>نام بانک</CTableHeaderCell>
                     <CTableHeaderCell>وضعیت</CTableHeaderCell>
                     <CTableHeaderCell>مبلغ</CTableHeaderCell>
                     <CTableHeaderCell>تاریخ</CTableHeaderCell>
@@ -187,6 +188,9 @@ const ChargeForm = () => {
                           : item.type == '6'
                           ? 'هدیه'
                           : ' رایگان '}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item.bank_title == null ? '-' : item.bank_title}
                       </CTableDataCell>
                       <CTableDataCell>
                         {item.status == '1' ? 'تایید شده' : 'تایید نشده'}
