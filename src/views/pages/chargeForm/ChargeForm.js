@@ -174,6 +174,7 @@ const ChargeForm = () => {
                     <CTableHeaderCell>تاریخ</CTableHeaderCell>
                     <CTableHeaderCell>نام مشتری</CTableHeaderCell>
                     <CTableHeaderCell>کدملی مشتری</CTableHeaderCell>
+                    <CTableHeaderCell>شماره تلفن</CTableHeaderCell>
                     <CTableHeaderCell>توضیحات</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -199,6 +200,7 @@ const ChargeForm = () => {
                       <CTableDataCell>{item.created_at.split('T')[1].split('.')[0]}</CTableDataCell>
                       <CTableDataCell>{item.firstname + ' ' + item.lastname}</CTableDataCell>
                       <CTableDataCell>{item.national_code}</CTableDataCell>
+                      <CTableDataCell>{item.phone}</CTableDataCell>
 
                       <CTableDataCell>{item.description}</CTableDataCell>
                     </CTableRow>
