@@ -41,13 +41,6 @@ const ChargeForm = () => {
     description: '',
   })
 
-  const handleInput = (e) => {
-    const { name, value } = e.target
-    const rawNumber = value.replace(/,/g, '')
-    const formatedData = numberWithCommas(rawNumber)
-    setCash({ ...cash, [name]: formatedData })
-  }
-
   useEffect(() => {
     AxiosInstance.get(`/payment-histories/register`)
       .then((res) => {
@@ -63,16 +56,25 @@ const ChargeForm = () => {
       .catch((error) => {
         console.log(error)
       })
-
-    AxiosInstance.get('/managers')
-      .then((res) => {
-        console.log(res.data)
-        setManagers(res.data.data.managers)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    const manager = JSON.parse(localStorage.getItem('manager'))
+    if (manager.is_superadmin) {
+      AxiosInstance.get('/managers')
+        .then((res) => {
+          console.log(res.data)
+          setManagers(res.data.data.managers)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   }, [])
+
+  const handleInput = (e) => {
+    const { name, value } = e.target
+    const rawNumber = value.replace(/,/g, '')
+    const formatedData = numberWithCommas(rawNumber)
+    setCash({ ...cash, [name]: formatedData })
+  }
 
   const handleFilter = () => {
     AxiosInstance.get(
@@ -165,16 +167,20 @@ const ChargeForm = () => {
                     locale={persian_fa}
                   />
                 </CCol>
-                <CCol xs="12" md="4">
-                  <CFormSelect onChange={handleManagerId}>
-                    <option value="">انتخاب مدیر</option>
-                    {managers.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.firstname + ' ' + item.lastname}
-                      </option>
-                    ))}
-                  </CFormSelect>
-                </CCol>
+
+                {JSON.parse(localStorage.getItem('manager')).is_superadmin ? (
+                  <CCol xs="12" md="4">
+                    <CFormSelect aria-label="Default select example" onChange={handleManagerId}>
+                      <option value="">انتخاب صندوقدار</option>
+                      {managers.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.firstname + ' ' + item.lastname}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                  </CCol>
+                ) : null}
+
                 <CCol xs="12" md="6">
                   <p />
                   <CButton color="primary" onClick={handleFilter}>
@@ -321,6 +327,7 @@ const ChargeForm = () => {
         newestOnTop
         rtl
       />
+      \
     </>
   )
 }
