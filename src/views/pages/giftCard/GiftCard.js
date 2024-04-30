@@ -29,6 +29,7 @@ const GiftCard = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [card, setCard] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [file, setFile] = useState(null)
   const [formdata, setFormdata] = useState({
     numbers: [''],
     amount: '',
@@ -61,6 +62,68 @@ const GiftCard = () => {
       })
     } else {
       setFormdata({ ...formdata, [name]: value })
+    }
+  }
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0])
+    console.log(e.target.files[0])
+  }
+
+  const handleUploadFile = () => {
+    console.log('handleUploadFile called')
+    console.log(file)
+    if (file) {
+      // Check if file exists and contains any files
+      const fileReader = new FileReader()
+      fileReader.readAsText(file)
+      fileReader.onload = (e) => {
+        console.log('onload called')
+        const data = e.target.result
+        const lines = data.split(/\r\n|\n/)
+        if (lines && lines.length > 0) {
+          const result = []
+          for (let i = 1; i < lines.length; i++) {
+            const obj = lines[i].split(',')
+            console.log(i)
+            console.log(lines[i])
+            if (obj.length > 0) {
+              const card = {
+                number: obj[0],
+                amount: obj[1],
+                directive: obj[2],
+                description: obj[3],
+                // expires_at: obj[4] ?? null,
+              }
+              result.push(card)
+            }
+            console.log(result)
+            AxiosInstance.post('/gift-cards/upload-csv', { cards: result })
+              .then((res) => {
+                console.log(res)
+                setCard([
+                  ...card.filter((item) =>
+                    res.data.data.gift_cards.find((newItem) => newItem.id !== item.id),
+                  ),
+                  ...res.data.data.gift_cards,
+                ])
+                toast.success('فایل با موفقیت آپلود شد')
+                setActiveKey(1)
+              })
+              .catch((err) => {
+                console.log(err)
+                toast.error(
+                  err.response.data.errors
+                    ? err.response.data.errors[0].msg
+                    : err.response.data.message,
+                )
+              })
+          }
+        }
+      }
+    } else {
+      // Handle case where no file is selected
+      toast.error('لطفاً یک فایل را انتخاب کنید')
     }
   }
 
@@ -126,6 +189,11 @@ const GiftCard = () => {
             ثبت کارت هدیه
           </CNavLink>
         </CNavItem>
+        <CNavItem>
+          <CNavLink active={activeKey === 3} onClick={() => setActiveKey(3)}>
+            بارگذاری فایل
+          </CNavLink>
+        </CNavItem>
       </CNav>
       <CTabContent>
         <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 2}>
@@ -144,7 +212,9 @@ const GiftCard = () => {
                         placeholder="کد کارت"
                         aria-label="numbers"
                         locale="fa-IR"
-                        value={formdata && formdata.numbers ? formdata.numbers[0] : ''}
+                        value={
+                          formdata.numbers && formdata.numbers.length > 0 ? formdata.numbers[0] : ''
+                        }
                         onChange={handleInputCahnge}
                       />
                     </CCol>
@@ -320,6 +390,36 @@ const GiftCard = () => {
                     ))}
                 </CTableBody>
               </CTable>
+            </CCardBody>
+          </CCard>
+        </CTabPane>
+        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 3}>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>بارگذاری فایل</strong>
+            </CCardHeader>
+            <CCardBody>
+              <CRow>
+                <CCol md={8}>
+                  <CFormInput
+                    type="file"
+                    label="فایل"
+                    name="file"
+                    placeholder="فایل"
+                    aria-label="file"
+                    locale="fa-IR"
+                    accept=".csv"
+                    onChange={handleFileChange}
+                  />
+                </CCol>
+              </CRow>
+              <CRow>
+                <CCol md={12}>
+                  <CButton color="primary" onClick={handleUploadFile}>
+                    بارگذاری
+                  </CButton>
+                </CCol>
+              </CRow>
             </CCardBody>
           </CCard>
         </CTabPane>
