@@ -21,12 +21,15 @@ import {
   CListGroup,
   CListGroupItem,
   CFormInput,
+  CFormSelect,
 } from '@coreui/react'
 
 const ChargeForm = () => {
   const [chargeForm, setChargeForm] = useState([])
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [managerId, setManagerId] = useState('')
+  const [managers, setManagers] = useState([])
   const [paymentHistories, setPaymentHistories] = useState({
     pos_amounts: {},
     gift_amount: '',
@@ -60,10 +63,21 @@ const ChargeForm = () => {
       .catch((error) => {
         console.log(error)
       })
+
+    AxiosInstance.get('/managers')
+      .then((res) => {
+        console.log(res.data)
+        setManagers(res.data.data.managers)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }, [])
 
   const handleFilter = () => {
-    AxiosInstance.get(`/payment-histories/register?start_date=${startDate}&end_date=${endDate}`)
+    AxiosInstance.get(
+      `/payment-histories/register?start_date=${startDate}&end_date=${endDate}&manager_id=${managerId} `,
+    )
       .then((res) => {
         if (res.data.data.payment_histories.length === 0) {
           toast.error('گزارشی برای این بازه زمانی وجود ندارد')
@@ -80,6 +94,10 @@ const ChargeForm = () => {
       .catch((error) => {
         console.log(error)
       })
+  }
+
+  const handleManagerId = (e) => {
+    setManagerId(e.target.value)
   }
 
   const handleStartDate = (newDate) => {
@@ -146,6 +164,16 @@ const ChargeForm = () => {
                     calendar={persian}
                     locale={persian_fa}
                   />
+                </CCol>
+                <CCol xs="12" md="4">
+                  <CFormSelect onChange={handleManagerId}>
+                    <option value="">انتخاب مدیر</option>
+                    {managers.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.firstname + ' ' + item.lastname}
+                      </option>
+                    ))}
+                  </CFormSelect>
                 </CCol>
                 <CCol xs="12" md="6">
                   <p />
