@@ -107,8 +107,6 @@ const GiftCard = () => {
                   ),
                   ...res.data.data.gift_cards,
                 ])
-                toast.success('فایل با موفقیت آپلود شد')
-                setActiveKey(1)
               })
               .catch((err) => {
                 console.log(err)
@@ -121,6 +119,8 @@ const GiftCard = () => {
           }
         }
       }
+      toast.success('فایل با موفقیت آپلود شد')
+      setActiveKey(1)
     } else {
       // Handle case where no file is selected
       toast.error('لطفاً یک فایل را انتخاب کنید')
