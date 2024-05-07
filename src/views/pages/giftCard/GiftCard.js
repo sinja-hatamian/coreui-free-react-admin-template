@@ -194,6 +194,11 @@ const GiftCard = () => {
             بارگذاری فایل
           </CNavLink>
         </CNavItem>
+        <CNavItem>
+          <CNavLink active={activeKey === 4} onClick={() => setActiveKey(4)}>
+            بررسی تاریخچه
+          </CNavLink>
+        </CNavItem>
       </CNav>
       <CTabContent>
         <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 2}>
