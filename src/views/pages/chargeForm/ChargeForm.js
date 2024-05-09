@@ -235,7 +235,6 @@ const ChargeForm = () => {
                       <CTableDataCell>{item.firstname + ' ' + item.lastname}</CTableDataCell>
                       <CTableDataCell>{item.national_code}</CTableDataCell>
                       <CTableDataCell>{item.phone}</CTableDataCell>
-
                       <CTableDataCell>{item.description}</CTableDataCell>
                     </CTableRow>
                   ))}

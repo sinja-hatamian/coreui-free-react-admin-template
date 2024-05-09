@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
 import {
   CButton,
   CRow,
@@ -36,6 +38,7 @@ const GiftCard = () => {
     directive: '',
     description: '',
     is_active: 'true',
+    expires_at: null,
   })
 
   useEffect(() => {
@@ -93,7 +96,7 @@ const GiftCard = () => {
                 amount: obj[1],
                 directive: obj[2],
                 description: obj[3],
-                // expires_at: obj[4] ?? null,
+                expires_at: obj[4],
               }
               result.push(card)
             }
@@ -148,6 +151,7 @@ const GiftCard = () => {
           directive: '',
           description: '',
           is_active: 'true',
+          expires_at: null,
         })
       })
   }
@@ -265,6 +269,18 @@ const GiftCard = () => {
                       </CCol>
                     </CCol>
                     <CCol md={6}>
+                      <CFormInput
+                        type="date"
+                        label="تاریخ انقضا"
+                        name="expires_at"
+                        placeholder="تاریخ انقضا"
+                        aria-label="expires_at"
+                        locale="fa-IR"
+                        value={formdata.expires_at}
+                        onChange={handleInputCahnge}
+                      />
+                    </CCol>
+                    <CCol md={8}>
                       <div>
                         <p>وضعیت کارت</p>
                         <CFormCheck

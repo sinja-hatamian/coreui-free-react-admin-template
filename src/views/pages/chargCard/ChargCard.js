@@ -28,6 +28,7 @@ const ChargCard = () => {
     bank_id: '',
     card_number: '',
     transaction_id: '',
+    description: '',
   }
 
   const [cardForm, setCardForm] = useState([initialCardForm])
@@ -53,6 +54,13 @@ const ChargCard = () => {
         ...updatedCardForms[index], // Copy the existing object
 
         [name]: rawNumber, // Update the specific field
+      }
+    }
+    if (name === 'description') {
+      updatedCardForms[index] = {
+        ...updatedCardForms[index], // Copy the existing object
+
+        [name]: value, // Update the specific field
       }
     }
     setCardForm(updatedCardForms)
@@ -306,6 +314,18 @@ const ChargCard = () => {
                       aria-label="card_number"
                       onChange={(e) => handleInput(e, index)}
                       value={cardForm.card_number}
+                      locale="fa-IR"
+                    />
+                  </CCol>
+                ) : null}
+                {cardForm.type === '5' ? (
+                  <CCol md={6}>
+                    <CFormInput
+                      label="توضیحات"
+                      name="description"
+                      aria-label="description"
+                      onChange={(e) => handleInput(e, index)}
+                      value={cardForm.description}
                       locale="fa-IR"
                     />
                   </CCol>
