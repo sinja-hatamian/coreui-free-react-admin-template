@@ -268,7 +268,7 @@ const GiftCard = () => {
                         />
                       </CCol>
                     </CCol>
-                    <CCol md={6}>
+                    {/* <CCol md={6}>
                       <CFormInput
                         type="date"
                         label="تاریخ انقضا"
@@ -279,7 +279,7 @@ const GiftCard = () => {
                         value={formdata.expires_at}
                         onChange={handleInputCahnge}
                       />
-                    </CCol>
+                    </CCol> */}
                     <CCol md={8}>
                       <div>
                         <p>وضعیت کارت</p>
