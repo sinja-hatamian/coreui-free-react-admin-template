@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import DatePicker, { Calendar } from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
+import moment from 'moment-jalaali'
+
 import {
   CButton,
   CRow,
@@ -31,7 +34,9 @@ const GiftCard = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [card, setCard] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [value, setValue] = useState(new Date())
   const [file, setFile] = useState(null)
+  // const [giftCardNumber, setGiftCardNumber] = useState('')
   const [formdata, setFormdata] = useState({
     numbers: [''],
     amount: '',
@@ -176,10 +181,29 @@ const GiftCard = () => {
       })
   }
 
+  // const handleGiftcardHistory = () => {
+  //   AxiosInstance.get(`/gift-card-histories/users/`)
+  //     .then((res) => {
+  //       console.log(res)
+  //       setCard([...card, ...res.data.data.gift_card_histories])
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //       toast.error(err.response.data.errors[0].msg)
+  //     })
+  // }
+
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
+  const handleDate = (newDate) => {
+    setValue(newDate)
+    if (newDate) {
+      const gregorianDate = moment(newDate).format('YYYY/MM/DD')
+      setFormdata({ ...formdata, expires_at: gregorianDate })
+    }
+  }
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -268,18 +292,17 @@ const GiftCard = () => {
                         />
                       </CCol>
                     </CCol>
-                    {/* <CCol md={6}>
-                      <CFormInput
-                        type="date"
-                        label="تاریخ انقضا"
-                        name="expires_at"
-                        placeholder="تاریخ انقضا"
-                        aria-label="expires_at"
-                        locale="fa-IR"
-                        value={formdata.expires_at}
-                        onChange={handleInputCahnge}
+                    <CCol md={6}>
+                      <div>تاریخ انقضا</div>
+                      <DatePicker
+                        value={value}
+                        onChange={handleDate}
+                        calendarPosition="bottom-right"
+                        inputPlaceholder=" تاریخ انقضا"
+                        calendar={persian}
+                        locale={persian_fa}
                       />
-                    </CCol> */}
+                    </CCol>
                     <CCol md={8}>
                       <div>
                         <p>وضعیت کارت</p>
@@ -444,6 +467,82 @@ const GiftCard = () => {
             </CCardBody>
           </CCard>
         </CTabPane>
+        {/* <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 4}>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>بررسی تاریخچه</strong>
+            </CCardHeader>
+            <CCardBody>
+              <CRow>
+                <CCol md={8}>
+                  <CFormInput
+                    label="کد کارت"
+                    name="giftCardNumber"
+                    placeholder="کد کارت"
+                    aria-label="giftCardNumber"
+                    locale="fa-IR"
+                    value={giftCardNumber}
+                    onChange={(e) => setGiftCardNumber(e.target.value)}
+                  />
+                </CCol>
+              </CRow>
+              <CRow>
+                <CCol md={12}>
+                  <CButton color="primary" onClick={handleGiftcardHistory}>
+                    جستجو
+                  </CButton>
+                </CCol>
+              </CRow>
+            </CCardBody>
+          </CCard>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>لیست کارت هدیه</strong>
+            </CCardHeader>
+            <CCardBody>
+              <CTable striped>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>کد کارت</CTableHeaderCell>
+                    <CTableHeaderCell>مبلغ</CTableHeaderCell>
+                    <CTableHeaderCell>توضیحات</CTableHeaderCell>
+                    <CTableHeaderCell>دستور دهنده</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {card
+                    .filter((item) => item.number.includes(giftCardNumber))
+                    .map((item) => (
+                      <CTableRow key={item.id}>
+                        <CTableDataCell>{item.giftcard_number}</CTableDataCell>
+                        <CTableDataCell>
+                          {item && item.amount !== undefined ? (
+                            numberWithCommas(item.amount)
+                          ) : (
+                            <span>Amount Not Available</span>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {item && item.description !== undefined ? (
+                            item.description
+                          ) : (
+                            <span>Description Not Available</span>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {item && item.directive !== undefined ? (
+                            item.directive
+                          ) : (
+                            <span>Directive Not Available</span>
+                          )}
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
+                </CTableBody>
+              </CTable>
+            </CCardBody>
+          </CCard>
+        </CTabPane> */}
       </CTabContent>
       <ToastContainer
         position="bottom-right"
