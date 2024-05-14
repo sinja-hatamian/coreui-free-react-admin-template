@@ -36,7 +36,8 @@ const GiftCard = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [value, setValue] = useState(new Date())
   const [file, setFile] = useState(null)
-  // const [giftCardNumber, setGiftCardNumber] = useState('')
+  const [cardNumber, setCardNumber] = useState('')
+  const [cardHistory, setCardHistory] = useState([])
   const [formdata, setFormdata] = useState({
     numbers: [''],
     amount: '',
@@ -181,18 +182,17 @@ const GiftCard = () => {
       })
   }
 
-  // const handleGiftcardHistory = () => {
-  //   AxiosInstance.get(`/gift-card-histories/users/`)
-  //     .then((res) => {
-  //       console.log(res)
-  //       setCard([...card, ...res.data.data.gift_card_histories])
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //       toast.error(err.response.data.errors[0].msg)
-  //     })
-  // }
-
+  const handleShowHistory = () => {
+    AxiosInstance.get(`/gift-card-histories?number=${cardNumber}`)
+      .then((res) => {
+        console.log(res)
+        setCardHistory(res.data.data.gift_card_histories)
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error('خطا در دریافت اطلاعات')
+      })
+  }
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
@@ -467,7 +467,7 @@ const GiftCard = () => {
             </CCardBody>
           </CCard>
         </CTabPane>
-        {/* <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 4}>
+        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 4}>
           <CCard className="mb-4">
             <CCardHeader>
               <strong>بررسی تاریخچه</strong>
@@ -477,72 +477,74 @@ const GiftCard = () => {
                 <CCol md={8}>
                   <CFormInput
                     label="کد کارت"
-                    name="giftCardNumber"
+                    name="cardNumber"
                     placeholder="کد کارت"
-                    aria-label="giftCardNumber"
+                    aria-label="cardNumber"
                     locale="fa-IR"
-                    value={giftCardNumber}
-                    onChange={(e) => setGiftCardNumber(e.target.value)}
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
                   />
                 </CCol>
               </CRow>
               <CRow>
                 <CCol md={12}>
-                  <CButton color="primary" onClick={handleGiftcardHistory}>
-                    جستجو
+                  <CButton color="primary" onClick={handleShowHistory}>
+                    نمایش
                   </CButton>
                 </CCol>
               </CRow>
-            </CCardBody>
-          </CCard>
-          <CCard className="mb-4">
-            <CCardHeader>
-              <strong>لیست کارت هدیه</strong>
-            </CCardHeader>
-            <CCardBody>
               <CTable striped>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell>کد کارت</CTableHeaderCell>
                     <CTableHeaderCell>مبلغ</CTableHeaderCell>
                     <CTableHeaderCell>توضیحات</CTableHeaderCell>
+                    <CTableHeaderCell>وضعیت</CTableHeaderCell>
                     <CTableHeaderCell>دستور دهنده</CTableHeaderCell>
+                    <CTableHeaderCell>اپراتور</CTableHeaderCell>
+                    <CTableHeaderCell>تاریخ</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {card
-                    .filter((item) => item.number.includes(giftCardNumber))
-                    .map((item) => (
-                      <CTableRow key={item.id}>
-                        <CTableDataCell>{item.giftcard_number}</CTableDataCell>
-                        <CTableDataCell>
-                          {item && item.amount !== undefined ? (
-                            numberWithCommas(item.amount)
+                  {cardHistory.map((item) => (
+                    <CTableRow key={item.id}>
+                      <CTableDataCell>{item.number}</CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.amount !== undefined ? numberWithCommas(item.amount) : ''}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.description !== undefined ? item.description : ''}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.is_active !== undefined ? (
+                          item.is_active ? (
+                            <span className="badge bg-success">فعال</span>
                           ) : (
-                            <span>Amount Not Available</span>
-                          )}
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          {item && item.description !== undefined ? (
-                            item.description
-                          ) : (
-                            <span>Description Not Available</span>
-                          )}
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          {item && item.directive !== undefined ? (
-                            item.directive
-                          ) : (
-                            <span>Directive Not Available</span>
-                          )}
-                        </CTableDataCell>
-                      </CTableRow>
-                    ))}
+                            <span className="badge bg-danger">غیر فعال</span>
+                          )
+                        ) : (
+                          <span>Active Not Available</span>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.directive !== undefined ? item.directive : ''}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item.manager_firstname + ' ' + item.manager_lastname}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {
+                          //Change date to jalali
+                          new Intl.DateTimeFormat('fa-IR').format(new Date(item.created_at))
+                        }
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
                 </CTableBody>
               </CTable>
             </CCardBody>
           </CCard>
-        </CTabPane> */}
+        </CTabPane>
       </CTabContent>
       <ToastContainer
         position="bottom-right"
