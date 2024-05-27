@@ -58,11 +58,28 @@ const _nav = [
     to: '/pages/posDevice',
     icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
   },
+  // {
+  //   component: CNavItem,
+  //   name: ' مدیریت سالن ها ',
+  //   to: '/pages/Stages',
+  //   icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
+  // },
   {
-    component: CNavItem,
-    name: ' مدیریت سالن ها ',
-    to: '/pages/Stages',
+    component: CNavGroup,
+    name: 'مدیریت سالن ها',
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'افزودن سالن',
+        to: '/pages/Stages',
+      },
+      {
+        component: CNavItem,
+        name: ' جزئیات سالن',
+        to: '/pages/addStage',
+      },
+    ],
   },
   {
     component: CNavItem,

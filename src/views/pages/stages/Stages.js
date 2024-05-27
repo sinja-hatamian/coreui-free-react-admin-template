@@ -28,6 +28,7 @@ const Stages = () => {
   const [stageList, setStageList] = useState([])
   const [stage, setStage] = useState({
     title: '',
+    capacity: '',
   })
 
   useEffect(() => {
@@ -50,7 +51,10 @@ const Stages = () => {
       .then((res) => {
         console.log(res.data.data)
         setStageList([...stageList, res.data.data.stage])
-        setStage({ title: '' })
+        setStage({
+          title: '',
+          capacity: '',
+        })
         toast.success('با موفقیت اضافه شد')
         setActiveKey(1)
       })
@@ -65,7 +69,7 @@ const Stages = () => {
       .then((res) => {
         console.log(res.data.data)
         setStageList(stageList.map((item) => (item.id === stage.id ? stage : item)))
-        setStage({ title: '' })
+        setStage({ title: '', capacity: '' })
         toast.success('با موفقیت ویرایش شد')
         setActiveKey(1)
       })
@@ -102,12 +106,14 @@ const Stages = () => {
                     <CTableHead>
                       <CTableRow>
                         <CTableHeaderCell>نام سالن</CTableHeaderCell>
+                        <CTableHeaderCell>ظرفیت</CTableHeaderCell>
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
                       {stageList.map((item) => (
                         <CTableRow key={item.id}>
                           <CTableDataCell>{item.title}</CTableDataCell>
+                          <CTableDataCell>{item.capacity}</CTableDataCell>
                           <CTableDataCell>
                             <CButton
                               color="primary"
@@ -146,6 +152,17 @@ const Stages = () => {
                         aria-label="نام سالن"
                         locale="fa-IR"
                         value={stage.title}
+                        onChange={handleInput}
+                      />
+                    </CCol>
+                    <CCol xs={12} md={6}>
+                      <CFormInput
+                        label="ظرفیت"
+                        placeholder="ظرفیت"
+                        name="capacity"
+                        aria-label="ظرفیت"
+                        locale="fa-IR"
+                        value={stage.capacity}
                         onChange={handleInput}
                       />
                     </CCol>
