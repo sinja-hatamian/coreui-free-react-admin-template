@@ -31,6 +31,8 @@ const customerFinanceLog = React.lazy(() =>
   import('./views/pages/customerFinanceLog/CustomerFinanceLog'),
 )
 
+const StagesPlans = React.lazy(() => import('./views/pages/stagePlans/StagePlans'))
+
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
 //Forms
@@ -115,6 +117,7 @@ const routes = [
     element: customerFinanceLog,
     exact: true,
   },
+  { path: '/pages/stagePlans', name: 'StagesPlans', element: StagesPlans, exact: true },
 ]
 
 export default routes

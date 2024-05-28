@@ -106,7 +106,7 @@ const Stages = () => {
                     <CTableHead>
                       <CTableRow>
                         <CTableHeaderCell>نام سالن</CTableHeaderCell>
-                        <CTableHeaderCell>ظرفیت</CTableHeaderCell>
+                        <CTableHeaderCell>ظرفیت کل</CTableHeaderCell>
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>

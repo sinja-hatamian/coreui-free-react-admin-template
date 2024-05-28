@@ -76,8 +76,8 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: ' جزئیات سالن',
-        to: '/pages/addStage',
+        name: '  جنسیت سالن ها ',
+        to: '/pages/stagePlans',
       },
     ],
   },
