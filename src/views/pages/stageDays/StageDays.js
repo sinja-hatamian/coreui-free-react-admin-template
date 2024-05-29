@@ -60,6 +60,27 @@ const StageDays = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
+  const getDayName = (day) => {
+    switch (day) {
+      case 6:
+        return 'شنبه'
+      case 0:
+        return 'یکشنبه'
+      case 1:
+        return 'دوشنبه'
+      case 2:
+        return 'سه شنبه'
+      case 3:
+        return 'چهارشنبه'
+      case 4:
+        return 'پنجشنبه'
+      case 5:
+        return 'جمعه'
+      default:
+        return ''
+    }
+  }
+
   const addStageDays = () => {
     AxiosInstance.post('/stage-days', formData)
       .then((res) => {
@@ -81,6 +102,20 @@ const StageDays = () => {
         console.log(res.data.data)
         setStageDays(stageDays.filter((item) => item.id !== id))
         toast.success('با موفقیت حذف شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error(err.response.data.errors[0].msg)
+      })
+  }
+
+  const handleUpdateStageDays = (id) => {
+    AxiosInstance.put(`/stage-days/${id}`, formData)
+      .then((res) => {
+        console.log(res.data.data)
+        setStageDays(stageDays.map((item) => (item.id === id ? formData : item)))
+        toast.success('با موفقیت ویرایش شد')
+        setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
@@ -124,30 +159,20 @@ const StageDays = () => {
                       {stageDays.map((item) => (
                         <CTableRow key={item.id}>
                           <CTableDataCell>{item.stage_title}</CTableDataCell>
-                          <CTableDataCell>
-                            {' '}
-                            {item.day === 6
-                              ? 'شنبه'
-                              : item.day === 0
-                              ? 'یکشنبه'
-                              : item.day === 1
-                              ? 'دوشنبه'
-                              : item.day === 2
-                              ? 'سه شنبه'
-                              : item.day === 3
-                              ? 'چهارشنبه'
-                              : item.day === 4
-                              ? 'پنجشنبه'
-                              : item.day === 5
-                              ? 'جمعه'
-                              : ''}
-                          </CTableDataCell>
+                          <CTableDataCell>{getDayName(item.day)}</CTableDataCell>
                           <CTableDataCell>{item.online_capacity}</CTableDataCell>
                           <CTableDataCell>{item.price}</CTableDataCell>
                           <CTableHeaderCell>
                             <CButton
                               color="primary"
                               onClick={() => {
+                                setFormData({
+                                  id: item.id,
+                                  day: item.day,
+                                  stage_id: item.stage_id,
+                                  online_capacity: item.online_capacity,
+                                  price: item.price,
+                                })
                                 setActiveKey(2)
                               }}
                             >
@@ -231,6 +256,15 @@ const StageDays = () => {
                     <CCol md={8} style={{ marginTop: '30px' }}>
                       <CButton color="success" style={{ color: '#fff' }} onClick={addStageDays}>
                         ثبت
+                      </CButton>
+                    </CCol>
+                    <CCol md={8} style={{ marginTop: '30px' }}>
+                      <CButton
+                        color="primary"
+                        style={{ color: '#fff' }}
+                        onClick={() => handleUpdateStageDays(formData.id)}
+                      >
+                        به روز رسانی
                       </CButton>
                     </CCol>
                   </CRow>

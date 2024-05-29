@@ -72,6 +72,27 @@ const StagePlans = () => {
     console.log('log handleInput formData: ', formdata)
   }
 
+  const getDayName = (day) => {
+    switch (day) {
+      case 6:
+        return 'شنبه'
+      case 0:
+        return 'یکشنبه'
+      case 1:
+        return 'دوشنبه'
+      case 2:
+        return 'سه شنبه'
+      case 3:
+        return 'چهارشنبه'
+      case 4:
+        return 'پنجشنبه'
+      case 5:
+        return 'جمعه'
+      default:
+        return ''
+    }
+  }
+
   const handleAddStageDetails = () => {
     let date = new Date(startDate.valueOf())
     date.setHours(date.getHours() + 3, date.getMinutes() + 30)
@@ -99,6 +120,7 @@ const StagePlans = () => {
         console.log(updatedFormData)
       })
   }
+
   const handleDeleteDetails = (id) => {
     AxiosInstance.delete(`/stage-plans/${id}`)
       .then((res) => {
@@ -150,23 +172,7 @@ const StagePlans = () => {
                       {stagePlanList.map((item) => (
                         <CTableRow key={item.id}>
                           <CTableDataCell>{item.stage_title}</CTableDataCell>
-                          <CTableDataCell>
-                            {item.day === 6
-                              ? 'شنبه'
-                              : item.day === 0
-                              ? 'یکشنبه'
-                              : item.day === 1
-                              ? 'دوشنبه'
-                              : item.day === 2
-                              ? 'سه شنبه'
-                              : item.day === 3
-                              ? 'چهارشنبه'
-                              : item.day === 4
-                              ? 'پنجشنبه'
-                              : item.day === 5
-                              ? 'جمعه'
-                              : ''}
-                          </CTableDataCell>
+                          <CTableDataCell>{getDayName(item.day)}</CTableDataCell>
                           <CTableDataCell>
                             {new Date(item.start_time).getUTCHours().toString().padStart(2, '0')}:
                             {new Date(item.start_time).getUTCMinutes().toString().padStart(2, '0')}
