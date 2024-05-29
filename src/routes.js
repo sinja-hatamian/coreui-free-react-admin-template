@@ -30,8 +30,8 @@ const customerFullLog = React.lazy(() => import('./views/pages/customerFullLog/C
 const customerFinanceLog = React.lazy(() =>
   import('./views/pages/customerFinanceLog/CustomerFinanceLog'),
 )
-
 const StagesPlans = React.lazy(() => import('./views/pages/stagePlans/StagePlans'))
+const stageDays = React.lazy(() => import('./views/pages/stageDays/StageDays'))
 
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
@@ -118,6 +118,7 @@ const routes = [
     exact: true,
   },
   { path: '/pages/stagePlans', name: 'StagesPlans', element: StagesPlans, exact: true },
+  { path: '/pages/stageDays', name: 'stageDays', element: stageDays, exact: true },
 ]
 
 export default routes

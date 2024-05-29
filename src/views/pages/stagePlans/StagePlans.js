@@ -6,7 +6,6 @@ import DatePicker, { Calendar } from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import TimePicker from 'react-multi-date-picker/plugins/time_picker'
-import DatePanel from 'react-multi-date-picker/plugins/date_panel'
 
 import {
   CCard,
@@ -70,7 +69,6 @@ const StagePlans = () => {
     } else {
       setFormdata({ ...formdata, [e.target.name]: e.target.value })
     }
-
     console.log('log handleInput formData: ', formdata)
   }
 
@@ -180,7 +178,19 @@ const StagePlans = () => {
 
                           <CTableDataCell>{item.gender === 'male' ? 'مرد' : 'زن'}</CTableDataCell>
                           <CTableDataCell>
-                            <CButton color="primary" onClick={() => setActiveKey(2)}>
+                            <CButton
+                              color="primary"
+                              onClick={() => {
+                                setFormdata({
+                                  day: item.day,
+                                  start_time: item.start_time,
+                                  end_time: item.end_time,
+                                  stage_id: item.stage_id,
+                                  gender: item.gender,
+                                })
+                                setActiveKey(2)
+                              }}
+                            >
                               ویرایش
                             </CButton>
                           </CTableDataCell>

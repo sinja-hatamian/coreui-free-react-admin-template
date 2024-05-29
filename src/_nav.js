@@ -58,12 +58,6 @@ const _nav = [
     to: '/pages/posDevice',
     icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: ' مدیریت سالن ها ',
-  //   to: '/pages/Stages',
-  //   icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
-  // },
   {
     component: CNavGroup,
     name: 'مدیریت سالن ها',
@@ -78,6 +72,11 @@ const _nav = [
         component: CNavItem,
         name: '  جنسیت سالن ها ',
         to: '/pages/stagePlans',
+      },
+      {
+        component: CNavItem,
+        name: 'تعیین ظرفیت انلاین',
+        to: '/pages/stageDays',
       },
     ],
   },
