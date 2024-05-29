@@ -75,6 +75,19 @@ const StageDays = () => {
       })
   }
 
+  const handleDeleteStageDays = (id) => {
+    AxiosInstance.delete(`/stage-days/${id}`)
+      .then((res) => {
+        console.log(res.data.data)
+        setStageDays(stageDays.filter((item) => item.id !== id))
+        toast.success('با موفقیت حذف شد')
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error(err.response.data.errors[0].msg)
+      })
+  }
+
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -139,6 +152,11 @@ const StageDays = () => {
                               }}
                             >
                               ویرایش
+                            </CButton>
+                          </CTableHeaderCell>
+                          <CTableHeaderCell>
+                            <CButton color="danger" onClick={() => handleDeleteStageDays(item.id)}>
+                              حذف
                             </CButton>
                           </CTableHeaderCell>
                         </CTableRow>
@@ -211,7 +229,7 @@ const StageDays = () => {
                       />
                     </CCol>
                     <CCol md={8} style={{ marginTop: '30px' }}>
-                      <CButton color="primary" onClick={addStageDays}>
+                      <CButton color="success" style={{ color: '#fff' }} onClick={addStageDays}>
                         ثبت
                       </CButton>
                     </CCol>
@@ -222,6 +240,16 @@ const StageDays = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+      />
     </>
   )
 }
