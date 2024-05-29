@@ -31,11 +31,14 @@ import {
 
 const StagePlans = () => {
   const [StageList, setStageList] = useState([])
+  const [startDate, setStartDate] = useState(new Date().setHours(9, 0))
+  const [endDate, setEndDate] = useState(new Date().setHours(22, 0))
+  const [stagePlanList, setStagePlanList] = useState([])
   const [activeKey, setActiveKey] = useState(1)
   const [formdata, setFormdata] = useState({
     day: '',
-    start_time: new Date().setHours(9, 0),
-    end_time: new Date().setHours(22, 0),
+    start_time: '',
+    end_time: '',
     stage_id: '',
     gender: '',
   })
@@ -49,33 +52,66 @@ const StagePlans = () => {
       .catch((err) => {
         console.log(err)
       })
+
+    AxiosInstance.get('/stage-plans')
+      .then((res) => {
+        console.log(res.data.data.stage_plans)
+        setStagePlanList(res.data.data.stage_plans)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   const handleInput = (e, name) => {
+    console.log(e.valueOf())
     if (name === 'start_time' || name === 'end_time') {
-      let date = new Date(e)
-      let time = date.toISOString().split('T')[1].split('.')[0]
-      let [hours, minutes] = time.split(':')
-      setFormdata({ ...formdata, [name]: `${hours}:${minutes}` })
+      setFormdata({ ...formdata, [name]: e })
     } else {
       setFormdata({ ...formdata, [e.target.name]: e.target.value })
     }
+
+    console.log('log handleInput formData: ', formdata)
   }
 
   const handleAddStageDetails = () => {
-    AxiosInstance.post('/stage-plans', formdata)
+    let date = new Date(startDate.valueOf())
+    date.setHours(date.getHours() + 3, date.getMinutes() + 30)
+    date = date.toISOString().split('T')[1].split('.')[0].split(':')
+    let date2 = new Date(endDate.valueOf())
+    date2.setHours(date2.getHours() + 3, date2.getMinutes() + 30)
+    date2 = date2.toISOString().split('T')[1].split('.')[0].split(':')
+    const updatedFormData = {
+      ...formdata,
+      start_time: `${date[0]}:${date[1]}`,
+      end_time: `${date2[0]}:${date2[1]}`,
+    }
+    console.log('updatedFormData:', updatedFormData)
+    AxiosInstance.post('/stage-plans', updatedFormData)
       .then((res) => {
         console.log(res.data.data)
         setStageList([...StageList, res.data.data.stages])
         toast.success('با موفقیت اضافه شد')
-
         setActiveKey(1)
+        console.log(updatedFormData)
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error(err.response.data.errors[0].msg)
+        console.log(updatedFormData)
+      })
+  }
+  const handleDeleteDetails = (id) => {
+    AxiosInstance.delete(`/stage-plans/${id}`)
+      .then((res) => {
+        console.log(res.data.data)
+        setStagePlanList(stagePlanList.filter((item) => item.id !== id))
+        toast.success('با موفقیت حذف شد')
       })
       .catch((err) => {
         console.log(err)
         toast.error(err.response.data.errors[0].msg)
       })
-    console.log(formdata)
   }
 
   return (
@@ -113,20 +149,45 @@ const StagePlans = () => {
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                      {StageList.map((item) => (
+                      {stagePlanList.map((item) => (
                         <CTableRow key={item.id}>
-                          <CTableDataCell>{item.title}</CTableDataCell>
-                          <CTableDataCell>{item.day}</CTableDataCell>
-                          <CTableDataCell>{item.start_time}</CTableDataCell>
-                          <CTableDataCell>{item.end_time}</CTableDataCell>
-                          <CTableDataCell>{item.gender}</CTableDataCell>
+                          <CTableDataCell>{item.stage_title}</CTableDataCell>
+                          <CTableDataCell>
+                            {item.day === 6
+                              ? 'شنبه'
+                              : item.day === 0
+                              ? 'یکشنبه'
+                              : item.day === 1
+                              ? 'دوشنبه'
+                              : item.day === 2
+                              ? 'سه شنبه'
+                              : item.day === 3
+                              ? 'چهارشنبه'
+                              : item.day === 4
+                              ? 'پنجشنبه'
+                              : item.day === 5
+                              ? 'جمعه'
+                              : ''}
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            {new Date(item.start_time).getUTCHours().toString().padStart(2, '0')}:
+                            {new Date(item.start_time).getUTCMinutes().toString().padStart(2, '0')}
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            {new Date(item.end_time).getUTCHours().toString().padStart(2, '0')}:
+                            {new Date(item.end_time).getUTCMinutes().toString().padStart(2, '0')}
+                          </CTableDataCell>
+
+                          <CTableDataCell>{item.gender === 'male' ? 'مرد' : 'زن'}</CTableDataCell>
                           <CTableDataCell>
                             <CButton color="primary" onClick={() => setActiveKey(2)}>
                               ویرایش
                             </CButton>
                           </CTableDataCell>
                           <CTableDataCell>
-                            <CButton color="danger">حذف</CButton>
+                            <CButton color="danger" onClick={() => handleDeleteDetails(item.id)}>
+                              حذف
+                            </CButton>
                           </CTableDataCell>
                         </CTableRow>
                       ))}
@@ -147,12 +208,20 @@ const StagePlans = () => {
                 <CCardBody>
                   <CRow>
                     <CCol xs={12} md={2}>
-                      <CFormSelect name="title" placeholder="نام سالن" label="نام سالن">
-                        {StageList.map((item) => (
-                          <option key={item.id} value={item.title}>
-                            {item.title}
-                          </option>
-                        ))}
+                      <CFormSelect
+                        name="stage_id"
+                        placeholder="نام سالن"
+                        label="نام سالن"
+                        onChange={handleInput}
+                      >
+                        {StageList.map(
+                          (item) =>
+                            item && (
+                              <option key={item.id} value={item.id}>
+                                {item.title}
+                              </option>
+                            ),
+                        )}
                       </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={2}>
@@ -169,20 +238,19 @@ const StagePlans = () => {
                         <option value="2">سه شنبه</option>
                         <option value="3">چهارشنبه</option>
                         <option value="4">پنجشنبه</option>
-                        <option value="5">جمعه</option>
                       </CFormSelect>
                     </CCol>
                     <CCol xs={12} md={2}>
                       <p>ساعت شروع</p>
                       <DatePicker
                         name="start_time"
-                        value={formdata.start_time}
+                        value={startDate}
+                        onChange={setStartDate}
                         disableDayPicker
                         format="HH:mm"
                         Calendar={persian}
                         locale={persian_fa}
                         calendarPosition="bottom-right"
-                        onChange={(e) => handleInput(e, 'start_time')}
                         plugins={[<TimePicker hideSeconds key={1} hStep={1} mStep={30} />]}
                       />
                     </CCol>
@@ -190,13 +258,13 @@ const StagePlans = () => {
                       <p>ساعت پایان</p>
                       <DatePicker
                         name="end_time"
-                        value={formdata.end_time}
+                        value={endDate}
+                        onChange={setEndDate}
                         disableDayPicker
                         format="HH:mm"
                         Calendar={persian}
                         locale={persian_fa}
                         calendarPosition="bottom-right"
-                        onChange={(e) => handleInput(e, 'end_time')}
                         plugins={[<TimePicker hideSeconds key={1} hStep={1} mStep={30} />]}
                       />
                     </CCol>
@@ -228,6 +296,16 @@ const StagePlans = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+      />
     </>
   )
 }
