@@ -406,7 +406,7 @@ const CustomerFullLog = () => {
                       <CTableDataCell>{item.TagSerial}</CTableDataCell>
                       <CTableDataCell>
                         {(() => {
-                          const dateTime = new Date(item.EnterTime)
+                          const dateTime = new Date(item.inOutLogEnterTime)
                           const jalaliDate = jalaali.toJalaali(dateTime)
                           const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
                           const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
@@ -419,7 +419,7 @@ const CustomerFullLog = () => {
                             return 'خارج نشده'
                           }
 
-                          const dateTime = new Date(item.ExitTime)
+                          const dateTime = new Date(item.inOutLogExitTime)
                           const jalaliDate = jalaali.toJalaali(dateTime)
                           const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
                           const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
