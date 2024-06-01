@@ -395,8 +395,8 @@ const CustomerFullLog = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell>شماره دستبند </CTableHeaderCell>
-                    <CTableHeaderCell> زمان ورود به بازی </CTableHeaderCell>
-                    <CTableHeaderCell>زمان خروج از بازی </CTableHeaderCell>
+                    {/* <CTableHeaderCell> زمان ورود به بازی </CTableHeaderCell>
+                    <CTableHeaderCell>زمان خروج از بازی </CTableHeaderCell> */}
                     <CTableHeaderCell> مشاهده جزئیات </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -404,28 +404,39 @@ const CustomerFullLog = () => {
                   {customerReport.map((item) => (
                     <CTableRow key={item.id}>
                       <CTableDataCell>{item.TagSerial}</CTableDataCell>
-                      <CTableDataCell>
+                      {/* <CTableDataCell>
                         {(() => {
+                          if (!item.inOutLogEnterTime) {
+                            return 'N/A'
+                          }
+
                           const dateTime = new Date(item.inOutLogEnterTime)
-                          const jalaliDate = jalaali.toJalaali(dateTime)
-                          const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
+                          if (isNaN(dateTime)) {
+                            return 'Invalid date'
+                          }
+
+                          const date = dateTime.toISOString().split('T')[0].replace(/-/g, '/')
                           const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
                           return date + '-' + time
                         })()}
                       </CTableDataCell>
                       <CTableDataCell>
                         {(() => {
-                          if (item.ExitTime === null) {
+                          if (!item.inOutLogExitTime) {
                             return 'خارج نشده'
                           }
 
                           const dateTime = new Date(item.inOutLogExitTime)
+                          if (isNaN(dateTime)) {
+                            return 'Invalid date'
+                          }
+
                           const jalaliDate = jalaali.toJalaali(dateTime)
                           const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
                           const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
                           return date + '-' + time
                         })()}
-                      </CTableDataCell>
+                      </CTableDataCell> */}
                       <CTableDataCell>
                         <CButton
                           color="info"
@@ -489,7 +500,7 @@ const CustomerFullLog = () => {
                       <CTableDataCell>{item.customerTagSerial}</CTableDataCell>
                       <CTableDataCell>
                         {(() => {
-                          const dateTime = new Date(item.customerEnterTime)
+                          const dateTime = new Date(item.inOutLogEnterTime)
                           const jalaliDate = jalaali.toJalaali(dateTime)
                           const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
                           const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
@@ -498,7 +509,7 @@ const CustomerFullLog = () => {
                       </CTableDataCell>
                       <CTableDataCell>
                         {(() => {
-                          const dateTime = new Date(item.customerExitTime)
+                          const dateTime = new Date(item.inOutLogExitTime)
                           const jalaliDate = jalaali.toJalaali(dateTime)
                           const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
                           const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
