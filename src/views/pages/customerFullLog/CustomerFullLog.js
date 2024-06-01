@@ -317,8 +317,8 @@ const CustomerFullLog = () => {
                   <CTableHeaderCell>شماره همراه</CTableHeaderCell>
                   <CTableHeaderCell>نام </CTableHeaderCell>
                   <CTableHeaderCell>نام خانوادگی </CTableHeaderCell>
-                  <CTableHeaderCell> ورود </CTableHeaderCell>
-                  <CTableHeaderCell> خروج</CTableHeaderCell>
+                  <CTableHeaderCell> ورود به مجموعه </CTableHeaderCell>
+                  <CTableHeaderCell> خروج از مجموعه</CTableHeaderCell>
                   <CTableHeaderCell> شارژ ورود (ریال)</CTableHeaderCell>
                   <CTableHeaderCell> مانده شارژ (ریال)</CTableHeaderCell>
                 </CTableRow>
@@ -395,8 +395,8 @@ const CustomerFullLog = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell>شماره دستبند </CTableHeaderCell>
-                    <CTableHeaderCell>زمان ورود </CTableHeaderCell>
-                    <CTableHeaderCell>زمان خروج </CTableHeaderCell>
+                    <CTableHeaderCell> زمان ورود به بازی </CTableHeaderCell>
+                    <CTableHeaderCell>زمان خروج از بازی </CTableHeaderCell>
                     <CTableHeaderCell> مشاهده جزئیات </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -479,7 +479,8 @@ const CustomerFullLog = () => {
                     <CTableHeaderCell>زمان خروج </CTableHeaderCell>
                     <CTableHeaderCell> نام بازی </CTableHeaderCell>
                     <CTableHeaderCell> هزینه در بازی </CTableHeaderCell>
-                    <CTableHeaderCell> تایم اضافی در بازی </CTableHeaderCell>
+                    <CTableHeaderCell>تایم اصلی بازی(دقیقه)</CTableHeaderCell>
+                    <CTableHeaderCell> تایم اضافی سپری شده در بازی(دقیقه)</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -505,7 +506,9 @@ const CustomerFullLog = () => {
                         })()}
                       </CTableDataCell>
                       <CTableDataCell>{item.gameName}</CTableDataCell>
+
                       <CTableDataCell>{item.inOutLogPrice}</CTableDataCell>
+                      <CTableDataCell>{item.gameBaseTime}</CTableDataCell>
                       <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
                     </CTableRow>
                   ))}
