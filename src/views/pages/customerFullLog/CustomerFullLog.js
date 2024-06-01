@@ -496,7 +496,7 @@ const CustomerFullLog = () => {
                     <CTableHeaderCell> هزینه در بازی </CTableHeaderCell>
                     <CTableHeaderCell>هزینه ورودی مجموعه</CTableHeaderCell>
                     <CTableHeaderCell>تایم اصلی بازی(دقیقه)</CTableHeaderCell>
-                    <CTableHeaderCell> تایم اضافی سپری شده در بازی(دقیقه)</CTableHeaderCell>
+                    {/* <CTableHeaderCell> تایم اضافی سپری شده در بازی(دقیقه)</CTableHeaderCell> */}
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
