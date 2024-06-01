@@ -530,7 +530,7 @@ const CustomerFullLog = () => {
                         {item.gateLogPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                       </CTableDataCell>
                       <CTableDataCell>{item.gameBaseTime}</CTableDataCell>
-                      <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
+                      {/* <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell> */}
                     </CTableRow>
                   ))}
                 </CTableBody>
