@@ -395,7 +395,6 @@ const CustomerFullLog = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell>شماره دستبند </CTableHeaderCell>
-                    <CTableHeaderCell>شارژ مصرفی</CTableHeaderCell>
                     {/* <CTableHeaderCell> زمان ورود به بازی </CTableHeaderCell>
                     <CTableHeaderCell>زمان خروج از بازی </CTableHeaderCell> */}
                     <CTableHeaderCell> مشاهده جزئیات </CTableHeaderCell>
@@ -438,9 +437,6 @@ const CustomerFullLog = () => {
                           return date + '-' + time
                         })()}
                       </CTableDataCell> */}
-                      <CTableDataCell>
-                        {item.UseCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      </CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="info"
@@ -494,9 +490,8 @@ const CustomerFullLog = () => {
                     <CTableHeaderCell>زمان خروج </CTableHeaderCell>
                     <CTableHeaderCell> نام بازی </CTableHeaderCell>
                     <CTableHeaderCell> هزینه در بازی </CTableHeaderCell>
-                    <CTableHeaderCell>هزینه ورودی مجموعه</CTableHeaderCell>
                     <CTableHeaderCell>تایم اصلی بازی(دقیقه)</CTableHeaderCell>
-                    {/* <CTableHeaderCell> تایم اضافی سپری شده در بازی(دقیقه)</CTableHeaderCell> */}
+                    <CTableHeaderCell> تایم اضافی سپری شده در بازی(دقیقه)</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -523,14 +518,9 @@ const CustomerFullLog = () => {
                       </CTableDataCell>
                       <CTableDataCell>{item.gameName}</CTableDataCell>
 
-                      <CTableDataCell>
-                        {item.inOutLogPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        {item.gateLogPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      </CTableDataCell>
+                      <CTableDataCell>{item.inOutLogPrice}</CTableDataCell>
                       <CTableDataCell>{item.gameBaseTime}</CTableDataCell>
-                      {/* <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell> */}
+                      <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>
