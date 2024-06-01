@@ -397,6 +397,7 @@ const CustomerFullLog = () => {
                     <CTableHeaderCell>شماره دستبند </CTableHeaderCell>
                     {/* <CTableHeaderCell> زمان ورود به بازی </CTableHeaderCell>
                     <CTableHeaderCell>زمان خروج از بازی </CTableHeaderCell> */}
+                    <CTableHeaderCell>شارژ مصرفی دستبند</CTableHeaderCell>
                     <CTableHeaderCell> مشاهده جزئیات </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -437,6 +438,9 @@ const CustomerFullLog = () => {
                           return date + '-' + time
                         })()}
                       </CTableDataCell> */}
+                      <CTableDataCell>
+                        {item.UseCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      </CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="info"
