@@ -36,27 +36,6 @@ const CustomerFinanceLog = () => {
     phone: '',
   })
 
-  const handleGetReport = () => {
-    AxiosInstance.get(
-      `/users/get-report/${customer.id}?start_date=${startDate}&end_date=${endDate}`,
-    )
-      .then((res) => {
-        if (res.data.data.report.length === 0) {
-          toast.error('گزارشی برای این بازه زمانی یافت نشد')
-        }
-        setReport(res.data.data.report)
-        setStartDate(res.data.data.start_date)
-        setEndDate(res.data.data.end_date)
-        console.log(res.data.data.report)
-        console.log(startDate)
-        console.log(endDate)
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message)
-        console.log(error.response.data.message)
-      })
-  }
-
   const handleStartDate = (newDate) => {
     newDate = new Date(newDate)
     newDate.setHours(0, 0, 0, 0)
@@ -101,13 +80,16 @@ const CustomerFinanceLog = () => {
   const fetchDataWithPhone = () => {
     AxiosInstance.get(`/users/phone/${formdata.phone}`)
       .then((res) => {
-        const customerData = res.data.data.user
-        console.log(customerData)
-        setFormdata((prev) => ({
-          ...prev,
-          ...customerData,
-        }))
-        localStorage.setItem('customer', JSON.stringify(customerData))
+        setCustomer(res.data.data.user)
+        console.log(customer)
+        setFormdata({
+          firstname: res.data.data.user.firstname,
+          lastname: res.data.data.user.lastname,
+          national_code: res.data.data.user.national_code,
+          phone: res.data.data.user.phone,
+          card_number: res.data.data.user.card_number,
+        })
+        console.log(res.data.data.user)
       })
       .catch((err) => {
         console.log(err)
@@ -118,16 +100,41 @@ const CustomerFinanceLog = () => {
   const fetchDataWithCardNumber = () => {
     AxiosInstance.get(`/users/card-number/${card_number}`)
       .then((res) => {
-        const customerData = res.data.data.user
-        console.log(customerData)
-        setFormdata((prev) => ({
-          ...prev,
-          ...customerData,
-        }))
+        setCustomer(res.data.data.user)
+        console.log(customer)
+        setFormdata({
+          firstname: res.data.data.user.firstname,
+          lastname: res.data.data.user.lastname,
+          national_code: res.data.data.user.national_code,
+          phone: res.data.data.user.phone,
+          card_number: res.data.data.user.card_number,
+        })
+        console.log(res.data.data.user)
       })
       .catch((err) => {
         console.log(err)
         toast.error('کاربری با این شماره کارت وجود ندارد')
+      })
+  }
+
+  const handleGetReport = () => {
+    AxiosInstance.get(
+      `/users/get-report/${customer.id}?start_date=${startDate}&end_date=${endDate}`,
+    )
+      .then((res) => {
+        if (res.data.data.report.length === 0) {
+          toast.error('گزارشی برای این بازه زمانی یافت نشد')
+        }
+        setReport(res.data.data.report)
+        setStartDate(res.data.data.start_date)
+        setEndDate(res.data.data.end_date)
+        console.log(res.data.data.report)
+        console.log(startDate)
+        console.log(endDate)
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message)
+        console.log(error.response.data.message)
       })
   }
 
@@ -265,8 +272,8 @@ const CustomerFinanceLog = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {report.map((item) => (
-                  <CTableRow key={item.id}>
+                {report.map((item, index) => (
+                  <CTableRow key={item.id ? item.id.toString() : index.toString()}>
                     <CTableDataCell>
                       {item.amount
                         ? item.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
