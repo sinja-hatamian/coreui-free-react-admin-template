@@ -107,25 +107,25 @@ const GiftCard = () => {
               result.push(card)
             }
             console.log(result)
-            AxiosInstance.post('/gift-cards/upload-csv', { cards: result })
-              .then((res) => {
-                console.log(res)
-                setCard([
-                  ...card.filter((item) =>
-                    res.data.data.gift_cards.find((newItem) => newItem.id !== item.id),
-                  ),
-                  ...res.data.data.gift_cards,
-                ])
-              })
-              .catch((err) => {
-                console.log(err)
-                toast.error(
-                  err.response.data.errors
-                    ? err.response.data.errors[0].msg
-                    : err.response.data.message,
-                )
-              })
           }
+          AxiosInstance.post('/gift-cards/upload-csv', { cards: result })
+            .then((res) => {
+              console.log(res)
+              setCard([
+                ...card.filter((item) =>
+                  res.data.data.gift_cards.find((newItem) => newItem.id !== item.id),
+                ),
+                ...res.data.data.gift_cards,
+              ])
+            })
+            .catch((err) => {
+              console.log(err)
+              toast.error(
+                err.response.data.errors
+                  ? err.response.data.errors[0].msg
+                  : err.response.data.message,
+              )
+            })
         }
       }
       toast.success('فایل با موفقیت آپلود شد')
