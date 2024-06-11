@@ -92,7 +92,7 @@ const GiftCard = () => {
         const lines = data.split(/\r\n|\n/)
         if (lines && lines.length > 0) {
           const result = []
-          for (let i = 1; i < lines.length; i++) {
+          for (let i = 1; i < lines.length - 1; i++) {
             const obj = lines[i].split(',')
             console.log(i)
             console.log(lines[i])
