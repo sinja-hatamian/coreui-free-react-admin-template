@@ -291,9 +291,11 @@ const CustomerFinanceLog = () => {
                     </CTableDataCell>
                     <CTableDataCell>
                       {item.created_at
-                        ? new Date(item.created_at).getHours() +
+                        ? new Date(item.created_at).getUTCHours().toString().padStart(2, '0') +
                           ':' +
-                          new Date(item.created_at).getMinutes()
+                          new Date(item.created_at).getUTCMinutes().toString().padStart(2, '0') +
+                          ':' +
+                          new Date(item.created_at).getUTCSeconds().toString().padStart(2, '0')
                         : '-'}
                     </CTableDataCell>
                   </CTableRow>
