@@ -28,17 +28,17 @@ const ChargCard = () => {
     bank_id: '',
     card_number: '',
     transaction_id: '',
-    description: '',
   }
 
   const [cardForm, setCardForm] = useState([initialCardForm])
+  const [description, setDescription] = useState('')
   const [selectedTypes, setSelectedTypes] = useState([''])
   const [selectCharge, setSelectCharge] = useState([''])
   const [banks, setBanks] = useState([])
   const [credit, setCredit] = useState([])
   const [card, setCard] = useState({})
   const [isButtonDisabled, setIsButtonDisabled] = useState(false) // State for disabling button
-  const [isLoading, setIsLoading] = useState(false) // State for loading
+  const [isLoading, setIsLoading] = useState(false) // State for loading spinner
 
   const handleInput = (e, index) => {
     const { name, value } = e.target
@@ -56,14 +56,12 @@ const ChargCard = () => {
         [name]: rawNumber, // Update the specific field
       }
     }
-    if (name === 'description') {
-      updatedCardForms[index] = {
-        ...updatedCardForms[index], // Copy the existing object
-
-        [name]: value, // Update the specific field
-      }
-    }
     setCardForm(updatedCardForms)
+  }
+
+  const handleInputDescription = (e) => {
+    const { value } = e.target
+    setDescription(value)
   }
 
   const handleTypeChange = (e, index) => {
@@ -153,15 +151,20 @@ const ChargCard = () => {
       AxiosInstance.post('/cards/charge', {
         payments: [
           ...cardForm.map((item) => {
-            Object.keys(item).forEach((key) => {
-              item[key] = item[key].replace(/[^0-9]/g, '')
-              if (item[key] === '') {
-                delete item[key]
+            const sanitizedItem = { ...item } // Clone the item to avoid mutating the original state
+            Object.keys(sanitizedItem).forEach((key) => {
+              if (key !== 'description') {
+                // Exclude description from numeric sanitization
+                sanitizedItem[key] = sanitizedItem[key].replace(/[^0-9]/g, '')
+                if (sanitizedItem[key] === '') {
+                  delete sanitizedItem[key]
+                }
               }
             })
-            return item
+            return sanitizedItem
           }),
         ],
+        description: description,
         user_id: customer.id,
       })
         .then((res) => {
@@ -171,6 +174,7 @@ const ChargCard = () => {
           //clear form
           setCardForm([initialCardForm])
           setSelectedTypes([''])
+          console.log(description)
         })
         .catch((err) => {
           console.log(err)
@@ -324,8 +328,8 @@ const ChargCard = () => {
                       label="توضیحات"
                       name="description"
                       aria-label="description"
-                      onChange={(e) => handleInput(e, index)}
-                      value={cardForm.description}
+                      onChange={handleInputDescription}
+                      value={description}
                       locale="fa-IR"
                     />
                   </CCol>

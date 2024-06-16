@@ -46,6 +46,7 @@ const ChargeForm = () => {
       .then((res) => {
         console.log(res.data)
         setChargeForm(res.data.data.payment_histories)
+        console.log(res.data.data.payment_histories.description)
         setPaymentHistories({
           pos_amounts: res.data.data.pos_amounts,
           gift_amount: res.data.data.gift_amount,
@@ -220,9 +221,11 @@ const ChargeForm = () => {
                           ? 'پوز'
                           : item.type == '3'
                           ? ' نقدی '
-                          : item.type == '6'
-                          ? 'هدیه'
-                          : ' رایگان '}
+                          : item.type == '5'
+                          ? 'رایگان'
+                          : item.type == '4'
+                          ? 'کارت هدیه '
+                          : ' شارژ هدیه'}
                       </CTableDataCell>
                       <CTableDataCell>
                         {item.bank_title == null ? '-' : item.bank_title}
