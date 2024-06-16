@@ -295,7 +295,6 @@ const GiftCard = () => {
                     <CCol md={6}>
                       <div>تاریخ انقضا</div>
                       <DatePicker
-                        value={value}
                         onChange={handleDate}
                         calendarPosition="bottom-right"
                         inputPlaceholder=" تاریخ انقضا"
