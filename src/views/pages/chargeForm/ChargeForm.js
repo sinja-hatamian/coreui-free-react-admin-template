@@ -329,7 +329,6 @@ const ChargeForm = () => {
         newestOnTop
         rtl
       />
-      \
     </>
   )
 }
