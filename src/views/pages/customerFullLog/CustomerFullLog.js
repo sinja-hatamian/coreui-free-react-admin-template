@@ -326,7 +326,12 @@ const CustomerFullLog = () => {
               </CTableHead>
               <CTableBody>
                 {report.map((item) => (
-                  <CTableRow key={item.id}>
+                  <CTableRow
+                    key={item.id}
+                    style={{
+                      color: item.RemainCharge < 0 ? 'red' : 'inherit',
+                    }}
+                  >
                     <CTableDataCell>{item.national_code ?? 'ثبت نشده'}</CTableDataCell>
                     <CTableDataCell>{item.phone ?? 'ثبت نشده'}</CTableDataCell>
                     <CTableDataCell>{item.firstname}</CTableDataCell>
