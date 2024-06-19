@@ -6,6 +6,8 @@ import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import jalaali from 'jalaali-js'
+import moment from 'moment-timezone'
+
 import {
   CCol,
   CRow,
@@ -333,10 +335,20 @@ const CustomerFullLog = () => {
                     <CTableDataCell>
                       {(() => {
                         const dateTime = new Date(item.EnterTime)
-                        const jalaliDate = jalaali.toJalaali(dateTime)
+                        // Adjust to Tehran time (UTC+3:30)
+                        const tehranOffset = 3.5 * 60 * 60 * 1000 // +3:30 in milliseconds
+                        const tehranDate = new Date(dateTime.getTime() - tehranOffset)
+                        const jalaliDate = jalaali.toJalaali(tehranDate)
+                        const jalaliTime = `${tehranDate
+                          .getHours()
+                          .toString()
+                          .padStart('2', '0')}:${tehranDate
+                          .getMinutes()
+                          .toString()
+                          .padStart('2', '0')}`
                         const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
-                        const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
-                        return date + '-' + time
+
+                        return date + '-' + jalaliTime
                       })()}
                     </CTableDataCell>
                     <CTableDataCell>
@@ -346,10 +358,20 @@ const CustomerFullLog = () => {
                         }
 
                         const dateTime = new Date(item.ExitTime)
-                        const jalaliDate = jalaali.toJalaali(dateTime)
+                        // Adjust to Tehran time (UTC+3:30)
+                        const tehranOffset = 3.5 * 60 * 60 * 1000 // +3:30 in milliseconds
+                        const tehranDate = new Date(dateTime.getTime() - tehranOffset)
+                        const jalaliDate = jalaali.toJalaali(tehranDate)
+                        const jalaliTime = `${tehranDate
+                          .getHours()
+                          .toString()
+                          .padStart('2', '0')}:${tehranDate
+                          .getMinutes()
+                          .toString()
+                          .padStart('2', '0')}`
                         const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
-                        const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
-                        return date + '-' + time
+
+                        return date + '-' + jalaliTime
                       })()}
                     </CTableDataCell>
                     <CTableDataCell>
