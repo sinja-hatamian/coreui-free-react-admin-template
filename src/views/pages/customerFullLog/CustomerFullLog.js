@@ -364,13 +364,18 @@ const CustomerFullLog = () => {
                         const jalaliTime = `${tehranDate
                           .getHours()
                           .toString()
-                          .padStart('2', '0')}:${tehranDate
-                          .getMinutes()
-                          .toString()
-                          .padStart('2', '0')}`
+                          .padStart(2, '0')}:${tehranDate.getMinutes().toString().padStart(2, '0')}`
                         const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
 
-                        return date + '-' + jalaliTime
+                        // Check if exit time is 00:30
+                        const isExitTime0030 =
+                          tehranDate.getHours() === 0 && tehranDate.getMinutes() === 30
+
+                        return (
+                          <span style={{ color: isExitTime0030 ? 'red' : 'black' }}>
+                            {date + '-' + jalaliTime}
+                          </span>
+                        )
                       })()}
                     </CTableDataCell>
                     <CTableDataCell>
