@@ -6,7 +6,6 @@ import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import jalaali from 'jalaali-js'
-import './customerFullLog.css'
 
 import {
   CCol,
@@ -327,13 +326,7 @@ const CustomerFullLog = () => {
               </CTableHead>
               <CTableBody>
                 {report.map((item) => (
-                  <CTableRow
-                    key={item.id}
-                    // style={{
-                    //   color: item.RemainCharge < 0 ? 'red' : 'inherit',
-                    // }}
-                    className={item.RemainCharge < 0 ? 'red-text' : ''}
-                  >
+                  <CTableRow key={item.id}>
                     <CTableDataCell>{item.national_code ?? 'ثبت نشده'}</CTableDataCell>
                     <CTableDataCell>{item.phone ?? 'ثبت نشده'}</CTableDataCell>
                     <CTableDataCell>{item.firstname}</CTableDataCell>
@@ -383,7 +376,11 @@ const CustomerFullLog = () => {
                     <CTableDataCell>
                       {item.AllCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     </CTableDataCell>
-                    <CTableDataCell>
+                    <CTableDataCell
+                      style={{
+                        color: item.RemainCharge < 0 ? 'red' : 'green',
+                      }}
+                    >
                       {item.RemainCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     </CTableDataCell>
                     <CTableDataCell>
