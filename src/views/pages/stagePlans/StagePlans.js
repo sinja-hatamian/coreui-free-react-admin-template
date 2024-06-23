@@ -74,8 +74,6 @@ const StagePlans = () => {
 
   const getDayName = (day) => {
     switch (day) {
-      case 6:
-        return 'شنبه'
       case 0:
         return 'یکشنبه'
       case 1:
@@ -88,6 +86,8 @@ const StagePlans = () => {
         return 'پنجشنبه'
       case 5:
         return 'جمعه'
+      case 6:
+        return 'شنبه'
       default:
         return ''
     }
