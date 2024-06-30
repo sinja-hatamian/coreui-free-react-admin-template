@@ -36,7 +36,6 @@ const Login = () => {
     AxiosInstance.post('/auth/login', formdata)
       .then((res) => {
         console.log(res.data.data.manager)
-        // alert('ورود با موفقیت انجام شد')
         localStorage.setItem('token', res.data.data.token)
         localStorage.setItem('manager', JSON.stringify(res.data.data.manager))
         localStorage.removeItem('customer')

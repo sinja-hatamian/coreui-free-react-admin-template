@@ -23,6 +23,8 @@ import {
   CTabContent,
   CTabPane,
   CFormSelect,
+  CFormCheck,
+  CFormLabel,
 } from '@coreui/react'
 
 const OperatorReg = () => {
@@ -39,7 +41,7 @@ const OperatorReg = () => {
     accounting_code: '',
     is_superadmin: false,
     status: '1',
-    roles: [''],
+    roles: [],
   })
 
   useEffect(() => {
@@ -63,14 +65,32 @@ const OperatorReg = () => {
   }, [])
 
   const handleInputCahnge = (e) => {
-    const { name, value } = e.target
-    console.log(name, value)
+    const { name, value, checked, type } = e.target
     if (name === 'roles') {
-      setFormdata((prev) => ({ ...prev, roles: [value] }))
+      setFormdata((currentFormData) => {
+        if (checked) {
+          return {
+            ...currentFormData,
+            roles: [...currentFormData.roles, value],
+          }
+        } else {
+          return {
+            ...currentFormData,
+            roles: currentFormData.roles.filter((role) => role !== value),
+          }
+        }
+      })
+      // } else if (type === 'checkbox') {
+      //   setFormdata((currentFormData) => ({
+      //     ...currentFormData,
+      //     [name]: checked,
+      //   }))
     } else {
-      setFormdata((prev) => ({ ...prev, [name]: value }))
+      setFormdata((currentFormData) => ({
+        ...currentFormData,
+        [name]: value,
+      }))
     }
-    console.log(formdata)
   }
 
   const handleSaveOperator = () => {
@@ -97,7 +117,6 @@ const OperatorReg = () => {
         console.log(err)
         toast.error(err.response.data.errors[0].msg)
       })
-    console.log(formdata)
   }
 
   return (
@@ -147,9 +166,8 @@ const OperatorReg = () => {
                           <CTableDataCell>{item.role}</CTableDataCell>
                           <CTableDataCell>
                             <CButton
-                              color="primary"
+                              color="info"
                               onClick={() => {
-                                console.log(item)
                                 setFormdata({
                                   id: item.id,
                                   national_code: item.national_code,
@@ -157,10 +175,11 @@ const OperatorReg = () => {
                                   lastname: item.lastname,
                                   phone: item.phone,
                                   username: item.username,
-                                  is_superadmin: item.is_superadmin,
+                                  password: item.password,
                                   accounting_code: item.accounting_code,
+                                  is_superadmin: item.is_superadmin,
                                   status: item.status,
-                                  roles: item.roles,
+                                  roles: item.roles?.map((role) => role.id.toString()) ?? [],
                                 })
                                 setActivekey(2)
                               }}
@@ -271,7 +290,7 @@ const OperatorReg = () => {
                       </CFormSelect>
                     </CCol>
                     <CCol md={6}>
-                      <CFormSelect
+                      {/* <CFormSelect
                         name="roles"
                         label="نقش"
                         value={formdata.roles}
@@ -285,7 +304,20 @@ const OperatorReg = () => {
                             </option>
                           )
                         })}
-                      </CFormSelect>
+                      </CFormSelect> */}
+                      <CFormLabel>نقش</CFormLabel>
+                      {roles.map((role) => (
+                        <CFormCheck
+                          key={role.id}
+                          type="checkbox"
+                          id={role.id}
+                          label={role.name}
+                          name="roles"
+                          value={role.id}
+                          checked={formdata.roles.includes(role.id.toString())}
+                          onChange={handleInputCahnge}
+                        />
+                      ))}
                     </CCol>
                     <CCol md={6}>
                       <CFormSelect
