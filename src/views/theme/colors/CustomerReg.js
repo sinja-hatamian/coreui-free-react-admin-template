@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import ChargCard from 'src/views/pages/chargCard/ChargCard'
 import AddAttendant from 'src/views/pages/addAttendant/AddAttendant'
 import InfoCard from 'src/views/pages/infoCard/InfoCard'
+import Decrese from 'src/views/pages/decrese/Decrese'
 import DatePicker, { Calendar } from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
@@ -249,6 +250,11 @@ const CustomerReg = () => {
     }
   }
 
+  const managerRoles = JSON.parse(localStorage.getItem('manager')).roles
+  const targetRoles = ['cashier', 'supervisor']
+  const isEqual = JSON.stringify(managerRoles) === JSON.stringify(targetRoles)
+  const isSuperAdmin = JSON.parse(localStorage.getItem('manager')).is_superadmin
+
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -273,6 +279,13 @@ const CustomerReg = () => {
             تخصیص دستبند
           </CNavLink>
         </CNavItem>
+        {isEqual || isSuperAdmin ? (
+          <CNavItem>
+            <CNavLink active={activeKey === 4} onClick={() => setActiveKey(4)}>
+              مدیریت اعتبار
+            </CNavLink>
+          </CNavItem>
+        ) : null}
       </CNav>
       <CTabContent>
         <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 1}>
@@ -511,6 +524,10 @@ const CustomerReg = () => {
         </CTabPane>
         <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 6}>
           {activeKey === 6 ? <AddAttendant /> : null}
+        </CTabPane>
+
+        <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 4}>
+          {activeKey === 4 ? <Decrese /> : null}
         </CTabPane>
       </CTabContent>
       <ToastContainer
