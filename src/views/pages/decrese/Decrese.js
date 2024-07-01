@@ -61,7 +61,9 @@ const Decrese = () => {
     AxiosInstance.post('/cards/decrease', formData)
       .then((res) => {
         toast.success('موجودی کارت کاهش یافت')
-        console.log(formData)
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000)
       })
       .catch((err) => {
         console.log(err)
