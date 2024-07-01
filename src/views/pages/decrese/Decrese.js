@@ -8,7 +8,6 @@ const Decrese = () => {
   const [formData, setFormData] = useState({
     user_id: '',
     amount: '',
-    description: '',
   })
   const [customerData, setCustomerData] = useState({
     firstname: '',
@@ -16,6 +15,7 @@ const Decrese = () => {
   })
   const [nationalCode, setNationalCode] = useState('')
   const [card, setCard] = useState({})
+  const [description, setDescription] = useState('')
 
   const handleInput = (e) => {
     const rawNumber = e.target.value
@@ -26,20 +26,13 @@ const Decrese = () => {
       [name]: value,
     })
   }
-
-  // useEffect(() => {
-  //   if (localStorage.getItem('customer')) {
-  //     const customer = JSON.parse(localStorage.getItem('customer'))
-  //     AxiosInstance.get(`/cards/${customer.id}`)
-  //       .then((res) => {
-  //         setCard(res.data.data.card)
-  //       })
-  //       .catch((err) => {
-  //         console.log(err)
-  //         toast.error('خطا در دریافت اطلاعات کارت')
-  //       })
-  //   }
-  // }, [])
+  const handleDescription = (e) => {
+    setDescription(e.target.value)
+    setFormData({
+      ...formData,
+      description: e.target.value,
+    })
+  }
 
   const fetchUser = () => {
     AxiosInstance.get(`/users/national-code/${nationalCode}`)
@@ -67,8 +60,8 @@ const Decrese = () => {
   const handleDecrese = () => {
     AxiosInstance.post('/cards/decrease', formData)
       .then((res) => {
-        console.log(res)
-        toast.success('موفقیت آمیز بود')
+        toast.success('موجودی کارت کاهش یافت')
+        console.log(formData)
       })
       .catch((err) => {
         console.log(err)
@@ -123,7 +116,6 @@ const Decrese = () => {
                   <p>
                     موجودی کارت: {card.balance ? numberWithCommas(card.balance) : 0} ریال
                     <br />
-                    شماره کارت: {card.number}
                   </p>
                 </div>
               </CCol>
@@ -138,7 +130,12 @@ const Decrese = () => {
                 />
               </CCol>
               <CCol md="6" className="mt-3">
-                <CFormInput name="description" placeholder="توضیحات" onChange={handleInput} />
+                <CFormInput
+                  name="description"
+                  placeholder="توضیحات"
+                  onChange={handleDescription}
+                  value={description}
+                />
               </CCol>
               <CCol md="6" className="mt-3">
                 <CButton color="primary" onClick={handleDecrese}>

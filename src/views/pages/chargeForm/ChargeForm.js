@@ -225,7 +225,11 @@ const ChargeForm = () => {
                           ? 'رایگان'
                           : item.type == '4'
                           ? 'کارت هدیه '
-                          : ' شارژ هدیه'}
+                          : item.type == '6'
+                          ? ' شارژ هدیه'
+                          : item.type == '7'
+                          ? '  کسر از حساب'
+                          : 'نامشخص'}
                       </CTableDataCell>
                       <CTableDataCell>
                         {item.bank_title == null ? '-' : item.bank_title}
