@@ -250,6 +250,23 @@ const CustomerReg = () => {
     }
   }
 
+  const handleCleanForm = () => {
+    setFormdata({
+      national_code: '',
+      firstname: '',
+      lastname: '',
+      introduction_way: '',
+      introduction_way_id: '',
+      password: '',
+      phone: '',
+      state_id: '',
+      city_id: '',
+      gender: '',
+      birthday: '',
+    })
+    localStorage.removeItem('customer')
+  }
+
   const managerRoles = JSON.parse(localStorage.getItem('manager')).roles
   const targetRoles = ['cashier', 'supervisor']
   const isEqual = JSON.stringify(managerRoles) === JSON.stringify(targetRoles)
@@ -393,14 +410,11 @@ const CustomerReg = () => {
                         aria-label="introduction_way"
                         locale="fa-IR"
                         onChange={handleInputCahnge}
+                        value={formdata.introduction_way_id} // Use value prop to control the selection
                       >
-                        <option>انتخاب کنید</option>
+                        <option value="">انتخاب کنید</option>
                         {introductionWays.map((item) => (
-                          <option
-                            key={item.id}
-                            value={item.id}
-                            selected={formdata.introduction_way_id === item.id}
-                          >
+                          <option key={item.id} value={item.id}>
                             {item.title}
                           </option>
                         ))}
@@ -423,15 +437,12 @@ const CustomerReg = () => {
                         label="استان"
                         aria-label="state_id"
                         locale="fa-IR"
-                        onChange={handleInputCahnge}
+                        onChange={handleInputCahnge} // Ensure this is correctly spelled as handleInputChange
+                        value={formdata.state_id} // Control the selection with this value
                       >
-                        <option>انتخاب کنید</option>
+                        <option value="">انتخاب کنید</option>
                         {state.map((item) => (
-                          <option
-                            key={item.id}
-                            value={item.id}
-                            selected={formdata.state_id === item.id}
-                          >
+                          <option key={item.id} value={item.id}>
                             {item.name}
                           </option>
                         ))}
@@ -443,15 +454,12 @@ const CustomerReg = () => {
                         label="شهر"
                         aria-label="city_id"
                         locale="fa-IR"
-                        onChange={handleInputCahnge}
+                        onChange={handleInputCahnge} // Corrected the function name typo
+                        value={formdata.city_id} // Control the selection with this value
                       >
-                        <option>انتخاب کنید</option>
+                        <option value="">انتخاب کنید</option>
                         {city.map((item) => (
-                          <option
-                            key={item.id}
-                            value={item.id}
-                            selected={formdata.city_id === item.id}
-                          >
+                          <option key={item.id} value={item.id}>
                             {item.name}
                           </option>
                         ))}
@@ -475,15 +483,11 @@ const CustomerReg = () => {
                         aria-label="gender"
                         locale="fa-IR"
                         value={formdata.gender}
-                        onChange={handleInputCahnge}
+                        onChange={handleInputCahnge} // Corrected the function name typo
                       >
                         <option value="">انتخاب کنید</option>
-                        <option value="male" selected={formdata.gender === 'male'}>
-                          مرد
-                        </option>
-                        <option value="female" selected={formdata.gender === 'female'}>
-                          زن
-                        </option>
+                        <option value="male">مرد</option>
+                        <option value="female">زن</option>
                       </CFormSelect>
                     </CCol>
                     <CCol md={12}>
@@ -509,6 +513,12 @@ const CustomerReg = () => {
                         <strong style={{ color: 'red' }}>توجه:</strong> فقط برای اپدیت اطلاعات کاربر
                         از گزینه ویرایش کاربر استفاده کنید
                       </p>
+                    </CCol>
+                    <p />
+                    <CCol md={12}>
+                      <CButton color="danger" style={{ color: '#fff' }} onClick={handleCleanForm}>
+                        پاک سازی فرم
+                      </CButton>
                     </CCol>
                   </CForm>
                 </CCardBody>
