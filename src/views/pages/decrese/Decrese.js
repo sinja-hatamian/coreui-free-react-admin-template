@@ -3,7 +3,6 @@ import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { CRow, CCol, CCardHeader, CCardBody, CCard, CFormInput, CButton } from '@coreui/react'
-import { Axios } from 'axios'
 
 const Decrese = () => {
   const [formData, setFormData] = useState({
