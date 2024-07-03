@@ -218,6 +218,12 @@ const Decrese = () => {
                   value={numberWithCommas(formData.amount)}
                 />
               </CCol>
+              <p />
+              {formData.type === '1' ? (
+                <div>
+                  <strong>در حالت متفرقه توضیحات الزامی می‌باشد</strong>
+                </div>
+              ) : null}
               <CCol md="6" className="mt-3">
                 <CFormInput
                   name="description"
