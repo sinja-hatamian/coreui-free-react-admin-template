@@ -1,13 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { CRow, CCol, CCardHeader, CCardBody, CCard, CFormInput, CButton } from '@coreui/react'
+import {
+  CRow,
+  CCol,
+  CCardHeader,
+  CCardBody,
+  CCard,
+  CFormInput,
+  CButton,
+  CFormSelect,
+} from '@coreui/react'
 
 const Decrese = () => {
   const [formData, setFormData] = useState({
     user_id: '',
     amount: '',
+    type: '',
+    item_id: '',
   })
   const [customerData, setCustomerData] = useState({
     firstname: '',
@@ -16,6 +27,18 @@ const Decrese = () => {
   const [nationalCode, setNationalCode] = useState('')
   const [card, setCard] = useState({})
   const [description, setDescription] = useState('')
+  const [games, setGames] = useState([])
+
+  useEffect(() => {
+    AxiosInstance.get('/games')
+      .then((res) => {
+        setGames(res.data.data.games)
+        console.log(res.data.data.games)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   const handleInput = (e) => {
     const rawNumber = e.target.value
@@ -61,9 +84,10 @@ const Decrese = () => {
     AxiosInstance.post('/cards/decrease', formData)
       .then((res) => {
         toast.success('موجودی کارت کاهش یافت')
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000)
+        // setTimeout(() => {
+        //   window.location.reload()
+        // }, 2000)
+        console.log(res)
       })
       .catch((err) => {
         console.log(err)
@@ -124,6 +148,45 @@ const Decrese = () => {
 
               {/* Transaction Section */}
               <CCol md="6" className="mt-3">
+                <CFormSelect
+                  name="type"
+                  onChange={handleInput}
+                  value={formData.type}
+                  placeholder="نوع تراکنش"
+                >
+                  <option value="0">انتخاب کنید</option>
+                  <option value="1">متفرقه</option>
+                  <option value="2">بازی</option>
+                  <option value="3"> گیت</option>
+                </CFormSelect>
+              </CCol>
+
+              {formData.type === '2' && (
+                <CCol md="6" className="mt-3">
+                  <CFormSelect
+                    name="item_id"
+                    onChange={handleInput}
+                    // value={formData.item_id}
+                    placeholder="بازی"
+                  >
+                    <option value="0">انتخاب کنید</option>
+                    {games.map((game) => (
+                      <option key={game.id} value={game.item_id}>
+                        {game.Name}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </CCol>
+              )}
+
+              <CCol md="6" className="mt-3">
+                {formData.type === '2' || formData.type === '3' ? (
+                  <div>
+                    <strong>مبلغ:</strong>
+                    <p>در حالت بازی و گیت به جای مبلغ دقیقه ثبت شود</p>
+                  </div>
+                ) : null}
+
                 <CFormInput
                   name="amount"
                   placeholder="مبلغ"
