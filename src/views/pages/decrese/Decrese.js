@@ -92,10 +92,9 @@ const Decrese = () => {
     AxiosInstance.post('/cards/decrease', formData)
       .then((res) => {
         toast.success('موجودی کارت کاهش یافت')
-        // setTimeout(() => {
-        //   window.location.reload()
-        // }, 2000)
-        console.log(formData)
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000)
         console.log(res)
       })
       .catch((err) => {
@@ -172,12 +171,7 @@ const Decrese = () => {
 
               {formData.type === '2' && (
                 <CCol md="6" className="mt-3">
-                  <CFormSelect
-                    name="item_id"
-                    onChange={handleInput}
-                    // value={formData.item_id}
-                    placeholder="بازی"
-                  >
+                  <CFormSelect name="item_id" onChange={handleInput} placeholder="بازی">
                     <option value="0">انتخاب بازی</option>
                     {games.map((game) => (
                       <option key={game.id} value={game.id}>
@@ -189,12 +183,7 @@ const Decrese = () => {
               )}
               {formData.type === '3' && (
                 <CCol md="6" className="mt-3">
-                  <CFormSelect
-                    name="item_id"
-                    onChange={handleInput}
-                    // value={formData.item_id}
-                    placeholder="گیت"
-                  >
+                  <CFormSelect name="item_id" onChange={handleInput} placeholder="گیت">
                     <option value="0">انتخاب گیت</option>
                     {gates.map((gate) => (
                       <option key={gate.id} value={gate.id}>
