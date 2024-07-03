@@ -163,7 +163,7 @@ const Decrese = () => {
                   value={formData.type}
                   placeholder="نوع تراکنش"
                 >
-                  <option value="0">انتخاب کنید</option>
+                  <option value="0">حالت کسر مبلغ را انتخاب کنید </option>
                   <option value="1">متفرقه</option>
                   <option value="2">بازی</option>
                   <option value="3"> گیت</option>
