@@ -205,16 +205,26 @@ const Decrese = () => {
                 </CCol>
               )}
               <CCol md="6" className="mt-3">
-                {formData.type === '2' || formData.type === '3' ? (
+                {formData.type === '2' ? (
                   <div>
-                    <strong>مبلغ:</strong>
-                    <p>در حالت بازی و گیت به جای مبلغ دقیقه ثبت شود</p>
+                    <strong>در حالت بازی به جای مبلغ دقیقه ثبت شود</strong>
+                  </div>
+                ) : formData.type === '3' ? (
+                  <div>
+                    <strong>در حالت گیت به جای مبلغ تعداد افراد ثبت شود</strong>
                   </div>
                 ) : null}
+                <p />
 
                 <CFormInput
                   name="amount"
-                  placeholder="مبلغ"
+                  placeholder={
+                    formData.type === '2'
+                      ? 'دقیقه'
+                      : formData.type === '3'
+                      ? 'تعداد افراد'
+                      : 'مبلغ به ریال'
+                  }
                   onChange={handleInput}
                   value={numberWithCommas(formData.amount)}
                 />
