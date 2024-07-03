@@ -28,12 +28,20 @@ const Decrese = () => {
   const [card, setCard] = useState({})
   const [description, setDescription] = useState('')
   const [games, setGames] = useState([])
+  const [gates, setGates] = useState([])
 
   useEffect(() => {
     AxiosInstance.get('/games')
       .then((res) => {
         setGames(res.data.data.games)
-        console.log(res.data.data.games)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    AxiosInstance.get('/gates')
+      .then((res) => {
+        setGates(res.data.data.gates)
       })
       .catch((err) => {
         console.log(err)
@@ -87,6 +95,7 @@ const Decrese = () => {
         // setTimeout(() => {
         //   window.location.reload()
         // }, 2000)
+        console.log(formData)
         console.log(res)
       })
       .catch((err) => {
@@ -169,16 +178,32 @@ const Decrese = () => {
                     // value={formData.item_id}
                     placeholder="بازی"
                   >
-                    <option value="0">انتخاب کنید</option>
+                    <option value="0">انتخاب بازی</option>
                     {games.map((game) => (
-                      <option key={game.id} value={game.item_id}>
+                      <option key={game.id} value={game.id}>
                         {game.Name}
                       </option>
                     ))}
                   </CFormSelect>
                 </CCol>
               )}
-
+              {formData.type === '3' && (
+                <CCol md="6" className="mt-3">
+                  <CFormSelect
+                    name="item_id"
+                    onChange={handleInput}
+                    // value={formData.item_id}
+                    placeholder="گیت"
+                  >
+                    <option value="0">انتخاب گیت</option>
+                    {gates.map((gate) => (
+                      <option key={gate.id} value={gate.id}>
+                        {gate.Name}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </CCol>
+              )}
               <CCol md="6" className="mt-3">
                 {formData.type === '2' || formData.type === '3' ? (
                   <div>
