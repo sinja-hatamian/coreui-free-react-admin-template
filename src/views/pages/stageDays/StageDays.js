@@ -123,6 +123,10 @@ const StageDays = () => {
       })
   }
 
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -161,7 +165,7 @@ const StageDays = () => {
                           <CTableDataCell>{item.stage_title}</CTableDataCell>
                           <CTableDataCell>{getDayName(item.day)}</CTableDataCell>
                           <CTableDataCell>{item.online_capacity}</CTableDataCell>
-                          <CTableDataCell>{item.price}</CTableDataCell>
+                          <CTableDataCell>{numberWithCommas(item.price)}</CTableDataCell>
                           <CTableHeaderCell>
                             <CButton
                               color="primary"
