@@ -125,7 +125,7 @@ const Decrese = () => {
       })
       .catch((err) => {
         console.log(err)
-        toast.error('خطا رخ داد')
+        toast.error(err.response.data.errors[0].msg)
       })
   }
 
