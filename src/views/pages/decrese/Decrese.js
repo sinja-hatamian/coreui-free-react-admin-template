@@ -25,6 +25,7 @@ const Decrese = () => {
     lastname: '',
   })
   const [nationalCode, setNationalCode] = useState('')
+  const [phone, setPhone] = useState('')
   const [card, setCard] = useState({})
   const [description, setDescription] = useState('')
   const [games, setGames] = useState([])
@@ -88,9 +89,34 @@ const Decrese = () => {
       })
   }
 
+  const fetchUSerByPhone = () => {
+    AxiosInstance.get(`users/phone/${phone}`)
+      .then((res) => {
+        AxiosInstance.get(`/cards/${res.data.data.user.id}`)
+          .then((res) => {
+            setCard(res.data.data.card)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        const phone = res.data.data.user
+        setPhone(phone)
+        setFormData({
+          ...formData,
+          user_id: phone.id,
+        })
+        console.log(res)
+        toast.success('مشتری یافت شد')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   const handleDecrese = () => {
     AxiosInstance.post('/cards/decrease', formData)
       .then((res) => {
+        console.log(formData)
         toast.success('موجودی کارت کاهش یافت')
         setTimeout(() => {
           window.location.reload()
@@ -123,8 +149,33 @@ const Decrese = () => {
                   placeholder="کد ملی"
                   onChange={(e) => setNationalCode(e.target.value)}
                 />
-                <CButton color="success" onClick={fetchUser} className="mt-2">
+                <CButton
+                  color="success"
+                  onClick={fetchUser}
+                  className="mt-2"
+                  style={{
+                    color: '#fff',
+                  }}
+                >
                   جستجو
+                </CButton>
+              </CCol>
+              <br />
+              <CCol md="6">
+                <CFormInput
+                  name="phone"
+                  placeholder="شماره تلفن"
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                <CButton
+                  color="success"
+                  onClick={fetchUSerByPhone}
+                  className="mt-2"
+                  style={{
+                    color: '#fff',
+                  }}
+                >
+                  جستجو با شماره تلفن
                 </CButton>
               </CCol>
 

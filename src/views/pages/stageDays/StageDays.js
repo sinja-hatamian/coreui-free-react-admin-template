@@ -22,7 +22,6 @@ import {
   CTableDataCell,
   CButton,
   CFormSelect,
-  CForm,
   CFormInput,
 } from '@coreui/react'
 
