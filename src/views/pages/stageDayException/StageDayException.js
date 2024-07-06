@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
+import DatePicker from 'react-multi-date-picker'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
+import moment from 'moment'
 import {
   CCard,
   CCardBody,
@@ -20,17 +23,19 @@ import {
   CTableRow,
   CTableHeaderCell,
   CTableDataCell,
+  CFormInput,
   CButton,
   CFormSelect,
-  CFormInput,
 } from '@coreui/react'
 
-const StageDays = () => {
-  const [stageList, setStageList] = useState([])
+const StageDayException = () => {
+  const [stagesList, setStagesList] = useState([])
   const [activeKey, setActiveKey] = useState(1)
-  const [stageDays, setStageDays] = useState([])
+  const [stageDayException, setStageDayException] = useState([])
+  const [value, setValue] = useState(new Date())
   const [formData, setFormData] = useState({
-    day: '',
+    id: '',
+    date: '',
     stage_id: '',
     online_capacity: '',
     price: '',
@@ -39,14 +44,15 @@ const StageDays = () => {
   useEffect(() => {
     AxiosInstance.get('/stages')
       .then((res) => {
-        setStageList(res.data.data.stages)
+        console.log(res.data.data.stages)
+        setStagesList(res.data.data.stages)
       })
       .catch((err) => {
         console.log(err)
       })
-    AxiosInstance.get('/stage-days')
+    AxiosInstance.get('/stage-day-exceptions')
       .then((res) => {
-        setStageDays(res.data.data.stage_days)
+        setStageDayException(res.data.data.stage_day_exceptions)
       })
       .catch((err) => {
         console.log(err)
@@ -54,67 +60,55 @@ const StageDays = () => {
   }, [])
 
   const handleInput = (e) => {
+    if (e.target.name === 'price') {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '')
+    }
+
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const getDayName = (day) => {
-    switch (day) {
-      case 6:
-        return 'شنبه'
-      case 0:
-        return 'یکشنبه'
-      case 1:
-        return 'دوشنبه'
-      case 2:
-        return 'سه شنبه'
-      case 3:
-        return 'چهارشنبه'
-      case 4:
-        return 'پنجشنبه'
-      case 5:
-        return 'جمعه'
-      default:
-        return ''
-    }
-  }
-
-  const addStageDays = () => {
-    AxiosInstance.post('/stage-days', formData)
+  const handleAddException = () => {
+    AxiosInstance.post('/stage-day-exceptions', formData)
       .then((res) => {
-        setStageList([...stageList, res.data.data.stages])
-        toast.success('با موفقیت اضافه شد')
+        console.log(formData)
+        setStagesList([...stagesList, res.data.data.stages])
+        toast.success('با موفقیت افزوده شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.errors[0].msg)
       })
   }
 
-  const handleDeleteStageDays = (id) => {
-    AxiosInstance.delete(`/stage-days/${id}`)
+  const handleDeleteException = (id) => {
+    AxiosInstance.delete(`/stage-day-exceptions/${id}`)
       .then((res) => {
-        setStageDays(stageDays.filter((item) => item.id !== id))
+        setStageDayException(stageDayException.filter((item) => item.id !== id))
         toast.success('با موفقیت حذف شد')
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.errors[0].msg)
       })
   }
 
-  const handleUpdateStageDays = (id) => {
-    AxiosInstance.put(`/stage-days/${id}`, formData)
+  const handleUpdateException = (id) => {
+    AxiosInstance.put(`/stage-day-exceptions/${id}`, formData)
       .then((res) => {
-        console.log(res.data.data)
-        setStageDays(stageDays.map((item) => (item.id === id ? formData : item)))
+        setStageDayException(
+          stageDayException.map((item) => (item.id === id ? res.data.data : item)),
+        )
         toast.success('با موفقیت ویرایش شد')
         setActiveKey(1)
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.errors[0].msg)
       })
+  }
+
+  const handleDate = (date) => {
+    const formattedDate = moment(date.toDate()).format('YYYY-MM-DD')
+    setValue(date)
+    setFormData({ ...formData, date: formattedDate })
   }
 
   const numberWithCommas = (x) => {
@@ -141,23 +135,25 @@ const StageDays = () => {
             <CCol xs={12}>
               <CCard className="mb-4">
                 <CCardHeader>
-                  <strong>لیست روزهای سالن ها</strong>
+                  <strong>لیست روزهای استثنا</strong>
                 </CCardHeader>
                 <CCardBody>
                   <CTable striped>
                     <CTableHead>
                       <CTableRow>
                         <CTableHeaderCell>نام سالن</CTableHeaderCell>
-                        <CTableHeaderCell>روز</CTableHeaderCell>
+                        <CTableHeaderCell>تاریخ</CTableHeaderCell>
                         <CTableHeaderCell>ظرفیت انلاین</CTableHeaderCell>
                         <CTableHeaderCell>هزینه</CTableHeaderCell>
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                      {stageDays.map((item) => (
+                      {stageDayException.map((item) => (
                         <CTableRow key={item.id}>
-                          <CTableDataCell>{item.stage_title}</CTableDataCell>
-                          <CTableDataCell>{getDayName(item.day)}</CTableDataCell>
+                          <CTableDataCell>{item.title}</CTableDataCell>
+                          <CTableDataCell>
+                            {moment(item.date).locale('fa-IR').format('YYYY/MM/DD')}
+                          </CTableDataCell>
                           <CTableDataCell>{item.online_capacity}</CTableDataCell>
                           <CTableDataCell>{numberWithCommas(item.price)}</CTableDataCell>
                           <CTableHeaderCell>
@@ -166,7 +162,7 @@ const StageDays = () => {
                               onClick={() => {
                                 setFormData({
                                   id: item.id,
-                                  day: item.day,
+                                  date: item.date,
                                   stage_id: item.stage_id,
                                   online_capacity: item.online_capacity,
                                   price: item.price,
@@ -178,7 +174,11 @@ const StageDays = () => {
                             </CButton>
                           </CTableHeaderCell>
                           <CTableHeaderCell>
-                            <CButton color="danger" onClick={() => handleDeleteStageDays(item.id)}>
+                            <CButton
+                              style={{ color: '#fff' }}
+                              color="danger"
+                              onClick={() => handleDeleteException(item.id)}
+                            >
                               حذف
                             </CButton>
                           </CTableHeaderCell>
@@ -191,16 +191,47 @@ const StageDays = () => {
             </CCol>
           </CRow>
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
+        <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 2}>
           <CRow>
-            <CCol>
+            <CCol xs={12}>
               <CCard className="mb-4">
                 <CCardHeader>
-                  <strong>افزودن روز جدید</strong>
+                  <strong>افزودن روز استثنا</strong>
                 </CCardHeader>
                 <CCardBody>
                   <CRow>
-                    <CCol xs={12} md={2}>
+                    <CCol xs={12} md={6}>
+                      <div>
+                        <p>تاریخ</p>
+                      </div>
+                      <DatePicker
+                        value={value}
+                        onChange={handleDate}
+                        calendar={persian}
+                        locale={persian_fa}
+                        format="YYYY-MM-DD"
+                      />
+                    </CCol>
+                    <CCol xs={12} md={6}>
+                      <CFormInput
+                        name="online_capacity"
+                        label="ظرفیت انلاین"
+                        placeholder="ظرفیت انلاین"
+                        aria-labelledby="online_capacity"
+                        value={formData.online_capacity}
+                        onChange={handleInput}
+                      />
+                    </CCol>
+                    <CCol xs={12} md={6}>
+                      <CFormInput
+                        name="price"
+                        label="هزینه"
+                        placeholder="هزینه"
+                        value={formData.price}
+                        onChange={handleInput}
+                      />
+                    </CCol>
+                    <CCol xs={12} md={6}>
                       <CFormSelect
                         label="انتخاب سالن"
                         name="stage_id"
@@ -208,7 +239,7 @@ const StageDays = () => {
                         onChange={handleInput}
                       >
                         <option value="">انتخاب سالن</option>
-                        {stageList.map(
+                        {stagesList.map(
                           (item) =>
                             item && (
                               <option key={item.id} value={item.id}>
@@ -218,54 +249,21 @@ const StageDays = () => {
                         )}
                       </CFormSelect>
                     </CCol>
-                    <CCol xs={12} md={2}>
-                      <CFormSelect
-                        label="انتخاب روز"
-                        name="day"
-                        value={formData.day}
-                        onChange={handleInput}
-                      >
-                        <option value="">انتخاب روز</option>
-                        <option value="1">شنبه</option>
-                        <option value="2">یکشنبه</option>
-                        <option value="3">دوشنبه</option>
-                        <option value="4">سه شنبه</option>
-                        <option value="5">چهارشنبه</option>
-                        <option value="6">پنجشنبه</option>
-                        <option value="7">جمعه</option>
-                      </CFormSelect>
-                    </CCol>
-                    <CCol xs={12} md={2}>
-                      <CFormInput
-                        name="online_capacity"
-                        label="ظرفیت انلاین"
-                        value={formData.online_capacity}
-                        onChange={handleInput}
-                      />
-                    </CCol>
-                    <CCol xs={12} md={2}>
-                      <CFormInput
-                        name="price"
-                        label="هزینه"
-                        value={formData.price}
-                        onChange={handleInput}
-                      />
-                    </CCol>
-                    <CCol md={8} style={{ marginTop: '30px' }}>
-                      <CButton color="success" style={{ color: '#fff' }} onClick={addStageDays}>
-                        ثبت
-                      </CButton>
-                    </CCol>
-                    <CCol md={8} style={{ marginTop: '30px' }}>
-                      <CButton
-                        color="primary"
-                        style={{ color: '#fff' }}
-                        onClick={() => handleUpdateStageDays(formData.id)}
-                      >
-                        به روز رسانی
-                      </CButton>
-                    </CCol>
                   </CRow>
+                  <br />
+                  <CButton color="success" onClick={handleAddException} style={{ color: '#fff' }}>
+                    ثبت
+                  </CButton>
+                  <br />
+                  <div>
+                    <CButton
+                      color="primary"
+                      onClick={() => handleUpdateException(formData.id)}
+                      style={{ color: '#fff' }}
+                    >
+                      به روز رسانی
+                    </CButton>
+                  </div>
                 </CCardBody>
               </CCard>
             </CCol>
@@ -274,16 +272,14 @@ const StageDays = () => {
       </CTabContent>
       <ToastContainer
         position="bottom-right"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
+        rtl
         draggable
       />
     </>
   )
 }
-
-export default StageDays
+export default StageDayException

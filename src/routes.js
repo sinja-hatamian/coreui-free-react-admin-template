@@ -1,3 +1,4 @@
+import { element, exact } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -32,6 +33,9 @@ const customerFinanceLog = React.lazy(() =>
 )
 const StagesPlans = React.lazy(() => import('./views/pages/stagePlans/StagePlans'))
 const stageDays = React.lazy(() => import('./views/pages/stageDays/StageDays'))
+const StageDayException = React.lazy(() =>
+  import('./views/pages/stageDayException/StageDayException'),
+)
 
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
@@ -119,6 +123,12 @@ const routes = [
   },
   { path: '/pages/stagePlans', name: 'StagesPlans', element: StagesPlans, exact: true },
   { path: '/pages/stageDays', name: 'stageDays', element: stageDays, exact: true },
+  {
+    path: '/pages/stageDayException',
+    name: 'stageDayException',
+    element: StageDayException,
+    exact: true,
+  },
 ]
 
 export default routes

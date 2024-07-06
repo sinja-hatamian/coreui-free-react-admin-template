@@ -78,6 +78,11 @@ const _nav = [
         name: 'تعیین ظرفیت انلاین',
         to: '/pages/stageDays',
       },
+      {
+        component: CNavItem,
+        name: 'افزودن روز استثنا',
+        to: '/pages/stageDayException',
+      },
     ],
   },
   {
