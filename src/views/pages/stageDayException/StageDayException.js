@@ -6,6 +6,8 @@ import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import moment from 'moment'
+import 'moment/locale/fa'
+import mj from 'moment-jalaali'
 import {
   CCard,
   CCardBody,
@@ -153,7 +155,7 @@ const StageDayException = () => {
                         <CTableRow key={item.id}>
                           <CTableDataCell>{item.title}</CTableDataCell>
                           <CTableDataCell>
-                            {moment(item.date).locale('fa-IR').format('YYYY/MM/DD')}
+                            {mj(item.date).locale('fa').format('jYYYY/jMM/jDD')}
                           </CTableDataCell>
                           <CTableDataCell>{item.online_capacity}</CTableDataCell>
                           <CTableDataCell>{numberWithCommas(item.price)}</CTableDataCell>
@@ -163,7 +165,7 @@ const StageDayException = () => {
                               onClick={() => {
                                 setFormData({
                                   id: item.id,
-                                  date: item.date,
+                                  date: item.date ? moment(item.date).format('YYYY-MM-DD') : '',
                                   stage_id: item.stage_id,
                                   online_capacity: item.online_capacity,
                                   price: item.price,
