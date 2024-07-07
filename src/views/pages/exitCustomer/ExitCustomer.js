@@ -56,6 +56,7 @@ const ShowByTag = () => {
   const [isLoading, setIsLoading] = useState(false) // State for loading
   const [showModal, setShowModal] = useState(false) // State for showing modal
   const [user, setUser] = useState(null)
+  const [description, setDescription] = useState('')
 
   useEffect(() => {
     if (inputRef.current) {
@@ -98,6 +99,10 @@ const ShowByTag = () => {
       ...tag,
       [e.target.name]: e.target.value,
     })
+  }
+
+  const handleDescription = (e) => {
+    setDescription(e.target.value)
   }
 
   const handlePeymentChange = (e, index) => {
@@ -422,6 +427,18 @@ const ShowByTag = () => {
                                       aria-label="card_number"
                                       onChange={(e) => handlePeymentChange(e, index)}
                                       value={cardForm.card_number}
+                                      locale="fa-IR"
+                                    />
+                                  </CCol>
+                                ) : null}
+                                {cardForm.type === '5' ? (
+                                  <CCol md={6}>
+                                    <CFormInput
+                                      label="توضیحات"
+                                      name="description"
+                                      aria-label="description"
+                                      onChange={handleDescription}
+                                      value={description}
                                       locale="fa-IR"
                                     />
                                   </CCol>
