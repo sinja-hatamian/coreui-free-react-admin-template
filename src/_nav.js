@@ -18,7 +18,6 @@ import {
   cilBank,
   cilDevices,
   cilColorBorder,
-  cilNotes,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 

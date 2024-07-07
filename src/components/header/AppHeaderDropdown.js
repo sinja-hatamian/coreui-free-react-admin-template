@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { CAvatar, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilLockLocked } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import avatar2 from './../../assets/images/avatars/2.jpg'
 

@@ -25,7 +25,6 @@ import {
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter,
 } from '@coreui/react'
 
 const CustomerFullLog = () => {

@@ -7,7 +7,7 @@ import ChargCard from 'src/views/pages/chargCard/ChargCard'
 import AddAttendant from 'src/views/pages/addAttendant/AddAttendant'
 import InfoCard from 'src/views/pages/infoCard/InfoCard'
 import Decrese from 'src/views/pages/decrese/Decrese'
-import DatePicker, { Calendar } from 'react-multi-date-picker'
+import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import {

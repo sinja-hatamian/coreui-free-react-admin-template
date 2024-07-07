@@ -1,4 +1,4 @@
-import { element, exact } from 'prop-types'
+// import { element, exact } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))

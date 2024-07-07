@@ -65,7 +65,7 @@ const OperatorReg = () => {
   }, [])
 
   const handleInputCahnge = (e) => {
-    const { name, value, checked, type } = e.target
+    const { name, value, checked } = e.target
     if (name === 'roles') {
       setFormdata((currentFormData) => {
         if (checked) {
