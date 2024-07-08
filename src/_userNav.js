@@ -8,6 +8,7 @@ import {
   cilBarChart,
   cilExitToApp,
   cilBookmark,
+  cilBasketball,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -52,6 +53,17 @@ const _userNav = [
     to: '/pages/exitCustomer',
     icon: <CIcon icon={cilExitToApp} customClassName="nav-icon" />,
   },
+
+  // {
+  //   component: CNavTitle,
+  //   name: 'کلاس های تابستانی',
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'ثبت کلاس',
+  //   to: '/pages/classReg',
+  //   icon: <CIcon icon={cilBasketball} customClassName="nav-icon" />,
+  // },
 
   {
     component: CNavTitle,

@@ -19,6 +19,7 @@ import {
   cilDevices,
   cilColorBorder,
   cilBookmark,
+  cilBasketball,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -111,6 +112,16 @@ const _nav = [
   },
   {
     component: CNavTitle,
+    name: 'کلاس های تابستانی',
+  },
+  {
+    component: CNavItem,
+    name: 'ثبت کلاس',
+    to: '/pages/classReg',
+    icon: <CIcon icon={cilBasketball} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
     name: 'پذیرش',
   },
   {
@@ -149,6 +160,7 @@ const _nav = [
     to: '/pages/exitCustomer',
     icon: <CIcon icon={cilExitToApp} customClassName="nav-icon" />,
   },
+
   {
     component: CNavTitle,
     name: 'گزارشات',
