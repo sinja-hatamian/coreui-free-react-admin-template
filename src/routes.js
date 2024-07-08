@@ -36,6 +36,7 @@ const stageDays = React.lazy(() => import('./views/pages/stageDays/StageDays'))
 const StageDayException = React.lazy(() =>
   import('./views/pages/stageDayException/StageDayException'),
 )
+const Reservation = React.lazy(() => import('./views/pages/reservation/Reservation'))
 
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
@@ -127,6 +128,12 @@ const routes = [
     path: '/pages/stageDayException',
     name: 'stageDayException',
     element: StageDayException,
+    exact: true,
+  },
+  {
+    path: '/pages/reservation',
+    name: 'Reservation',
+    element: Reservation,
     exact: true,
   },
 ]

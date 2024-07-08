@@ -7,6 +7,7 @@ import {
   cilChartLine,
   cilBarChart,
   cilExitToApp,
+  cilBookmark,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -38,12 +39,12 @@ const _userNav = [
     to: '/theme/CustomerReg',
     icon: <CIcon icon={cilCheckCircle} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'بررسی دستبند ',
-  //   to: '/pages/showByTag',
-  //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-  // },
+  {
+    component: CNavItem,
+    name: 'رزرو آنلاین ',
+    to: '/pages/reservation',
+    icon: <CIcon icon={cilBookmark} customClassName="nav-icon" />,
+  },
 
   {
     component: CNavItem,
@@ -74,18 +75,6 @@ const _userNav = [
     to: '/theme/color',
     icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'گزارشات رزواسیون',
-  //   to: '/theme/color',
-  //   icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'گزارشات کارت‌های هدیه',
-  //   to: '/theme/color',
-  //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  // },
 ]
 
 export default _userNav

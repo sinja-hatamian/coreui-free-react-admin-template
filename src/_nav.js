@@ -18,6 +18,7 @@ import {
   cilBank,
   cilDevices,
   cilColorBorder,
+  cilBookmark,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -134,6 +135,12 @@ const _nav = [
     name: 'پذیرش مشتریان',
     to: '/theme/CustomerReg',
     icon: <CIcon icon={cilCheckCircle} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'رزرو آنلاین ',
+    to: '/pages/reservation',
+    icon: <CIcon icon={cilBookmark} customClassName="nav-icon" />,
   },
 
   {
