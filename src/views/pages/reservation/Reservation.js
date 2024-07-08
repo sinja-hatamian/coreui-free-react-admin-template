@@ -70,7 +70,7 @@ const Reservation = () => {
           })
       })
       .catch((error) => {
-        console.log(error)
+        toast.error('کاربری با این کد ملی یافت نشد')
       })
   }
 
@@ -87,7 +87,7 @@ const Reservation = () => {
           })
       })
       .catch((error) => {
-        console.log(error)
+        toast.error('کاربری با این شماره تلفن یافت نشد')
       })
   }
 
@@ -487,6 +487,17 @@ const Reservation = () => {
           </CRow>
         </CTabPane>
       </CTabContent>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }
