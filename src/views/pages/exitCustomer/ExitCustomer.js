@@ -46,6 +46,7 @@ const ShowByTag = () => {
     bank_id: '',
     card_number: '',
     transaction_id: '',
+    description: '',
   }
   const [cardForm, setCardForm] = useState([initialCardForm])
   const [selectedTypes, setSelectedTypes] = useState([''])
@@ -102,7 +103,8 @@ const ShowByTag = () => {
   }
 
   const handleDescription = (e) => {
-    setDescription(e.target.value)
+    const { value } = e.target
+    setDescription(value)
   }
 
   const handlePeymentChange = (e, index) => {
@@ -237,6 +239,7 @@ const ShowByTag = () => {
             return item
           }),
         ],
+        description: description,
         user_id: user.id,
       })
         .then((res) => {
