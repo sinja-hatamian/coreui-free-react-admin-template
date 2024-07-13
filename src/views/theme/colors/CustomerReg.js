@@ -410,7 +410,7 @@ const CustomerReg = () => {
                         aria-label="introduction_way"
                         locale="fa-IR"
                         onChange={handleInputCahnge}
-                        value={formdata.introduction_way_id} // Use value prop to control the selection
+                        // value={formdata.introduction_way_id}
                       >
                         <option value="">انتخاب کنید</option>
                         {introductionWays.map((item) => (
