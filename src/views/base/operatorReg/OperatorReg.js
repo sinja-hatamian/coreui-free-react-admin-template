@@ -80,11 +80,6 @@ const OperatorReg = () => {
           }
         }
       })
-      // } else if (type === 'checkbox') {
-      //   setFormdata((currentFormData) => ({
-      //     ...currentFormData,
-      //     [name]: checked,
-      //   }))
     } else {
       setFormdata((currentFormData) => ({
         ...currentFormData,
@@ -155,40 +150,43 @@ const OperatorReg = () => {
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                      {operatorList.map((item) => (
-                        <CTableRow key={item.id}>
-                          <CTableDataCell>{item.firstname}</CTableDataCell>
-                          <CTableDataCell>{item.lastname}</CTableDataCell>
-                          <CTableDataCell>{item.national_code}</CTableDataCell>
-                          <CTableDataCell>{item.phone}</CTableDataCell>
-                          <CTableDataCell>{item.username}</CTableDataCell>
-                          <CTableDataCell>{item.status}</CTableDataCell>
-                          <CTableDataCell>{item.role}</CTableDataCell>
-                          <CTableDataCell>
-                            <CButton
-                              color="info"
-                              onClick={() => {
-                                setFormdata({
-                                  id: item.id,
-                                  national_code: item.national_code,
-                                  firstname: item.firstname,
-                                  lastname: item.lastname,
-                                  phone: item.phone,
-                                  username: item.username,
-                                  password: item.password,
-                                  accounting_code: item.accounting_code,
-                                  is_superadmin: item.is_superadmin,
-                                  status: item.status,
-                                  roles: item.roles?.map((role) => role.id.toString()) ?? [],
-                                })
-                                setActivekey(2)
-                              }}
-                            >
-                              ویرایش
-                            </CButton>
-                          </CTableDataCell>
-                        </CTableRow>
-                      ))}
+                      {operatorList.map(
+                        (item) =>
+                          item.status === '1' && (
+                            <CTableRow key={item.id}>
+                              <CTableDataCell>{item.firstname}</CTableDataCell>
+                              <CTableDataCell>{item.lastname}</CTableDataCell>
+                              <CTableDataCell>{item.national_code}</CTableDataCell>
+                              <CTableDataCell>{item.phone}</CTableDataCell>
+                              <CTableDataCell>{item.username}</CTableDataCell>
+                              <CTableDataCell>{item.status}</CTableDataCell>
+                              <CTableDataCell>{item.role}</CTableDataCell>
+                              <CTableDataCell>
+                                <CButton
+                                  color="info"
+                                  onClick={() => {
+                                    setFormdata({
+                                      id: item.id,
+                                      national_code: item.national_code,
+                                      firstname: item.firstname,
+                                      lastname: item.lastname,
+                                      phone: item.phone,
+                                      username: item.username,
+                                      password: item.password,
+                                      accounting_code: item.accounting_code,
+                                      is_superadmin: item.is_superadmin,
+                                      status: item.status,
+                                      roles: item.roles?.map((role) => role.id.toString()) ?? [],
+                                    })
+                                    setActivekey(2)
+                                  }}
+                                >
+                                  ویرایش
+                                </CButton>
+                              </CTableDataCell>
+                            </CTableRow>
+                          ),
+                      )}
                     </CTableBody>
                   </CTable>
                 </CCardBody>

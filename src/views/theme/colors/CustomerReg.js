@@ -535,7 +535,6 @@ const CustomerReg = () => {
         <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 6}>
           {activeKey === 6 ? <AddAttendant /> : null}
         </CTabPane>
-
         <CTabPane role="tabpanel" aria-labelledby="contact-tab" visible={activeKey === 4}>
           {activeKey === 4 ? <Decrese /> : null}
         </CTabPane>
