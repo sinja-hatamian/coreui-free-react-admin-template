@@ -99,11 +99,11 @@ const Decrese = () => {
           .catch((err) => {
             console.log(err)
           })
-        const phone = res.data.data.user
-        setPhone(phone)
+        const customerData = res.data.data.user
+        setCustomerData(customerData)
         setFormData({
           ...formData,
-          user_id: phone.id,
+          user_id: customerData.id,
         })
         console.log(res)
         toast.success('مشتری یافت شد')
