@@ -8,7 +8,6 @@ import {
   cilBarChart,
   cilExitToApp,
   cilBookmark,
-  cilBasketball,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -16,6 +15,12 @@ const _crmNav = [
   {
     component: CNavTitle,
     name: 'پشتیبانی مشتریان',
+  },
+  {
+    component: CNavItem,
+    name: 'ثبت گزارش',
+    to: '/pages/addCallReport',
+    icon: <CIcon icon={cilBookmark} customClassName="nav-icon" />,
   },
 ]
 

@@ -39,6 +39,7 @@ const StageDayException = React.lazy(() =>
 const Reservation = React.lazy(() => import('./views/pages/reservation/Reservation'))
 const ClassReg = React.lazy(() => import('./views/pages/classReg/ClassReg'))
 const ClassRegUser = React.lazy(() => import('./views/pages/classRegUser/ClassRegUser'))
+const AddCallReport = React.lazy(() => import('./views/pages/addCallReport/AddCallReport'))
 
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
@@ -140,6 +141,12 @@ const routes = [
   },
   { path: '/pages/classReg', name: 'ClassReg', element: ClassReg, exact: true },
   { path: '/pages/classRegUser', name: 'ClassRegUser', element: ClassRegUser, exact: true },
+  {
+    path: '/pages/addCallReport',
+    name: 'AddCallReport',
+    element: AddCallReport,
+    exact: true,
+  },
 ]
 
 export default routes
