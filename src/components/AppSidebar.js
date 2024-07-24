@@ -13,10 +13,12 @@ import 'simplebar/dist/simplebar.min.css'
 // sidebar nav config
 import navigation from '../_nav'
 import userNavigation from '../_userNav'
+import crmNav from '../_crmNav'
 // import AxiosInstance from 'src/utils/AxiosInstance'
 
 const AppSidebar = () => {
   const [isSuperAdmin, setIsSuperAdmin] = useState()
+  const [isCustomerSupport, setIsCustomerSupport] = useState()
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
@@ -28,6 +30,13 @@ const AppSidebar = () => {
         setIsSuperAdmin(true)
       } else {
         setIsSuperAdmin(false)
+      }
+    }
+    if (manager) {
+      if (manager.roles[0] === 'customer_support') {
+        setIsCustomerSupport(true)
+      } else {
+        setIsCustomerSupport(false)
       }
     }
   }, [])
@@ -49,11 +58,9 @@ const AppSidebar = () => {
       <CSidebarNav>
         <SimpleBar>
           {/* <AppSidebarNav items={navigation} /> */}
-          {isSuperAdmin ? (
-            <AppSidebarNav items={navigation} />
-          ) : (
-            <AppSidebarNav items={userNavigation} />
-          )}
+          {isSuperAdmin && <AppSidebarNav items={navigation} />}
+          {isCustomerSupport && <AppSidebarNav items={crmNav} />}
+          {!isSuperAdmin && !isCustomerSupport && <AppSidebarNav items={userNavigation} />}
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler
