@@ -1,20 +1,18 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilDollar,
-  cilCheckCircle,
-  cilChart,
-  cilChartLine,
-  cilBarChart,
-  cilExitToApp,
-  cilBookmark,
-} from '@coreui/icons'
+import { cilChart, cilBookmark } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _crmNav = [
   {
     component: CNavTitle,
     name: 'پشتیبانی مشتریان',
+  },
+  {
+    component: CNavItem,
+    name: 'لیست گزارشات',
+    to: '/pages/callReport',
+    icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,

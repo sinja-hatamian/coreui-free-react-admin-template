@@ -40,6 +40,7 @@ const Reservation = React.lazy(() => import('./views/pages/reservation/Reservati
 const ClassReg = React.lazy(() => import('./views/pages/classReg/ClassReg'))
 const ClassRegUser = React.lazy(() => import('./views/pages/classRegUser/ClassRegUser'))
 const AddCallReport = React.lazy(() => import('./views/pages/addCallReport/AddCallReport'))
+const callReport = React.lazy(() => import('./views/pages/callReport/CallReport'))
 
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
@@ -147,6 +148,7 @@ const routes = [
     element: AddCallReport,
     exact: true,
   },
+  { path: '/pages/callReport', name: 'callReport', element: callReport, exact: true },
 ]
 
 export default routes
