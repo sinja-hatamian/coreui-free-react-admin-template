@@ -102,6 +102,63 @@ const CallReport = () => {
               <strong>گزارشات تماس</strong>
             </CCardHeader>
             <CCardBody>
+              <CCol md="12">
+                {/* search section */}
+                <CRow className="mt-3">
+                  <CCol md="6">
+                    <CFormInput
+                      placeholder="کد ملی"
+                      name="nationalCode"
+                      value={nationalCode}
+                      onChange={(e) => {
+                        setNationalCode(e.target.value)
+                      }}
+                    />
+                  </CCol>
+                  <CCol md="6">
+                    <CButton color="primary" onClick={fetchUser}>
+                      جستجو
+                    </CButton>
+                  </CCol>
+                </CRow>
+                <CRow className="mt-3">
+                  <CCol md="6">
+                    <CFormInput
+                      placeholder="شماره تماس"
+                      name="phone"
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(e.target.value)
+                      }}
+                    />
+                  </CCol>
+                  <CCol md="6">
+                    <CButton color="primary" onClick={fetchUSerByPhone}>
+                      جستجو
+                    </CButton>
+                  </CCol>
+                </CRow>
+              </CCol>
+              {/* customer info */}
+              <CCol md="12" className="mt-3">
+                <div
+                  className="text-center"
+                  style={{
+                    border: '1px solid #ccc',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    backgroundColor: '#f9f9f9',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center', // Corrected from 'justifyItems' to 'alignItems' for proper CSS
+                    flexDirection: 'column', // Added for vertical alignment of items
+                  }}
+                >
+                  مشخصات مشتری:
+                  <br />
+                  {customerData.firstname} {customerData.lastname}
+                </div>
+              </CCol>
               <CRow>
                 <CButton onClick={showReports} color="primary">
                   نمایش گزارشات
