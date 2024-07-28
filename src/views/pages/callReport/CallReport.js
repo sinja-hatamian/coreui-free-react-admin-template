@@ -259,21 +259,29 @@ const CallReport = () => {
                       <CModal visible={visible} onClose={closeModal}>
                         <CModalHeader onClose={closeModal}>ویرایش گزارش تماس</CModalHeader>
                         <CModalBody>
-                          <CFormInput
-                            name="rate"
-                            placeholder="امتیاز"
-                            value={currentReport.rate}
-                            onChange={handleInput}
-                          />
-                          <CFormInput
-                            name="description"
-                            placeholder="توضیحات"
-                            value={currentReport.description}
-                            onChange={handleInput}
-                          />
-                          <CButton color="primary" onClick={updateCallReport}>
-                            ذخیره
-                          </CButton>
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '10px',
+                            }}
+                          >
+                            <CFormInput
+                              name="rate"
+                              placeholder="امتیاز"
+                              value={currentReport.rate}
+                              onChange={handleInput}
+                            />
+                            <CFormInput
+                              name="description"
+                              placeholder="توضیحات"
+                              value={currentReport.description}
+                              onChange={handleInput}
+                            />
+                            <CButton color="primary" onClick={updateCallReport}>
+                              ذخیره
+                            </CButton>
+                          </div>
                         </CModalBody>
                       </CModal>
                     )}
