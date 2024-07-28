@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {
   CRow,
@@ -10,7 +10,6 @@ import {
   CCard,
   CFormInput,
   CButton,
-  CFormTextarea,
   CTable,
   CTableHead,
   CTableBody,
@@ -81,13 +80,16 @@ const CallReport = () => {
       })
   }
 
-  const showReports = () => {
-    AxiosInstance.get(`/call-reports/${formData.user_id}`)
+  const showCallReports = () => {
+    console.log(customerData.id)
+    AxiosInstance.get(`/call-reports/`, {
+      params: {
+        user_id: formData.user_id,
+      },
+    })
       .then((res) => {
-        console.log(res.data.data)
         setReports(res.data.data.callReports)
       })
-
       .catch((err) => {
         console.log(err)
       })
@@ -159,8 +161,9 @@ const CallReport = () => {
                   {customerData.firstname} {customerData.lastname}
                 </div>
               </CCol>
+              <br />
               <CRow>
-                <CButton onClick={showReports} color="primary">
+                <CButton onClick={showCallReports} color="primary">
                   نمایش گزارشات
                 </CButton>
               </CRow>
@@ -193,6 +196,17 @@ const CallReport = () => {
             </CCardBody>
           </CCard>
         </CCol>
+        <ToastContainer
+          position="bottom-left"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </CRow>
     </>
   )
