@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {
   CRow,
@@ -23,7 +23,7 @@ const AddCallReport = () => {
   const [formData, setFormData] = useState({
     user_id: '',
     description: '',
-    rete: '',
+    rate: '',
   })
 
   const handleInput = (e) => {
@@ -71,6 +71,7 @@ const AddCallReport = () => {
   }
 
   const handleAddCallReport = () => {
+    console.log(formData)
     AxiosInstance.post('/call-reports', formData)
       .then((res) => {
         console.log(res)
@@ -158,8 +159,8 @@ const AddCallReport = () => {
               <CCol md="6" className="mt-3">
                 <CFormInput
                   placeholder="امتیاز از یک تا ده"
-                  name="rete"
-                  value={formData.rete}
+                  name="rate"
+                  value={formData.rate}
                   onChange={handleInput}
                 />
               </CCol>
@@ -178,6 +179,18 @@ const AddCallReport = () => {
           </CCardBody>
         </CCard>
       </CCol>
+
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </CRow>
   )
 }
