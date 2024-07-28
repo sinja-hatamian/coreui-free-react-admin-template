@@ -23,6 +23,28 @@ import {
 
 const ClassReg = () => {
   const [activeKey, setActiveKey] = useState(1)
+  const [classes, setClasses] = useState([])
+  const [formData, setFormData] = useState({
+    title: '',
+    level: '',
+    start_date: '',
+    end_date: '',
+    start_time: '',
+    end_time: '',
+    price: '',
+    is_active: '',
+  })
+
+  useEffect(() => {
+    AxiosInstance.get('/classes')
+      .then((res) => {
+        setClasses(res.data.data.classes)
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   return (
     <>
@@ -59,24 +81,22 @@ const ClassReg = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                <CTableRow>
-                  <CTableDataCell>کلاس 1</CTableDataCell>
-                  <CTableDataCell>1400/01/01</CTableDataCell>
-                  <CTableDataCell>1400/01/01</CTableDataCell>
-                  <CTableDataCell>08:00</CTableDataCell>
-                  <CTableDataCell>10:00</CTableDataCell>
-                  <CTableDataCell>10</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="info" style={{ color: 'white' }}>
-                      ویرایش
-                    </CButton>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="danger" style={{ color: 'white' }}>
-                      حذف
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
+                {classes.map((item) => (
+                  <CTableRow key={item.id}>
+                    <CTableDataCell>{item.name}</CTableDataCell>
+                    <CTableDataCell>{item.start_date}</CTableDataCell>
+                    <CTableDataCell>{item.end_date}</CTableDataCell>
+                    <CTableDataCell>{item.start_time}</CTableDataCell>
+                    <CTableDataCell>{item.end_time}</CTableDataCell>
+                    <CTableDataCell>{item.sessions}</CTableDataCell>
+                    <CTableDataCell>
+                      <CButton color="info">ویرایش</CButton>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CButton color="danger">حذف</CButton>
+                    </CTableDataCell>
+                  </CTableRow>
+                ))}
               </CTableBody>
             </CTable>
           </CCard>
