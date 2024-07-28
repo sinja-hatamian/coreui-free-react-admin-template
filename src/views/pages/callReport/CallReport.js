@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -16,12 +16,17 @@ import {
   CTableHeaderCell,
   CTableRow,
   CTableDataCell,
+  CModal,
+  CModalHeader,
+  CModalBody,
 } from '@coreui/react'
 
 const CallReport = () => {
   const [nationalCode, setNationalCode] = useState('')
   const [phone, setPhone] = useState('')
   const [reports, setReports] = useState([])
+  const [visible, setVisible] = useState(false)
+  const [currentReport, setCurrentReport] = useState(null)
   const [customerData, setCustomerData] = useState({
     firstname: '',
     lastname: '',
@@ -36,11 +41,20 @@ const CallReport = () => {
     rate: '',
   })
 
-  const handleInputChange = (e) => {
+  const openModal = (report) => {
+    setCurrentReport(report)
+    setVisible(true)
+  }
+
+  const closeModal = () => {
+    setVisible(false)
+  }
+
+  const handleInput = (e) => {
     const name = e.target.name
     const value = e.target.value
-    setFormData({
-      ...formData,
+    setCurrentReport({
+      ...currentReport,
       [name]: value,
     })
   }
@@ -100,6 +114,18 @@ const CallReport = () => {
       .then((res) => {
         toast.success('گزارش تماس حذف شد')
         showCallReports()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  const updateCallReport = () => {
+    AxiosInstance.put(`/call-reports/${currentReport.id}`, currentReport)
+      .then((res) => {
+        toast.success('گزارش تماس ویرایش شد')
+        showCallReports()
+        closeModal()
       })
       .catch((err) => {
         console.log(err)
@@ -178,6 +204,7 @@ const CallReport = () => {
                   نمایش گزارشات
                 </CButton>
               </CRow>
+              <br />
               <CRow>
                 <CTable striped>
                   <CTableHead>
@@ -200,12 +227,56 @@ const CallReport = () => {
                         <CTableDataCell>{report.rate}</CTableDataCell>
                         <CTableDataCell>{report.description}</CTableDataCell>
                         <CTableDataCell>
-                          <CButton color="danger" onClick={() => deleteCallReport(report.id)}>
-                            حذف
-                          </CButton>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-around',
+                            }}
+                          >
+                            <CButton
+                              color="danger"
+                              onClick={() => deleteCallReport(report.id)}
+                              style={{
+                                color: '#fff',
+                              }}
+                            >
+                              حذف
+                            </CButton>
+                            <CButton
+                              color="warning"
+                              onClick={() => openModal(report)}
+                              style={{
+                                color: '#fff',
+                              }}
+                            >
+                              ویرایش
+                            </CButton>
+                          </div>
                         </CTableDataCell>
                       </CTableRow>
                     ))}
+                    {currentReport && (
+                      <CModal visible={visible} onClose={closeModal}>
+                        <CModalHeader onClose={closeModal}>ویرایش گزارش تماس</CModalHeader>
+                        <CModalBody>
+                          <CFormInput
+                            name="rate"
+                            placeholder="امتیاز"
+                            value={currentReport.rate}
+                            onChange={handleInput}
+                          />
+                          <CFormInput
+                            name="description"
+                            placeholder="توضیحات"
+                            value={currentReport.description}
+                            onChange={handleInput}
+                          />
+                          <CButton color="primary" onClick={updateCallReport}>
+                            ذخیره
+                          </CButton>
+                        </CModalBody>
+                      </CModal>
+                    )}
                   </CTableBody>
                 </CTable>
               </CRow>
