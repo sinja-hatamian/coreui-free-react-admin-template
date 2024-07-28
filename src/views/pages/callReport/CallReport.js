@@ -95,6 +95,17 @@ const CallReport = () => {
       })
   }
 
+  const deleteCallReport = (id) => {
+    AxiosInstance.delete(`/call-reports/${id}`)
+      .then((res) => {
+        toast.success('گزارش تماس حذف شد')
+        showCallReports()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   return (
     <>
       <CRow>
@@ -188,6 +199,11 @@ const CallReport = () => {
                         </CTableDataCell>
                         <CTableDataCell>{report.rate}</CTableDataCell>
                         <CTableDataCell>{report.description}</CTableDataCell>
+                        <CTableDataCell>
+                          <CButton color="danger" onClick={() => deleteCallReport(report.id)}>
+                            حذف
+                          </CButton>
+                        </CTableDataCell>
                       </CTableRow>
                     ))}
                   </CTableBody>
