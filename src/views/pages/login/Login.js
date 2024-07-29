@@ -41,7 +41,11 @@ const Login = () => {
         localStorage.removeItem('customer')
 
         //redirect to openCash page
-        window.location.href = '/#/pages/openCash'
+        if (res.data.data.manager.roles[0] === 'customer_support') {
+          window.location.href = '/#/pages/callReport'
+        } else {
+          window.location.href = '/#/pages/openCash'
+        }
       })
       .catch((err) => {
         console.log(err)
