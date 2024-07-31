@@ -21,6 +21,7 @@ import {
   cilBookmark,
   cilBasketball,
   cilMoodGood,
+  cilInbox,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -169,6 +170,27 @@ const _nav = [
     icon: <CIcon icon={cilExitToApp} customClassName="nav-icon" />,
   },
 
+  {
+    component: CNavTitle,
+    name: 'پکیج ‌ها',
+  },
+  {
+    component: CNavGroup,
+    name: 'عملیات پکیج‌ ها',
+    icon: <CIcon icon={cilInbox} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'ثبت پکیج',
+        to: '/pages/packageReg',
+      },
+      {
+        component: CNavItem,
+        name: 'نمایش پکیج‌ ها',
+        to: '/pages/showPackages',
+      },
+    ],
+  },
   {
     component: CNavTitle,
     name: 'گزارشات',
