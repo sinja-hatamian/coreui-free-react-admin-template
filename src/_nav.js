@@ -112,22 +112,22 @@ const _nav = [
     to: '/pages/giftCard',
     icon: <CIcon icon={cilGift} customClassName="nav-icon" />,
   },
-  {
-    component: CNavTitle,
-    name: 'کلاس های تابستانی',
-  },
-  {
-    component: CNavItem,
-    name: 'ثبت کلاس',
-    to: '/pages/classReg',
-    icon: <CIcon icon={cilBasketball} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'ثبت نام هنرجو',
-    to: '/pages/classRegUser',
-    icon: <CIcon icon={cilMoodGood} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavTitle,
+  //   name: 'کلاس های تابستانی',
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'ثبت کلاس',
+  //   to: '/pages/classReg',
+  //   icon: <CIcon icon={cilBasketball} customClassName="nav-icon" />,
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'ثبت نام هنرجو',
+  //   to: '/pages/classRegUser',
+  //   icon: <CIcon icon={cilMoodGood} customClassName="nav-icon" />,
+  // },
 
   {
     component: CNavTitle,
