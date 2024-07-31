@@ -189,6 +189,16 @@ const _nav = [
         name: 'نمایش پکیج‌ ها',
         to: '/pages/showPackages',
       },
+      {
+        component: CNavItem,
+        name: 'ثبت ایتم های پکیج',
+        to: '/pages/itemsReg',
+      },
+      {
+        component: CNavItem,
+        name: 'نمایش ایتم های پکیج',
+        to: '/pages/showItems',
+      },
     ],
   },
   {

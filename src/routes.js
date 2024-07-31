@@ -43,6 +43,8 @@ const AddCallReport = React.lazy(() => import('./views/pages/addCallReport/AddCa
 const callReport = React.lazy(() => import('./views/pages/callReport/CallReport'))
 const showPackages = React.lazy(() => import('./views/pages/showPackages/ShowPackages'))
 const packageReg = React.lazy(() => import('./views/pages/packageReg/PackageReg'))
+const itemsReg = React.lazy(() => import('./views/pages/itemsReg/ItemsReg'))
+const ShowItems = React.lazy(() => import('./views/pages/showItems/ShowItems'))
 
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
@@ -153,6 +155,8 @@ const routes = [
   { path: '/pages/callReport', name: 'callReport', element: callReport, exact: true },
   { path: '/pages/showPackages', name: 'showPackages', element: showPackages, exact: true },
   { path: '/pages/packageReg', name: 'packageReg', element: packageReg, exact: true },
+  { path: '/pages/itemsReg', name: 'itemsReg', element: itemsReg, exact: true },
+  { path: '/pages/showItems', name: 'ShowItems', element: ShowItems, exact: true },
 ]
 
 export default routes
