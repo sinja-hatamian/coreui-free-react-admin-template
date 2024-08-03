@@ -53,14 +53,18 @@ const ShowItems = () => {
   const handleInput = (e) => {
     const name = e.target.name
     let value = e.target.value
-    // Helper function to format number with commas
-    const formatNumberWithCommas = (number) => {
-      return number.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    }
+
     if (name === 'price') {
-      value = formatNumberWithCommas(value)
+      value = value.replace(/,/g, '')
+      if (!isNaN(value) && value !== '') {
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      }
     }
-    setCurrentItem({ ...currentItem, [name]: value })
+
+    setCurrentItem({
+      ...currentItem,
+      [name]: value,
+    })
   }
 
   const updateItems = () => {
@@ -76,6 +80,19 @@ const ShowItems = () => {
       .catch((error) => {
         console.log(error)
         toast.error('خطا در به روزرسانی آیتم')
+      })
+  }
+
+  const handleDelete = (id) => {
+    AxiosInstance.delete(`/items/${id}`)
+      .then((response) => {
+        const filteredItems = items.filter((item) => item.id !== id)
+        setItems(filteredItems)
+        toast.success('آیتم با موفقیت حذف شد')
+      })
+      .catch((error) => {
+        console.log(error)
+        toast.error('خطا در حذف آیتم')
       })
   }
 
@@ -106,8 +123,17 @@ const ShowItems = () => {
                     {item.is_per_person === 'true' ? 'به ازای هر نفر' : 'یکجا'}
                   </CTableDataCell>
                   <CTableDataCell>
-                    <CButton color="info" onClick={() => openModal(item)}>
+                    <CButton color="info" style={{ color: '#fff' }} onClick={() => openModal(item)}>
                       ویرایش
+                    </CButton>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <CButton
+                      color="danger"
+                      style={{ color: '#fff' }}
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      حذف
                     </CButton>
                   </CTableDataCell>
                 </CTableRow>
@@ -117,7 +143,13 @@ const ShowItems = () => {
                   <CModalHeader>
                     <h3>ویرایش آیتم</h3>
                   </CModalHeader>
-                  <CModalBody>
+                  <CModalBody
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '1rem',
+                    }}
+                  >
                     <CRow>
                       <CCol>
                         <CFormInput
@@ -174,6 +206,17 @@ const ShowItems = () => {
           </CTable>
         </CCardBody>
       </CCard>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }
