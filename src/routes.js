@@ -45,6 +45,7 @@ const showPackages = React.lazy(() => import('./views/pages/showPackages/ShowPac
 const packageReg = React.lazy(() => import('./views/pages/packageReg/PackageReg'))
 const itemsReg = React.lazy(() => import('./views/pages/itemsReg/ItemsReg'))
 const ShowItems = React.lazy(() => import('./views/pages/showItems/ShowItems'))
+const packageDays = React.lazy(() => import('./views/pages/packageDays/PackageDays'))
 
 // const showByTag = React.lazy(() => import('./views/pages/showByTag/ShowByTag'))
 
@@ -157,6 +158,7 @@ const routes = [
   { path: '/pages/packageReg', name: 'packageReg', element: packageReg, exact: true },
   { path: '/pages/itemsReg', name: 'itemsReg', element: itemsReg, exact: true },
   { path: '/pages/showItems', name: 'ShowItems', element: ShowItems, exact: true },
+  { path: '/pages/packageDays', name: 'packageDays', element: packageDays, exact: true },
 ]
 
 export default routes

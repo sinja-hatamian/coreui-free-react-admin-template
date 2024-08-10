@@ -199,6 +199,11 @@ const _nav = [
         name: 'نمایش ایتم های پکیج',
         to: '/pages/showItems',
       },
+      {
+        component: CNavItem,
+        name: 'روزهای پکیج',
+        to: '/pages/packageDays',
+      },
     ],
   },
   {

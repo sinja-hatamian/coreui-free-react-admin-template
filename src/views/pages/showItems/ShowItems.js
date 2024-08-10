@@ -83,18 +83,18 @@ const ShowItems = () => {
       })
   }
 
-  const handleDelete = (id) => {
-    AxiosInstance.delete(`/items/${id}`)
-      .then((response) => {
-        const filteredItems = items.filter((item) => item.id !== id)
-        setItems(filteredItems)
-        toast.success('آیتم با موفقیت حذف شد')
-      })
-      .catch((error) => {
-        console.log(error)
-        toast.error('خطا در حذف آیتم')
-      })
-  }
+  // const handleDelete = (id) => {
+  //   AxiosInstance.delete(`/items/${id}`)
+  //     .then((response) => {
+  //       const filteredItems = items.filter((item) => item.id !== id)
+  //       setItems(filteredItems)
+  //       toast.success('آیتم با موفقیت حذف شد')
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //       toast.error('خطا در حذف آیتم')
+  //     })
+  // }
 
   return (
     <>
@@ -127,7 +127,7 @@ const ShowItems = () => {
                       ویرایش
                     </CButton>
                   </CTableDataCell>
-                  <CTableDataCell>
+                  {/* <CTableDataCell>
                     <CButton
                       color="danger"
                       style={{ color: '#fff' }}
@@ -135,7 +135,7 @@ const ShowItems = () => {
                     >
                       حذف
                     </CButton>
-                  </CTableDataCell>
+                  </CTableDataCell> */}
                 </CTableRow>
               ))}
               {
