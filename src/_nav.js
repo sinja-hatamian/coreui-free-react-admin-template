@@ -211,34 +211,23 @@ const _nav = [
     name: 'گزارشات',
   },
   {
-    component: CNavItem,
-    name: 'گزارشات مشتریان',
-    to: '/pages/customerFullLog',
-    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'گزارشات گردش حساب مشتری',
-    to: '/pages/customerFinanceLog',
-    icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'گزارشات رزواسیون',
-    to: '/theme/color',
-    icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'گزارشات کارت‌های هدیه',
-    to: '/theme/color',
-    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'گزارشات صندوق',
-    to: '/theme/color',
-    icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
+    component: CNavGroup,
+    name: 'گزارشات',
+    icon: <CIcon icon={cilInbox} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'گزارشات مشتریان',
+        to: '/pages/customerFullLog',
+        icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'گزارشات گردش حساب مشتری',
+        to: '/pages/customerFinanceLog',
+        icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
+      },
+    ],
   },
 ]
 

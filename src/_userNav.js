@@ -9,6 +9,7 @@ import {
   cilExitToApp,
   cilBookmark,
   cilBasketball,
+  cilInbox,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -53,6 +54,29 @@ const _userNav = [
     to: '/pages/exitCustomer',
     icon: <CIcon icon={cilExitToApp} customClassName="nav-icon" />,
   },
+  {
+    component: CNavTitle,
+    name: 'گزارشات',
+  },
+  {
+    component: CNavGroup,
+    name: 'گزارشات',
+    icon: <CIcon icon={cilInbox} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'گزارشات مشتریان',
+        to: '/pages/customerFullLog',
+        icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'گزارشات گردش حساب مشتری',
+        to: '/pages/customerFinanceLog',
+        icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
+      },
+    ],
+  },
 
   // {
   //   component: CNavTitle,
@@ -65,28 +89,28 @@ const _userNav = [
   //   icon: <CIcon icon={cilBasketball} customClassName="nav-icon" />,
   // },
 
-  {
-    component: CNavTitle,
-    name: 'گزارشات',
-  },
-  {
-    component: CNavItem,
-    name: 'گزارشات مشتریان',
-    to: '/pages/customerFullLog',
-    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'گزارشات گردش حساب مشتری',
-    to: '/pages/customerFinanceLog',
-    icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'گزارشات صندوق',
-    to: '/theme/color',
-    icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavTitle,
+  //   name: 'گزارشات',
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'گزارشات مشتریان',
+  //   to: '/pages/customerFullLog',
+  //   icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'گزارشات گردش حساب مشتری',
+  //   to: '/pages/customerFinanceLog',
+  //   icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'گزارشات صندوق',
+  //   to: '/theme/color',
+  //   icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
+  // },
 ]
 
 export default _userNav
