@@ -292,7 +292,7 @@ const CallReport = () => {
           </CCard>
         </CCol>
         <ToastContainer
-          position="bottom-left"
+          position="bottom-right"
           autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}
