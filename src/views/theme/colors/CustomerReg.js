@@ -88,7 +88,6 @@ const CustomerReg = () => {
     }
     AxiosInstance.get('/introduction-ways')
       .then((res) => {
-        console.log(res)
         setIntroductionWays(res.data.data.introduction_ways)
       })
       .catch((err) => {

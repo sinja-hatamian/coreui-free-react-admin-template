@@ -76,11 +76,14 @@ const ChargeForm = () => {
     const formatedData = numberWithCommas(rawNumber)
     setCash({ ...cash, [name]: formatedData })
   }
-
   const handleFilter = () => {
-    AxiosInstance.get(
-      `/payment-histories/register?start_date=${startDate}&end_date=${endDate}&manager_id=${managerId} `,
-    )
+    let url = `/payment-histories/register?start_date=${startDate}&end_date=${endDate}`
+
+    if (managerId) {
+      url += `&manager_id=${managerId}`
+    }
+
+    AxiosInstance.get(url)
       .then((res) => {
         if (res.data.data.payment_histories.length === 0) {
           toast.error('گزارشی برای این بازه زمانی وجود ندارد')
