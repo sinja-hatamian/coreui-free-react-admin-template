@@ -281,7 +281,6 @@ const ChargCard = () => {
                         name="bank_id"
                         aria-label="bank_id"
                         onChange={(e) => handleInput(e, index)}
-                        // value={cardForm.bank_id}
                         locale="fa-IR"
                         required={true}
                       >
