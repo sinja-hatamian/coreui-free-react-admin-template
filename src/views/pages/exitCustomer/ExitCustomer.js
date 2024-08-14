@@ -490,6 +490,19 @@ const ShowByTag = () => {
         </CCol>
         <CCol xs="12" md="12" className="mb-4">
           <strong>اطلاعات همراهان</strong>
+          <p
+            style={{
+              textAlign: 'center',
+              color: '#fff',
+              backgroundColor: '#007bff',
+              padding: '5px',
+              borderRadius: '5px',
+              margin: '5px',
+            }}
+          >
+            تعداد همراهان:
+            {customers.length}
+          </p>
           <p />
           <CTable striped bordered>
             <CTableHead>
