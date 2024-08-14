@@ -286,11 +286,13 @@ const ChargCard = () => {
                         required={true}
                       >
                         <option value="">انتخاب کنید</option>
-                        {banks.map((bank) => (
-                          <option key={bank.id} value={bank.id}>
-                            {bank.title}
-                          </option>
-                        ))}
+                        {banks
+                          .filter((bank) => bank.id === '20012')
+                          .map((bank) => (
+                            <option key={bank.id} value={bank.id}>
+                              {bank.title}
+                            </option>
+                          ))}
                       </CFormSelect>
                     </CCol>
                     <CCol md={6}>
