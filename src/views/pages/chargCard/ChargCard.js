@@ -287,7 +287,7 @@ const ChargCard = () => {
                       >
                         <option value="">انتخاب کنید</option>
                         {banks
-                          .filter((bank) => bank.id === '20012')
+                          .filter((bank) => bank.id !== '20012')
                           .map((bank) => (
                             <option key={bank.id} value={bank.id}>
                               {bank.title}
