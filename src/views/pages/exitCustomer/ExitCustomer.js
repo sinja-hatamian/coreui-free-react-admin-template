@@ -516,31 +516,29 @@ const ShowByTag = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {customers.map((customer, index) => {
-                const isLastCustomer = index === customers.length - 1
-                const showExitTime = !(isLastCustomer && customer.ExitTime != null)
-                const backgroundColor =
-                  showExitTime && customer.ExitTime != null ? '#e04a5e' : '#fff'
-
-                return (
-                  <CTableRow key={customer.id} style={{ backgroundColor }}>
-                    <CTableDataCell>{customer.TagSerial}</CTableDataCell>
-                    <CTableDataCell>
-                      {customer.EnterTime.split('T')[1].split(':').slice(0, 2).join(':')}
-                    </CTableDataCell>
-                    <CTableDataCell>{showExitTime ? customer.ExitTime : ''}</CTableDataCell>
-                    <CTableDataCell>
-                      <CButton
-                        disabled={customer.ExitTime != null}
-                        onClick={() => handleExit(customer.TagSerial)}
-                        color="success"
-                      >
-                        ثبت خروج
-                      </CButton>
-                    </CTableDataCell>
-                  </CTableRow>
-                )
-              })}
+              {customers.map((customer) => (
+                <CTableRow
+                  key={customer.id}
+                  style={{ backgroundColor: customer.ExitTime == null ? '#fff' : '#e04a5e' }}
+                >
+                  <CTableDataCell>{customer.TagSerial}</CTableDataCell>
+                  <CTableDataCell>
+                    {customer.EnterTime.split('T')[1].split(':').slice(0, 2).join(':')}
+                  </CTableDataCell>{' '}
+                  <CTableDataCell>{customer.ExitTime}</CTableDataCell>
+                  <CTableDataCell>
+                    <CButton
+                      disabled={customer.ExitTime != null}
+                      onClick={() => {
+                        return handleExit(customer.TagSerial)
+                      }}
+                      color="success"
+                    >
+                      ثبت خروج
+                    </CButton>
+                  </CTableDataCell>
+                </CTableRow>
+              ))}
             </CTableBody>
           </CTable>
         </CCol>
