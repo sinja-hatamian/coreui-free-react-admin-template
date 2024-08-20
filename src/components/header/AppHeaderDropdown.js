@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { CAvatar, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
 import { cilLockLocked } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import avatar2 from './../../assets/images/avatars/2.jpg'
 import Avatar from './../../assets/images/avatars/Avatar.png'
 
 const AppHeaderDropdown = () => {
@@ -22,20 +21,6 @@ const AppHeaderDropdown = () => {
 
   return (
     <>
-      {/* <div
-        style={{
-          marginTop: '7px',
-          marginLeft: '5px',
-        }}
-      >
-        {formData.firstname} {formData.lastname}
-      </div>
-      <div>
-        <p>
-          صندوق:
-          {formData.stage_title}
-        </p>
-      </div> */}
       <div
         style={{
           display: 'flex',
@@ -65,10 +50,6 @@ const AppHeaderDropdown = () => {
           <CAvatar src={Avatar} size="lg" />
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
-          {/* <CDropdownItem>
-          <CIcon icon={cilUser} className="me-2" />
-          {formData.firstname} {formData.lastname}
-        </CDropdownItem> */}
           <CDropdownItem
             href="#/login"
             onClick={() => {
