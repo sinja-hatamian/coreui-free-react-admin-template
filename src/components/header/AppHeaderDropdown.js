@@ -3,6 +3,7 @@ import { CAvatar, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } fro
 import { cilLockLocked } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import avatar2 from './../../assets/images/avatars/2.jpg'
+import Avatar from './../../assets/images/avatars/Avatar.png'
 
 const AppHeaderDropdown = () => {
   const [formData, setFormData] = useState({})
@@ -61,7 +62,7 @@ const AppHeaderDropdown = () => {
       </div>
       <CDropdown variant="nav-item">
         <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-          <CAvatar src={avatar2} size="md" />
+          <CAvatar src={Avatar} size="lg" />
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
           {/* <CDropdownItem>
