@@ -32,7 +32,15 @@ import {
 const PackageDays = () => {
   const [packageDays, setPackageDays] = useState([])
   const [visible, setVisible] = useState(false)
+  const [updateVisible, setUpdateVisible] = useState(false)
   const [formData, setFormData] = useState({
+    day: '',
+    start_time: '',
+    end_time: '',
+    price_per_person: '',
+  })
+  const [editData, setEditData] = useState({
+    id: '',
     day: '',
     start_time: '',
     end_time: '',
@@ -53,6 +61,16 @@ const PackageDays = () => {
     setVisible(true)
   }
 
+  const openUpdateModal = (packageDay) => {
+    setEditData({
+      id: packageDay.id,
+      day: packageDay.day,
+      start_time: moment(packageDay.start_time, 'HH:mm').format('HH:mm'),
+      end_time: moment(packageDay.end_time, 'HH:mm').format('HH:mm'),
+      price_per_person: numberWithCommas(packageDay.price_per_person),
+    })
+    setUpdateVisible(true)
+  }
   const closeModal = () => {
     setVisible(false)
     setFormData({
@@ -80,10 +98,35 @@ const PackageDays = () => {
     })
   }
 
+  const handleEditInput = (e) => {
+    const name = e.target.name
+    let value = e.target.value
+
+    if (name === 'price_per_person') {
+      value = value.replace(/,/g, '')
+      if (!isNaN(value) && value !== '') {
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      }
+    }
+
+    setEditData({
+      ...editData,
+      [name]: value,
+    })
+  }
+
   const handleTimeInput = (date, name) => {
     const formattedTime = moment(date.toDate()).format('HH:mm')
     setFormData({
       ...formData,
+      [name]: formattedTime,
+    })
+  }
+
+  const handleEditTimeInput = (date, name) => {
+    const formattedTime = moment(date.toDate()).format('HH:mm')
+    setEditData({
+      ...editData,
       [name]: formattedTime,
     })
   }
@@ -148,19 +191,30 @@ const PackageDays = () => {
         toast.error('خطا در حذف پکیج روز')
       })
   }
+  const handleUpdatePackageDay = () => {
+    const startTime = moment(editData.start_time, 'HH:mm').format('HH:mm')
+    const endTime = moment(editData.end_time, 'HH:mm').format('HH:mm')
 
-  const handleUpdatePackageDay = (id) => {
-    AxiosInstance.put(`/package-days/${id}`, formData)
+    const dataToSend = {
+      ...editData,
+      start_time: startTime,
+      end_time: endTime,
+    }
+
+    AxiosInstance.put(`/package-days/${editData.id}`, dataToSend)
       .then((res) => {
-        console.log(res)
+        // Fetch the updated list from the server
+        AxiosInstance.get('/package-days').then((res) => {
+          setPackageDays(res.data.data.package_days)
+        })
+        setUpdateVisible(false)
         toast.success('پکیج روز با موفقیت ویرایش شد')
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         toast.error('خطا در ویرایش پکیج روز')
       })
   }
-
   return (
     <>
       <CRow>
@@ -215,7 +269,11 @@ const PackageDays = () => {
                         </CButton>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <CButton style={{ color: '#fff' }} color="warning">
+                        <CButton
+                          style={{ color: '#fff' }}
+                          color="warning"
+                          onClick={() => openUpdateModal(packageDay)}
+                        >
                           ویرایش
                         </CButton>
                       </CTableDataCell>
@@ -286,6 +344,67 @@ const PackageDays = () => {
           </CButton>
         </CModalFooter>
       </CModal>
+      <CModal visible={updateVisible} onClose={() => setUpdateVisible(false)}>
+        <CModalHeader closeButton>
+          <h5>ویرایش پکیج روز</h5>
+        </CModalHeader>
+        <CModalBody>
+          <CForm>
+            <CCol>
+              <CFormSelect name="day" value={editData.day} onChange={handleEditInput}>
+                <option value="">انتخاب کنید</option>
+                <option value="0">یکشنبه</option>
+                <option value="1">دوشنبه</option>
+                <option value="2">سه شنبه</option>
+                <option value="3">چهارشنبه</option>
+                <option value="4">پنجشنبه</option>
+                <option value="5">جمعه</option>
+                <option value="6">شنبه</option>
+              </CFormSelect>
+            </CCol>
+            <CCol>
+              <DatePicker
+                disableDayPicker
+                format="HH:mm"
+                calendar={persian}
+                locale={persian_fa}
+                value={editData.start_time ? moment(editData.start_time, 'HH:mm').toDate() : null}
+                onChange={(value) => handleEditTimeInput(value, 'start_time')}
+                plugins={[<TimePicker key={1} hideSeconds />]}
+              />
+            </CCol>
+            <CCol>
+              <DatePicker
+                disableDayPicker
+                format="HH:mm"
+                calendar={persian}
+                locale={persian_fa}
+                value={editData.end_time ? moment(editData.end_time, 'HH:mm').toDate() : null}
+                onChange={(value) => handleEditTimeInput(value, 'end_time')}
+                plugins={[<TimePicker key={1} hideSeconds />]}
+              />
+            </CCol>
+            <CCol>
+              <CFormInput
+                type="text"
+                label="قیمت هر نفر"
+                name="price_per_person"
+                value={editData.price_per_person}
+                onChange={handleEditInput}
+              />
+            </CCol>
+          </CForm>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="primary" onClick={handleUpdatePackageDay}>
+            ذخیره
+          </CButton>
+          <CButton color="secondary" onClick={() => setUpdateVisible(false)}>
+            لغو
+          </CButton>
+        </CModalFooter>
+      </CModal>
+
       <ToastContainer
         position="bottom-right"
         autoClose={2000}
