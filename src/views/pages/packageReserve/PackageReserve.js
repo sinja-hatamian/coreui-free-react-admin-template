@@ -74,7 +74,11 @@ const PackageReserve = () => {
         toast.success('مشتری یافت شد')
       })
       .catch((err) => {
-        console.log(err)
+        toast.error('مشتری یافت نشد')
+        setCustomerData({
+          firstname: '',
+          lastname: '',
+        })
       })
   }
 
@@ -95,6 +99,7 @@ const PackageReserve = () => {
       })
       .catch((err) => {
         console.log(err)
+        toast.error('مشتری یافت نشد')
       })
   }
 
@@ -120,6 +125,14 @@ const PackageReserve = () => {
                       value={nationalCode}
                       onChange={(e) => setNationalCode(e.target.value)}
                     />
+                    <p />
+                    <CButton
+                      color="info"
+                      onClick={fetchUser}
+                      style={{ color: '#fff', gap: '10px' }}
+                    >
+                      جستجو
+                    </CButton>
                   </CCol>
 
                   <CCol md="6">
@@ -129,16 +142,12 @@ const PackageReserve = () => {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                     />
+                    <p />
+                    <CButton color="info" onClick={fetchUSerByPhone} style={{ color: '#fff' }}>
+                      جستجو بر اساس شماره تماس
+                    </CButton>
                   </CCol>
                 </CRow>
-                <CButton color="info" onClick={fetchUser}>
-                  جستجو
-                </CButton>
-                <CCol md="6">
-                  <CButton color="info" onClick={fetchUSerByPhone}>
-                    جستجو بر اساس شماره تماس
-                  </CButton>
-                </CCol>
               </CForm>
             </CCardBody>
           </CCard>
@@ -190,6 +199,17 @@ const PackageReserve = () => {
           </CCard>
         </CCol>
       </CRow>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }

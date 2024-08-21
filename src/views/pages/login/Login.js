@@ -35,7 +35,7 @@ const Login = () => {
   const handleLogin = () => {
     AxiosInstance.post('/auth/login', formdata)
       .then((res) => {
-        console.log(res.data.data.manager)
+        // console.log(res.data.data.manager)
         localStorage.setItem('token', res.data.data.token)
         localStorage.setItem('manager', JSON.stringify(res.data.data.manager))
         localStorage.removeItem('customer')
