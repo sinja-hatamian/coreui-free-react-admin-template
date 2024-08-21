@@ -181,6 +181,11 @@ const _nav = [
     items: [
       {
         component: CNavItem,
+        name: ' رزرو پکیج',
+        to: '/pages/packageReserve',
+      },
+      {
+        component: CNavItem,
         name: 'ثبت پکیج',
         to: '/pages/packageReg',
       },
