@@ -110,6 +110,7 @@ const ShowItems = () => {
                 <CTableHeaderCell>قیمت</CTableHeaderCell>
                 <CTableHeaderCell>توضیحات</CTableHeaderCell>
                 <CTableHeaderCell>حالت پرداختی</CTableHeaderCell>
+                <CTableHeaderCell>والد</CTableHeaderCell>
                 <CTableHeaderCell>عملیات</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -119,23 +120,15 @@ const ShowItems = () => {
                   <CTableDataCell>{item.title}</CTableDataCell>
                   <CTableDataCell>{numberWithCommas(item.price)}</CTableDataCell>
                   <CTableDataCell>{item.description}</CTableDataCell>
+                  <CTableDataCell>{item.is_per_person ? 'به ازای هر نفر' : 'یکجا'}</CTableDataCell>
                   <CTableDataCell>
-                    {item.is_per_person === 'true' ? 'به ازای هر نفر' : 'یکجا'}
+                    {item.parent_id ? items.find((i) => i.id === item.parent_id).title : 'ندارد'}
                   </CTableDataCell>
                   <CTableDataCell>
                     <CButton color="info" style={{ color: '#fff' }} onClick={() => openModal(item)}>
                       ویرایش
                     </CButton>
                   </CTableDataCell>
-                  {/* <CTableDataCell>
-                    <CButton
-                      color="danger"
-                      style={{ color: '#fff' }}
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      حذف
-                    </CButton>
-                  </CTableDataCell> */}
                 </CTableRow>
               ))}
               {

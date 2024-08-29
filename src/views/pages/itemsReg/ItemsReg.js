@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -23,6 +23,19 @@ const ItemsReg = () => {
     is_per_person: '',
     status: '',
   })
+  const [items, setItems] = useState([])
+
+  useEffect(() => {
+    AxiosInstance.get('/items')
+      .then((response) => {
+        const filteredItems = response.data.data.items.filter((item) => item.parent_id === null)
+        setItems(filteredItems)
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [])
 
   const handleInput = (e) => {
     const name = e.target.name
@@ -81,12 +94,14 @@ const ItemsReg = () => {
               />
             </CCol>
             <CCol md="6" className="mb-3">
-              <CFormInput
-                name="parent_id"
-                placeholder="parent_id"
-                value={formData.parent_id}
-                onChange={handleInput}
-              />
+              <CFormSelect name="parent_id" onChange={handleInput} value={formData.parent_id}>
+                <option value="">انتخاب آیتم والد</option>
+                {items.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.title}
+                  </option>
+                ))}
+              </CFormSelect>
             </CCol>
             <CCol md="6" className="mb-3">
               <CFormSelect
@@ -94,7 +109,7 @@ const ItemsReg = () => {
                 onChange={handleInput}
                 value={formData.is_per_person}
               >
-                <option value="">آیا قابلیت انتخاب برای هر نفر دارد؟</option>
+                <option value="">آیا قیمت به ازای هر نفر است؟</option>
                 <option value="true">بله</option>
                 <option value="false">خیر</option>
               </CFormSelect>

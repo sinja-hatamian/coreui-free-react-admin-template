@@ -111,7 +111,12 @@ const ShowPackages = () => {
                   <CTableDataCell>{item.description}</CTableDataCell>
                   <CTableDataCell>{item.status === '1' ? 'فعال' : 'غیرفعال'}</CTableDataCell>
                   <CTableDataCell>
-                    <CButton color="info" style={{ color: '#fff' }} onClick={() => openModal(item)}>
+                    <CButton
+                      color="info"
+                      style={{ color: '#fff' }}
+                      onClick={() => openModal(item)}
+                      block
+                    >
                       ویرایش
                     </CButton>
                   </CTableDataCell>

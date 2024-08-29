@@ -44,7 +44,6 @@ const GiftCard = () => {
     directive: '',
     description: '',
     is_active: 'true',
-    expires_at: null,
   })
 
   useEffect(() => {
@@ -157,7 +156,6 @@ const GiftCard = () => {
           directive: '',
           description: '',
           is_active: 'true',
-          expires_at: null,
         })
       })
   }
@@ -292,7 +290,7 @@ const GiftCard = () => {
                         />
                       </CCol>
                     </CCol>
-                    <CCol md={6}>
+                    {/* <CCol md={6}>
                       <div>تاریخ انقضا</div>
                       <DatePicker
                         onChange={handleDate}
@@ -301,7 +299,7 @@ const GiftCard = () => {
                         calendar={persian}
                         locale={persian_fa}
                       />
-                    </CCol>
+                    </CCol> */}
                     <CCol md={8}>
                       <div>
                         <p>وضعیت کارت</p>
