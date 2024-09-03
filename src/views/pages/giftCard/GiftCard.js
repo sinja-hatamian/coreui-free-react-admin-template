@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import DatePicker from 'react-multi-date-picker'
-import persian from 'react-date-object/calendars/persian'
-import persian_fa from 'react-date-object/locales/persian_fa'
 import moment from 'moment-jalaali'
-
 import {
   CButton,
   CRow,
@@ -195,13 +191,13 @@ const GiftCard = () => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
-  const handleDate = (newDate) => {
-    setValue(newDate)
-    if (newDate) {
-      const gregorianDate = moment(newDate).format('YYYY/MM/DD')
-      setFormdata({ ...formdata, expires_at: gregorianDate })
-    }
-  }
+  // const handleDate = (newDate) => {
+  //   setValue(newDate)
+  //   if (newDate) {
+  //     const gregorianDate = moment(newDate).format('YYYY/MM/DD')
+  //     setFormdata({ ...formdata, expires_at: gregorianDate })
+  //   }
+  // }
   return (
     <>
       <CNav variant="tabs" role="tablist">

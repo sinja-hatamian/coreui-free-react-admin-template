@@ -27,6 +27,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
+  CFormTextarea,
 } from '@coreui/react'
 import TimePicker from 'react-multi-date-picker/plugins/time_picker'
 
@@ -385,9 +386,20 @@ const PackageReserve = () => {
                   <strong>اطلاعات رزرو</strong>
                 </CCardHeader>
                 <CCardBody>
-                  <CRow className="justify-content-center align-items-center">
-                    <CCol md="6" className="mb-3">
+                  <CRow
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      textAlign: 'right',
+                      gap: '20px', // Add gap between columns
+                    }}
+                  >
+                    <CCol md="2" className="mb-3">
                       <CForm>
+                        <div>
+                          <p>تاریخ</p>
+                        </div>
                         <DatePicker
                           value={formData.date}
                           onChange={(date) => setFormData({ ...formData, date: handleDate(date) })}
@@ -397,8 +409,11 @@ const PackageReserve = () => {
                         />
                       </CForm>
                     </CCol>
-                    <CCol md="6" className="mb-3">
+                    <CCol md="2" className="mb-3">
                       <CForm>
+                        <div>
+                          <p>ساعت</p>
+                        </div>
                         <DatePicker
                           disableDayPicker
                           format="HH:mm"
@@ -410,12 +425,13 @@ const PackageReserve = () => {
                         />
                       </CForm>
                     </CCol>
-                    <CCol md="6" className="mb-3">
+                    <CCol md="2" className="mb-3">
                       <CForm>
                         <CFormInput
                           id="total_count"
                           name="total_count"
-                          placeholder="تعداد کل"
+                          placeholder=" تعداد کل مهمانان"
+                          label="تعداد کل مهمانان"
                           value={formData.total_count}
                           onChange={(e) =>
                             setFormData({ ...formData, total_count: e.target.value })
@@ -423,12 +439,13 @@ const PackageReserve = () => {
                         />
                       </CForm>
                     </CCol>
-                    <CCol md="6" className="mb-3">
+                    <CCol md="2" className="mb-3">
                       <CForm>
                         <CFormInput
                           id="player_count"
                           name="player_count"
                           placeholder="تعداد بازیکن"
+                          label="تعداد بازیکن"
                           value={formData.player_count}
                           onChange={(e) =>
                             setFormData({ ...formData, player_count: e.target.value })
@@ -436,12 +453,13 @@ const PackageReserve = () => {
                         />
                       </CForm>
                     </CCol>
-                    <CCol md="6" className="mb-3">
+                    <CCol md="2" className="mb-3">
                       <CForm>
                         <CFormInput
                           id="discount"
                           name="discount"
                           placeholder="تخفیف"
+                          label="تخفیف(ریال)"
                           value={formData.discount}
                           onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
                         />
@@ -449,10 +467,11 @@ const PackageReserve = () => {
                     </CCol>
                     <CCol md="12" className="mb-3">
                       <CForm>
-                        <CFormInput
+                        <CFormTextarea
                           id="description"
                           name="description"
                           placeholder="توضیحات"
+                          label="توضیحات"
                           value={formData.description}
                           onChange={(e) =>
                             setFormData({ ...formData, description: e.target.value })
