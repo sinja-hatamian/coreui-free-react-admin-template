@@ -28,15 +28,21 @@ import {
   CTabContent,
   CTabPane,
   CFormTextarea,
-  CFormCheck,
   CAccordion,
   CAccordionItem,
   CAccordionBody,
   CAccordionHeader,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
 } from '@coreui/react'
 
 const PackageReserve = () => {
   const [data, setData] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [calculatedPrice, setCalculatedPrice] = useState(null)
   const [isActivePackage, setIsActivePackage] = useState([])
   const [isActiveItems, setIsActiveItems] = useState([])
   const [isActiveOtherItems, setIsActiveOtherItems] = useState([])
@@ -145,6 +151,10 @@ const PackageReserve = () => {
     })
   }
 
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
   const renderDropdowns = () => {
     return (
       <CAccordion>
@@ -164,45 +174,54 @@ const PackageReserve = () => {
                 {item.title}
               </div>
             </CAccordionHeader>
+
             <CAccordionBody>
-              <ul
-                style={{
-                  listStyleType: 'none',
-                  padding: 0,
-                  display: 'flex',
-                  flexDirection: 'column-reverse',
-                  alignItems: 'flex-start',
-                }}
-              >
-                {item.children.map((child) => (
-                  <li
-                    key={child.id}
-                    style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}
-                  >
-                    <label style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <input
-                        type="radio"
-                        checked={selectedChildren[item.id] === child.id}
-                        onChange={() => handleRadioChange(item.id, child)}
-                        style={{ marginRight: '10px' }}
-                      />
-                      <span style={{ marginRight: '10px' }}>{child.title}</span>
-                    </label>
-                    {child.is_per_person ? (
-                      <CFormInput
-                        id="count"
-                        name="count"
-                        placeholder="تعداد"
-                        style={{ width: '100px' }}
-                        value={
-                          formData.items.find((formItem) => formItem.id === child.id)?.count || ''
-                        }
-                        onChange={(e) => handleInputChange(e, child.id)}
-                      />
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
+              <CTable>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>آیتم</CTableHeaderCell>
+                    <CTableHeaderCell>تعداد</CTableHeaderCell>
+                    <CTableHeaderCell>قیمت واحد(ریال)</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {item.children.map((child) => (
+                    <CTableRow key={child.id}>
+                      <CTableDataCell>
+                        <label style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                          <input
+                            type="radio"
+                            checked={selectedChildren[item.id] === child.id}
+                            onChange={() => handleRadioChange(item.id, child)}
+                            style={{ marginRight: '10px' }}
+                          />
+                          <span style={{ marginRight: '10px' }}>{child.title}</span>
+                        </label>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {child.is_per_person ? (
+                          <CFormInput
+                            id="count"
+                            name="count"
+                            placeholder="تعداد"
+                            style={{ width: '100px' }}
+                            value={
+                              formData.items.find((formItem) => formItem.id === child.id)?.count ||
+                              ''
+                            }
+                            onChange={(e) => handleInputChange(e, child.id)}
+                          />
+                        ) : (
+                          '-'
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <span style={{ marginRight: '10px' }}>{numberWithCommas(child.price)}</span>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
             </CAccordionBody>
           </CAccordionItem>
         ))}
@@ -228,45 +247,53 @@ const PackageReserve = () => {
               سایر آیتم‌ها
             </div>
           </CAccordionHeader>
+
           <CAccordionBody>
-            <ul
-              style={{
-                listStyleType: 'none',
-                padding: 0,
-                display: 'flex',
-                flexDirection: 'column-reverse',
-                alignItems: 'flex-start',
-              }}
-            >
-              {isActiveOtherItems.map((item) => (
-                <li
-                  key={item.id}
-                  style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}
-                >
-                  <label style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                    <input
-                      type="checkbox"
-                      style={{ marginRight: '10px' }}
-                      value={item.id}
-                      onChange={handleCheckboxChange}
-                    />
-                    <span style={{ marginRight: '10px' }}>{item.title}</span>
-                  </label>
-                  {item.is_per_person ? (
-                    <CFormInput
-                      id="count"
-                      name="count"
-                      placeholder="تعداد"
-                      style={{ width: '100px' }}
-                      value={
-                        formData.items.find((formItem) => formItem.id === item.id)?.count || ''
-                      }
-                      onChange={(e) => handleInputChange(e, item.id)}
-                    />
-                  ) : null}
-                </li>
-              ))}
-            </ul>
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell>آیتم</CTableHeaderCell>
+                  <CTableHeaderCell>تعداد</CTableHeaderCell>
+                  <CTableHeaderCell>قیمت واحد(ریال)</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {isActiveOtherItems.map((item) => (
+                  <CTableRow key={item.id}>
+                    <CTableDataCell>
+                      <label style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                        <input
+                          type="checkbox"
+                          style={{ marginRight: '10px' }}
+                          value={item.id}
+                          onChange={handleCheckboxChange}
+                        />
+                        <span style={{ marginRight: '10px' }}>{item.title}</span>
+                      </label>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      {item.is_per_person ? (
+                        <CFormInput
+                          id="count"
+                          name="count"
+                          placeholder="تعداد"
+                          style={{ width: '100px' }}
+                          value={
+                            formData.items.find((formItem) => formItem.id === item.id)?.count || ''
+                          }
+                          onChange={(e) => handleInputChange(e, item.id)}
+                        />
+                      ) : (
+                        '-'
+                      )}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <span style={{ marginRight: '10px' }}>{numberWithCommas(item.price)}</span>
+                    </CTableDataCell>
+                  </CTableRow>
+                ))}
+              </CTableBody>
+            </CTable>
           </CAccordionBody>
         </CAccordionItem>
       </CAccordion>
@@ -310,8 +337,16 @@ const PackageReserve = () => {
       })
   }
 
-  const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const hadleCalculate = () => {
+    console.log(formData)
+    AxiosInstance.post('/package-reserves/calculate-price', formData)
+      .then((res) => {
+        setCalculatedPrice(res.data.data.total_price)
+        setIsModalOpen(true)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const handleReserve = () => {
@@ -607,14 +642,55 @@ const PackageReserve = () => {
               <br />
               <CCard>
                 <CCardBody>
-                  <CButton color="primary" onClick={handleReserve}>
-                    ثبت رزرو
+                  <CButton color="primary" onClick={hadleCalculate}>
+                    محاسبه هزینه
                   </CButton>
                 </CCardBody>
               </CCard>
             </CCol>
           </CRow>
         </CTabPane>
+        <CModal visible={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <CModalHeader>
+            <CModalTitle>جزئیات رزرو</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <p>
+              <strong>نام مشتری:</strong> {customerData.firstname} {customerData.lastname}
+            </p>
+            <p>
+              <strong>تاریخ:</strong> {moment(formData.date).format('jYYYY/jMM/jDD')}
+            </p>
+            <p>
+              <strong>ساعت:</strong> {formData.start_time}
+            </p>
+            <p>
+              <strong>تعداد کل مهمانان:</strong> {formData.total_count}
+            </p>
+            <p>
+              <strong>تعداد بازیکن:</strong> {formData.player_count}
+            </p>
+            <p>
+              <strong>پکیج انتخاب شده:</strong>{' '}
+              {isActivePackage.find((pkg) => pkg.id === formData.package_id)?.title || ''}
+            </p>
+            <p>
+              <strong>قیمت نهایی :</strong> {calculatedPrice && numberWithCommas(calculatedPrice)}{' '}
+              ریال
+            </p>
+            <p>
+              <strong>توضیحات:</strong> {formData.description}
+            </p>
+          </CModalBody>
+          <CModalFooter>
+            <CButton color="secondary" onClick={() => setIsModalOpen(false)}>
+              بستن
+            </CButton>
+            <CButton color="primary" onClick={handleReserve}>
+              ثبت رزرو
+            </CButton>
+          </CModalFooter>
+        </CModal>
         <ToastContainer
           position="bottom-right"
           autoClose={2000}
