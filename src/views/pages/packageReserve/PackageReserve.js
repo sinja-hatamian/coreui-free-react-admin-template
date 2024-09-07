@@ -6,7 +6,7 @@ import DatePicker from 'react-multi-date-picker'
 import TimePicker from 'react-multi-date-picker/plugins/time_picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
-import moment from 'moment'
+import moment from 'moment-jalaali'
 import {
   CCard,
   CCardBody,
@@ -44,7 +44,6 @@ const PackageReserve = () => {
   const [selectedChildren, setSelectedChildren] = useState({})
   const [nationalCode, setNationalCode] = useState('')
   const [phone, setPhone] = useState('')
-  const [selectedParentItems, setSelectedParentItems] = useState([])
   const [customerData, setCustomerData] = useState({
     firstname: '',
     lastname: '',
@@ -366,8 +365,12 @@ const PackageReserve = () => {
                           <CTableDataCell>
                             {item.user_firstname} {item.user_lastname}
                           </CTableDataCell>
-                          <CTableDataCell>{item.date}</CTableDataCell>
-                          <CTableDataCell>{item.start_time}</CTableDataCell>
+                          <CTableDataCell>
+                            {moment(item.date).format('jYYYY/jMM/jDD')}
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            {item.start_time.split('T')[1].split(':').slice(0, 2).join(':')}
+                          </CTableDataCell>
                           <CTableDataCell>{numberWithCommas(item.total_price)}</CTableDataCell>
                           <CTableDataCell>{item.status}</CTableDataCell>
                           <CTableDataCell>{item.description}</CTableDataCell>
