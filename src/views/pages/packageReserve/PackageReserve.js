@@ -3,10 +3,10 @@ import AxiosInstance from 'src/utils/AxiosInstance'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import DatePicker from 'react-multi-date-picker'
+import TimePicker from 'react-multi-date-picker/plugins/time_picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import moment from 'moment'
-import 'moment/locale/fa'
 import {
   CCard,
   CCardBody,
@@ -28,8 +28,12 @@ import {
   CTabContent,
   CTabPane,
   CFormTextarea,
+  CFormCheck,
+  CAccordion,
+  CAccordionItem,
+  CAccordionBody,
+  CAccordionHeader,
 } from '@coreui/react'
-import TimePicker from 'react-multi-date-picker/plugins/time_picker'
 
 const PackageReserve = () => {
   const [data, setData] = useState([])
@@ -37,16 +41,16 @@ const PackageReserve = () => {
   const [isActiveItems, setIsActiveItems] = useState([])
   const [isActiveOtherItems, setIsActiveOtherItems] = useState([])
   const [activeKey, setActiveKey] = useState(1)
-  const [openAccordion, setOpenAccordion] = useState(null)
   const [selectedChildren, setSelectedChildren] = useState({})
   const [nationalCode, setNationalCode] = useState('')
   const [phone, setPhone] = useState('')
-  const [card, setCard] = useState({})
+  const [selectedParentItems, setSelectedParentItems] = useState([])
   const [customerData, setCustomerData] = useState({
     firstname: '',
     lastname: '',
   })
   const [formData, setFormData] = useState({
+    user_id: '',
     package_id: '',
     date: '',
     start_time: '',
@@ -100,153 +104,210 @@ const PackageReserve = () => {
   }, [])
 
   const handleDate = (date) => {
-    let jalaliDate = moment(date, 'YYYY-MM-DD').locale('fa').format('YYYY/M/D')
-    return jalaliDate
-  }
-
-  const toggleAccordion = (id) => {
-    setOpenAccordion(openAccordion === id ? null : id)
-  }
-
-  const handleCheckboxChange = (id, item) => {
-    setSelectedChildren((prevSelectedChildren) => {
-      return {
-        ...prevSelectedChildren,
-        [id]: !prevSelectedChildren[id],
-      }
-    })
+    const formattedDate = moment(date.toDate()).format('YYYY-MM-DD')
+    setFormData({ ...formData, date: formattedDate })
   }
 
   const handleRadioChange = (parentId, child) => {
-    setSelectedChildren((prevSelectedChildren) => {
-      return {
-        ...prevSelectedChildren,
-        [parentId]: [child.id],
-      }
+    if (selectedChildren[parentId] === undefined) {
+      // If item already exists in array, update the count if needed
+      setFormData({ ...formData, items: [...formData.items, { id: child.id, count: 1 }] })
+    } else {
+      setFormData({
+        ...formData,
+        items: [
+          ...formData.items.filter((item) => item.id != selectedChildren[parentId]),
+          { id: child.id, count: 1 },
+        ],
+      })
+    }
+
+    setSelectedChildren((prevSelectedChildren) => ({
+      ...prevSelectedChildren,
+      [parentId]: child.id,
+    }))
+  }
+
+  const handleCheckboxChange = (e) => {
+    if (e.target.checked) {
+      setFormData({ ...formData, items: [...formData.items, { id: e.target.value, count: 1 }] })
+    } else {
+      setFormData({
+        ...formData,
+        items: [...formData.items.filter((item) => item.id != e.target.value)],
+      })
+    }
+  }
+
+  const handleInputChange = (e, id) => {
+    setFormData({
+      ...formData,
+      items: [...formData.items.filter((item) => item.id != id), { id, count: e.target.value }],
     })
   }
 
   const renderDropdowns = () => {
-    return isActiveItems.map((parent) => (
-      <div
-        key={parent.id}
-        style={{ marginBottom: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
-      >
-        <div
-          onClick={() => toggleAccordion(parent.id)}
-          style={{
-            cursor: 'pointer',
-            padding: '10px',
-            backgroundColor: '#f7f7f7',
-            fontFamily: 'IRANSans',
-            fontSize: '16px',
-            fontWeight: 'bold',
-          }}
-        >
-          {parent.title}
-        </div>
-        {openAccordion === parent.id && (
-          <div style={{ padding: '10px' }}>
-            <ul style={{ listStyleType: 'none', padding: 0 }}>
-              {parent.children.map((child) => (
+    return (
+      <CAccordion>
+        {isActiveItems.map((item) => (
+          <CAccordionItem key={item.id} itemKey={item.id}>
+            <CAccordionHeader>
+              <div
+                style={{
+                  cursor: 'pointer',
+                  padding: '10px',
+                  backgroundColor: '#f7f7f7',
+                  fontFamily: 'IRANSans',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                }}
+              >
+                {item.title}
+              </div>
+            </CAccordionHeader>
+            <CAccordionBody>
+              <ul
+                style={{
+                  listStyleType: 'none',
+                  padding: 0,
+                  display: 'flex',
+                  flexDirection: 'column-reverse',
+                  alignItems: 'flex-start',
+                }}
+              >
+                {item.children.map((child) => (
+                  <li
+                    key={child.id}
+                    style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}
+                  >
+                    <label style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <input
+                        type="radio"
+                        checked={selectedChildren[item.id] === child.id}
+                        onChange={() => handleRadioChange(item.id, child)}
+                        style={{ marginRight: '10px' }}
+                      />
+                      <span style={{ marginRight: '10px' }}>{child.title}</span>
+                    </label>
+                    {child.is_per_person ? (
+                      <CFormInput
+                        id="count"
+                        name="count"
+                        placeholder="تعداد"
+                        style={{ width: '100px' }}
+                        value={
+                          formData.items.find((formItem) => formItem.id === child.id)?.count || ''
+                        }
+                        onChange={(e) => handleInputChange(e, child.id)}
+                      />
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </CAccordionBody>
+          </CAccordionItem>
+        ))}
+      </CAccordion>
+    )
+  }
+
+  const renderOtherItems = () => {
+    return (
+      <CAccordion>
+        <CAccordionItem itemKey="otherItems">
+          <CAccordionHeader>
+            <div
+              style={{
+                cursor: 'pointer',
+                padding: '10px',
+                backgroundColor: '#f7f7f7',
+                fontFamily: 'IRANSans',
+                fontSize: '16px',
+                fontWeight: 'bold',
+              }}
+            >
+              سایر آیتم‌ها
+            </div>
+          </CAccordionHeader>
+          <CAccordionBody>
+            <ul
+              style={{
+                listStyleType: 'none',
+                padding: 0,
+                display: 'flex',
+                flexDirection: 'column-reverse',
+                alignItems: 'flex-start',
+              }}
+            >
+              {isActiveOtherItems.map((item) => (
                 <li
-                  key={child.id}
+                  key={item.id}
                   style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}
                 >
                   <label style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                     <input
-                      type="radio"
-                      name={parent.id}
-                      checked={selectedChildren[parent.id]?.includes(child.id) || false}
-                      onChange={() => handleRadioChange(parent.id, child)}
+                      type="checkbox"
                       style={{ marginRight: '10px' }}
+                      value={item.id}
+                      onChange={handleCheckboxChange}
                     />
-                    <span style={{ marginRight: '10px' }}>{child.title}</span>
+                    <span style={{ marginRight: '10px' }}>{item.title}</span>
                   </label>
+                  {item.is_per_person ? (
+                    <CFormInput
+                      id="count"
+                      name="count"
+                      placeholder="تعداد"
+                      style={{ width: '100px' }}
+                      value={
+                        formData.items.find((formItem) => formItem.id === item.id)?.count || ''
+                      }
+                      onChange={(e) => handleInputChange(e, item.id)}
+                    />
+                  ) : null}
                 </li>
               ))}
             </ul>
-          </div>
-        )}
-      </div>
-    ))
+          </CAccordionBody>
+        </CAccordionItem>
+      </CAccordion>
+    )
   }
 
-  const renderOtherItems = () => {
-    return isActiveOtherItems.map((item) => (
-      <div
-        key={item.id}
-        style={{ marginBottom: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
-      >
-        <ul style={{ listStyleType: 'none', padding: 0 }}>
-          <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <label
-              style={{ display: 'flex', alignItems: 'center', width: '100%', marginTop: '1%' }}
-            >
-              <input
-                type="checkbox"
-                name="otherItems"
-                checked={selectedChildren[item.id] || false}
-                onChange={() => handleCheckboxChange(item.id, item)}
-                style={{ marginRight: '10px' }}
-              />
-              <span style={{ marginRight: '10px' }}>{item.title}</span>
-            </label>
-          </li>
-        </ul>
-      </div>
-    ))
-  }
-
-  const handleTime = (time) => {
-    // Split the datetime string to get the time part
-    let timePart = time.split('T')[1].split('.')[0]
-
-    // Return only the hours and minutes
-    return timePart.slice(0, 5)
+  const handleTime = (date, name) => {
+    const formattedTime = moment(date.toDate()).format('HH:mm')
+    setFormData({ ...formData, [name]: formattedTime })
   }
 
   const fetchUser = () => {
     AxiosInstance.get(`/users/national-code/${nationalCode}`)
       .then((res) => {
-        AxiosInstance.get(`/cards/${res.data.data.user.id}`)
-          .then((res) => {
-            setCard(res.data.data.card)
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-        const customerData = res.data.data.user
-        setCustomerData(customerData)
-        toast.success('مشتری یافت شد')
+        console.log(res.data.data.user)
+        setCustomerData({
+          id: res.data.data.user.id,
+          firstname: res.data.data.user.firstname,
+          lastname: res.data.data.user.lastname,
+        })
+        setFormData({ ...formData, user_id: res.data.data.user.id })
+        console.log(formData)
       })
       .catch((err) => {
-        toast.error('مشتری یافت نشد')
-        setCustomerData({
-          firstname: '',
-          lastname: '',
-        })
+        toast.error('کاربری با این کد ملی یافت نشد')
       })
   }
 
   const fetchUSerByPhone = () => {
-    AxiosInstance.get(`users/phone/${phone}`)
+    AxiosInstance.get(`/users/phone/${phone}`)
       .then((res) => {
-        AxiosInstance.get(`/cards/${res.data.data.user.id}`)
-          .then((res) => {
-            setCard(res.data.data.card)
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-        const customerData = res.data.data.user
-        setCustomerData(customerData)
-        console.log(res)
-        toast.success('مشتری یافت شد')
+        setCustomerData({
+          id: res.data.data.user.id,
+          firstname: res.data.data.user.firstname,
+          lastname: res.data.data.user.lastname,
+        })
+        setFormData({ ...formData, user_id: res.data.data.user.id })
       })
       .catch((err) => {
-        console.log(err)
-        toast.error('مشتری یافت نشد')
+        toast.error('کاربری با این شماره تلفن یافت نشد')
       })
   }
 
@@ -256,15 +317,12 @@ const PackageReserve = () => {
 
   const handleReserve = () => {
     console.log(formData)
-    AxiosInstance.post('/package-reserves', {
-      user_id: customerData.id,
-      formData,
-    })
+    AxiosInstance.post('/package-reserves', formData)
       .then((res) => {
-        toast.success('رزرو با موفقیت انجام شد')
+        toast.success('رزرو با موفقیت ثبت شد')
       })
       .catch((err) => {
-        toast.error('خطا در رزرو')
+        toast.error('خطا در ثبت رزرو')
       })
   }
 
@@ -283,7 +341,7 @@ const PackageReserve = () => {
         </CNavItem>
       </CNav>
       <CTabContent>
-        <CTabPane show={activeKey === 1} aria-label="home-tab" visible={activeKey === 1}>
+        <CTabPane aria-label="home-tab" visible={activeKey === 1}>
           <CRow>
             <CCol>
               <CCard>
@@ -308,8 +366,8 @@ const PackageReserve = () => {
                           <CTableDataCell>
                             {item.user_firstname} {item.user_lastname}
                           </CTableDataCell>
-                          <CTableDataCell>{handleDate(item.date)}</CTableDataCell>
-                          <CTableDataCell>{handleTime(item.start_time)}</CTableDataCell>
+                          <CTableDataCell>{item.date}</CTableDataCell>
+                          <CTableDataCell>{item.start_time}</CTableDataCell>
                           <CTableDataCell>{numberWithCommas(item.total_price)}</CTableDataCell>
                           <CTableDataCell>{item.status}</CTableDataCell>
                           <CTableDataCell>{item.description}</CTableDataCell>
@@ -322,7 +380,7 @@ const PackageReserve = () => {
             </CCol>
           </CRow>
         </CTabPane>
-        <CTabPane show={activeKey === 2} aria-label="home-tab" visible={activeKey === 2}>
+        <CTabPane aria-label="home-tab" visible={activeKey === 2}>
           <CRow>
             <CCol>
               <CCard>
@@ -343,7 +401,7 @@ const PackageReserve = () => {
                       </CForm>
                     </CCol>
                     <CCol md="6" className="mb-3">
-                      <CButton color="primary" onClick={fetchUser} block>
+                      <CButton color="primary" onClick={fetchUser}>
                         جستجو بر اساس کد ملی
                       </CButton>
                     </CCol>
@@ -359,7 +417,7 @@ const PackageReserve = () => {
                       </CForm>
                     </CCol>
                     <CCol md="6" className="mb-3">
-                      <CButton color="primary" onClick={fetchUSerByPhone} block>
+                      <CButton color="primary" onClick={fetchUSerByPhone}>
                         جستجو بر اساس شماره تلفن
                       </CButton>
                     </CCol>
@@ -401,11 +459,14 @@ const PackageReserve = () => {
                           <p>تاریخ</p>
                         </div>
                         <DatePicker
-                          value={formData.date}
-                          onChange={(date) => setFormData({ ...formData, date: handleDate(date) })}
-                          calendar={persian}
-                          locale={persian_fa}
+                          value={
+                            formData.date ? moment(formData.date, 'YYYY-MM-DD').toDate() : null
+                          }
+                          onChange={handleDate}
                           format="YYYY-MM-DD"
+                          calendar={persian}
+                          calendarPosition="bottom-right"
+                          locale={persian_fa}
                         />
                       </CForm>
                     </CCol>
@@ -419,8 +480,12 @@ const PackageReserve = () => {
                           format="HH:mm"
                           calendar={persian}
                           locale={persian_fa}
-                          value={formData.start_time}
-                          onChange={(time) => setFormData({ ...formData, start_time: time })}
+                          value={
+                            formData.start_time
+                              ? moment(formData.start_time, 'HH:mm').toDate()
+                              : null
+                          }
+                          onChange={(date) => handleTime(date, 'start_time')}
                           plugins={[<TimePicker key={1} hideSeconds />]}
                         />
                       </CForm>
@@ -507,9 +572,17 @@ const PackageReserve = () => {
                             </CTableDataCell>
                             <CTableDataCell>{item.description}</CTableDataCell>
                             <CTableDataCell>
-                              <CButton color="primary" block>
-                                انتخاب
-                              </CButton>
+                              <input
+                                type="checkbox"
+                                checked={formData.package_id === item.id}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setFormData({ ...formData, package_id: item.id })
+                                  } else {
+                                    setFormData({ ...formData, package_id: '' })
+                                  }
+                                }}
+                              />
                             </CTableDataCell>
                           </CTableRow>
                         ))}
@@ -526,6 +599,14 @@ const PackageReserve = () => {
                 <CCardBody>
                   <CCol>{renderDropdowns()}</CCol>
                   <CCol>{renderOtherItems()}</CCol>
+                </CCardBody>
+              </CCard>
+              <br />
+              <CCard>
+                <CCardBody>
+                  <CButton color="primary" onClick={handleReserve}>
+                    ثبت رزرو
+                  </CButton>
                 </CCardBody>
               </CCard>
             </CCol>
