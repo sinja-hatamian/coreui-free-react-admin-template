@@ -69,6 +69,7 @@ const OpenCash = () => {
               />
             </CCol>
           </CRow>
+          <br />
           <CForm className="row g-3">
             <CCol md={6}>
               <CCol xs>
