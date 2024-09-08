@@ -42,6 +42,7 @@ import {
 const PackageReserve = () => {
   const [data, setData] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalDetailsOpen, setIsModalDetailsOpen] = useState(false)
   const [calculatedPrice, setCalculatedPrice] = useState(null)
   const [isActivePackage, setIsActivePackage] = useState([])
   const [isActiveItems, setIsActiveItems] = useState([])
@@ -337,6 +338,31 @@ const PackageReserve = () => {
       })
   }
 
+  const showDetails = (id) => {
+    AxiosInstance.get(`/package-reserves/${id}`)
+      .then((res) => {
+        console.log(res.data.data.package_reserve)
+        setCustomerData({
+          firstname: res.data.data.package_reserve.user_firstname,
+          lastname: res.data.data.package_reserve.user_lastname,
+        })
+        setFormData({
+          date: res.data.data.package_reserve.date,
+          start_time: res.data.data.package_reserve.start_time,
+          total_count: res.data.data.package_reserve.total_count,
+          player_count: res.data.data.package_reserve.player_count,
+          description: res.data.data.package_reserve.description,
+          total_price: res.data.data.package_reserve.total_price,
+          package_id: res.data.data.package_reserve.package_id,
+          items: res.data.data.package_reserve.items,
+        })
+        setIsModalDetailsOpen(true)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   const hadleCalculate = () => {
     console.log(formData)
     AxiosInstance.post('/package-reserves/calculate-price', formData)
@@ -391,7 +417,7 @@ const PackageReserve = () => {
                         <CTableHeaderCell>ساعت</CTableHeaderCell>
                         <CTableHeaderCell>قیمت</CTableHeaderCell>
                         <CTableHeaderCell>وضعیت</CTableHeaderCell>
-                        <CTableHeaderCell>توضیحات</CTableHeaderCell>
+                        <CTableHeaderCell>جزئیات</CTableHeaderCell>
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -408,12 +434,69 @@ const PackageReserve = () => {
                           </CTableDataCell>
                           <CTableDataCell>{numberWithCommas(item.total_price)}</CTableDataCell>
                           <CTableDataCell>{item.status}</CTableDataCell>
-                          <CTableDataCell>{item.description}</CTableDataCell>
+                          <CTableDataCell>
+                            <CButton color="primary" onClick={() => showDetails(item.id)}>
+                              نمایش جزئیات
+                            </CButton>
+                          </CTableDataCell>
                         </CTableRow>
                       ))}
                     </CTableBody>
                   </CTable>
                 </CCardBody>
+                <CModal visible={isModalDetailsOpen} onClose={() => setIsModalDetailsOpen(false)}>
+                  <CModalHeader>
+                    <CModalTitle>جزئیات رزرو</CModalTitle>
+                  </CModalHeader>
+                  <CModalBody>
+                    <p>
+                      <strong>نام مشتری:</strong> {customerData.firstname} {customerData.lastname}
+                    </p>
+                    <p>
+                      <strong>تاریخ:</strong> {moment(formData.date).format('jYYYY/jMM/jDD')}
+                    </p>
+                    <p>
+                      <strong>ساعت:</strong>{' '}
+                      {/* {formData.start_time.split('T')[1].split(':').slice(0, 2).join(':')} */}
+                    </p>
+                    <p>
+                      <strong>تعداد کل مهمانان:</strong> {formData.total_count}
+                    </p>
+                    <p>
+                      <strong>تعداد بازیکن:</strong> {formData.player_count}
+                    </p>
+                    <p>
+                      <strong>پکیج انتخاب شده:</strong>{' '}
+                      {isActivePackage.find((pkg) => pkg.id === formData.package_id)?.title || ''}
+                    </p>
+                    <p>
+                      <strong>قیمت نهایی :</strong> {formData.total_price} ریال
+                    </p>
+                    <p>
+                      <strong>توضیحات:</strong> {formData.description}
+                    </p>
+                    <p>
+                      <strong>آیتم‌ها:</strong>
+                      <ul>
+                        {formData.items.map((item) => (
+                          <li key={item.id}>
+                            {
+                              isActiveItems
+                                .map((parent) => parent.children)
+                                .flat()
+                                .find((child) => child.id === item.id)?.title
+                            }
+                          </li>
+                        ))}
+                      </ul>
+                    </p>
+                  </CModalBody>
+                  <CModalFooter>
+                    <CButton color="secondary" onClick={() => setIsModalOpen(false)}>
+                      بستن
+                    </CButton>
+                  </CModalFooter>
+                </CModal>
               </CCard>
             </CCol>
           </CRow>
