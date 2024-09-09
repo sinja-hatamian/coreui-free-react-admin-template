@@ -34,7 +34,6 @@ const Stages = () => {
   useEffect(() => {
     AxiosInstance.get('/stages')
       .then((res) => {
-        console.log(res.data.data.stages)
         setStageList(res.data.data.stages)
       })
       .catch((err) => {

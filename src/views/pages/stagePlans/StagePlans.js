@@ -6,7 +6,6 @@ import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import TimePicker from 'react-multi-date-picker/plugins/time_picker'
-
 import {
   CCard,
   CCardBody,
@@ -45,7 +44,6 @@ const StagePlans = () => {
   useEffect(() => {
     AxiosInstance.get('/stages')
       .then((res) => {
-        console.log(res.data.data.stages)
         setStageList(res.data.data.stages)
       })
       .catch((err) => {
@@ -54,7 +52,6 @@ const StagePlans = () => {
 
     AxiosInstance.get('/stage-plans')
       .then((res) => {
-        console.log(res.data.data.stage_plans)
         setStagePlanList(res.data.data.stage_plans)
       })
       .catch((err) => {

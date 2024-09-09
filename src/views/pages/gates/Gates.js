@@ -52,7 +52,6 @@ const Gates = () => {
     AxiosInstance.get('/gates')
       .then((res) => {
         setGates(res.data.data.gates)
-        console.log(res.data.data.gates)
       })
       .catch((err) => {
         console.log(err)
@@ -60,7 +59,6 @@ const Gates = () => {
     AxiosInstance.get('/stages')
       .then((res) => {
         setStage(res.data.data.stages)
-        console.log(res.data.data.stages)
       })
       .catch((err) => {
         console.log(err)
@@ -83,12 +81,10 @@ const Gates = () => {
   const handleUpdateGame = () => {
     AxiosInstance.put(`/gates/${gateData.id}`, gateData)
       .then((res) => {
-        console.log(res)
         toast.success('گیت با موفقیت ویرایش شد')
         setActiveKey(1)
       })
       .catch((err) => {
-        console.log(err)
         toast.error(err.response.data.errors[0].msg)
       })
   }
@@ -99,14 +95,11 @@ const Gates = () => {
       toast.error('لطفاً یک آدرس IP معتبر را وارد کنید')
       return
     }
-
     AxiosInstance.post('/gates/open', { ip: deviceCode }) // Send "ip" in the request body
       .then((res) => {
-        console.log(res)
         toast.success('دستور ارسال شد')
       })
       .catch((err) => {
-        console.log(err)
         toast.error('خطا در ارسال دستور')
       })
   }
@@ -155,7 +148,7 @@ const Gates = () => {
                     </CTableHead>
                     <CTableBody>
                       {gates.map((gate) => (
-                        <CTableRow key={gates.id}>
+                        <CTableRow key={gate.id}>
                           <CTableDataCell>{gate.Name}</CTableDataCell>
                           <CTableDataCell>{gate.DeviceCode}</CTableDataCell>
                           <CTableDataCell>

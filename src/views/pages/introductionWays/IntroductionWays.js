@@ -33,7 +33,6 @@ const IntroductionWays = () => {
   useEffect(() => {
     AxiosInstance.get('/introduction-ways')
       .then((res) => {
-        console.log(res.data.data)
         setIntroductionWaysList(res.data.data.introduction_ways)
       })
       .catch((err) => {

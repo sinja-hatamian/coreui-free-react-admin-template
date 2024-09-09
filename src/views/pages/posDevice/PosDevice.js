@@ -44,7 +44,6 @@ const PosDevice = () => {
     AxiosInstance.get('/pos-devices')
       .then((res) => {
         setPosList(res.data.data.pos_devices)
-        console.log(res.data.data.pos_devices)
       })
       .catch((err) => {
         console.log(err)
@@ -53,7 +52,6 @@ const PosDevice = () => {
     AxiosInstance.get('/banks')
       .then((res) => {
         setBankTitle(res.data.data.banks)
-        console.log(res.data.data.banks)
       })
       .catch((err) => {
         console.log(err)
@@ -61,7 +59,6 @@ const PosDevice = () => {
 
     AxiosInstance.get('/stages').then((res) => {
       setStage(res.data.data.stages)
-      console.log(res.data.data.stages)
     })
   }, [])
 

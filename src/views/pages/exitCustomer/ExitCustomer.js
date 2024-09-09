@@ -131,7 +131,6 @@ const ShowByTag = () => {
       .then((res) => {
         const customerData = res.data.data.user
         setUser(customerData)
-        // console.log(customerData)
         setFomedata((prev) => ({
           ...prev,
           ...customerData,
@@ -168,7 +167,6 @@ const ShowByTag = () => {
   const handleExit = (TagSerial) => {
     AxiosInstance.post('/attendants/exit', { tag: TagSerial })
       .then((res) => {
-        console.log(res.data)
         if (res.data.data?.customers) {
           setCustomers(res.data.data.customers)
           if (!res.data.data.customers.find((customer) => customer.ExitTime == null)) {
@@ -326,7 +324,7 @@ const ShowByTag = () => {
                   <CButton color="primary" onClick={() => setShowModal(true)}>
                     تسویه
                   </CButton>
-                  <CModal visible={showModal} show={showModal} onClose={() => setShowModal(false)}>
+                  <CModal visible={showModal} onClose={() => setShowModal(false)}>
                     <CModalHeader closeButton>
                       <CModalTitle>تسویه حساب</CModalTitle>
                     </CModalHeader>
@@ -353,7 +351,7 @@ const ShowByTag = () => {
                                     <option value="">انتخاب کنید</option>
                                     {selectCharge.map((charge) => (
                                       <option key={charge.id} value={charge.charge_amount}>
-                                        {numberWithCommas(charge.charge_amount) + ' ' + 'ریال '}
+                                        {numberWithCommas(charge.charge_amount) + 'ریال '}
                                       </option>
                                     ))}
                                   </CFormSelect>

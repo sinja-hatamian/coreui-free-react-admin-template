@@ -46,7 +46,6 @@ const StageDayException = () => {
   useEffect(() => {
     AxiosInstance.get('/stages')
       .then((res) => {
-        console.log(res.data.data.stages)
         setStagesList(res.data.data.stages)
       })
       .catch((err) => {

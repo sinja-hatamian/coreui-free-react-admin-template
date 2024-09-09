@@ -475,21 +475,20 @@ const PackageReserve = () => {
                     <p>
                       <strong>توضیحات:</strong> {formData.description}
                     </p>
-                    <p>
-                      <strong>آیتم‌ها:</strong>
-                      <ul>
-                        {formData.items.map((item) => (
-                          <li key={item.id}>
-                            {
-                              isActiveItems
-                                .map((parent) => parent.children)
-                                .flat()
-                                .find((child) => child.id === item.id)?.title
-                            }
-                          </li>
-                        ))}
-                      </ul>
-                    </p>
+
+                    <strong>آیتم‌ها:</strong>
+                    <ul>
+                      {formData.items.map((item) => (
+                        <li key={item.id}>
+                          {
+                            isActiveItems
+                              .map((parent) => parent.children)
+                              .flat()
+                              .find((child) => child.id === item.id)?.title
+                          }
+                        </li>
+                      ))}
+                    </ul>
                   </CModalBody>
                   <CModalFooter>
                     <CButton color="secondary" onClick={() => setIsModalOpen(false)}>

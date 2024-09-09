@@ -44,7 +44,6 @@ const ChargeCredits = () => {
   useEffect(() => {
     AxiosInstance.get('/charge-credits')
       .then((res) => {
-        console.log(res.data.data)
         setCredit(res.data.data.charge_credits)
       })
       .catch((err) => {

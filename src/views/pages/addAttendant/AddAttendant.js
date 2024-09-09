@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import DatePicker from 'react-multi-date-picker'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
 import {
   CRow,
   CCol,
@@ -22,9 +25,6 @@ import {
   CModalTitle,
   CModalBody,
 } from '@coreui/react'
-import DatePicker from 'react-multi-date-picker'
-import persian from 'react-date-object/calendars/persian'
-import persian_fa from 'react-date-object/locales/persian_fa'
 
 const AddAttendant = () => {
   const [attendant, setAttendant] = useState([])
@@ -194,7 +194,7 @@ const AddAttendant = () => {
                       name="firstname"
                       aria-label="firstname"
                       placeholder="نام"
-                      value={customer.firstname}
+                      value={customer.firstname || ''}
                       locale="fa-IR"
                       disabled
                     />
@@ -206,7 +206,7 @@ const AddAttendant = () => {
                       name="lastname"
                       aria-label="lastname"
                       placeholder="نام خانوادگی"
-                      value={customer.lastname}
+                      value={customer.lastname || ''}
                       locale="fa-IR"
                       disabled
                     />
@@ -218,7 +218,7 @@ const AddAttendant = () => {
                       name="national_code"
                       aria-label="national_code"
                       placeholder="کد ملی"
-                      value={customer.national_code}
+                      value={customer.national_code || ''}
                       locale="fa-IR"
                       disabled
                     />
@@ -230,7 +230,7 @@ const AddAttendant = () => {
                       aria-label="phone"
                       name="phone"
                       placeholder="شماره تلفن"
-                      value={customer.phone}
+                      value={customer.phone || ''}
                       locale="fa-IR"
                       disabled
                     />
@@ -238,7 +238,7 @@ const AddAttendant = () => {
                   <CCol md={6}>
                     <p>تاریخ تولد</p>
                     <DatePicker
-                      value={customer.birthday}
+                      value={customer.birthday || ''}
                       label="تاریخ تولد"
                       onChange={handleDate}
                       calendarPosition="bottom-right"
@@ -253,7 +253,7 @@ const AddAttendant = () => {
                       label="جنسیت"
                       name="gender"
                       aria-label="gender"
-                      value={customer.gender}
+                      value={customer.gender || ''}
                       locale="fa-IR"
                       disabled
                     >
@@ -271,7 +271,7 @@ const AddAttendant = () => {
                       name="tag"
                       aria-label="tag"
                       onChange={(event) => setTag(event.target.value)}
-                      value={tag}
+                      value={tag || ''}
                       locale="fa-IR"
                     ></CFormInput>
                   </CCol>
@@ -294,7 +294,7 @@ const AddAttendant = () => {
                       aria-label="firstname"
                       placeholder="نام"
                       onChange={(event) => handleChange(event, index)}
-                      value={item.firstname}
+                      value={item.firstname || ''}
                       locale="fa-IR"
                     />
                   </CCol>
@@ -310,7 +310,7 @@ const AddAttendant = () => {
                       aria-label="lastname"
                       placeholder="نام خانوادگی"
                       onChange={(event) => handleChange(event, index)}
-                      value={item.lastname}
+                      value={item.lastname || ''}
                       locale="fa-IR"
                     />
                   </CCol>
@@ -322,7 +322,7 @@ const AddAttendant = () => {
                       aria-label="national_code"
                       placeholder="کد ملی"
                       onChange={(event) => handleChange(event, index)}
-                      value={item.national_code}
+                      value={item.national_code || ''}
                       locale="fa-IR"
                     />
                   </CCol>
@@ -334,7 +334,7 @@ const AddAttendant = () => {
                       name="phone"
                       placeholder="شماره تلفن"
                       onChange={(event) => handleChange(event, index)}
-                      value={item.phone}
+                      value={item.phone || ''}
                       locale="fa-IR"
                     />
                   </CCol>
@@ -342,7 +342,7 @@ const AddAttendant = () => {
                     <label>
                       <p>تاریخ تولد</p>
                       <DatePicker
-                        value={value}
+                        value={value || ''}
                         onChange={(newDate) => handleDate(newDate, index)}
                         calendarPosition="bottom-right"
                         inputPlaceholder="تاریخ تولد "
@@ -361,7 +361,7 @@ const AddAttendant = () => {
                       name="gender"
                       aria-label="gender"
                       onChange={(event) => handleChange(event, index)}
-                      value={item.gender}
+                      value={item.gender || ''}
                       locale="fa-IR"
                     >
                       <option value={0}>انتخاب کنید</option>
@@ -379,7 +379,7 @@ const AddAttendant = () => {
                       name="tag"
                       aria-label="tag"
                       onChange={(event) => handleChange(event, index)}
-                      value={item.tag}
+                      value={item.tag || ''}
                       locale="fa-IR"
                     ></CFormInput>
                   </CCol>
@@ -422,9 +422,9 @@ const AddAttendant = () => {
             <CTableBody>
               {serverTag !== null ? (
                 <CTableRow>
-                  <CTableHeaderCell>{customer.firstname}</CTableHeaderCell>
-                  <CTableHeaderCell>{customer.lastname}</CTableHeaderCell>
-                  <CTableHeaderCell>{tag}</CTableHeaderCell>
+                  <CTableHeaderCell>{customer.firstname || ''}</CTableHeaderCell>
+                  <CTableHeaderCell>{customer.lastname || ''}</CTableHeaderCell>
+                  <CTableHeaderCell>{tag || ''}</CTableHeaderCell>
                   <CTableHeaderCell>
                     {card.balance ? numberWithCommas(card.balance) : 0}
                   </CTableHeaderCell>
@@ -432,9 +432,9 @@ const AddAttendant = () => {
               ) : null}
               {fixedData.map((item) => (
                 <CTableRow key={item.id}>
-                  <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
-                  <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
-                  <CTableHeaderCell>{item.tag}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.firstname || ''}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.lastname || ''}</CTableHeaderCell>
+                  <CTableHeaderCell>{item.tag || ''}</CTableHeaderCell>
                 </CTableRow>
               ))}
             </CTableBody>
@@ -483,30 +483,31 @@ const AddAttendant = () => {
               <CTableBody>
                 {suggest.map((item, index) => (
                   <CTableRow key={index}>
-                    <CTableHeaderCell>{item.firstname}</CTableHeaderCell>
-                    <CTableHeaderCell>{item.lastname}</CTableHeaderCell>
+                    <CTableHeaderCell>{item.firstname || ''}</CTableHeaderCell>
+                    <CTableHeaderCell>{item.lastname || ''}</CTableHeaderCell>
                     <CTableHeaderCell>
-                      {' '}
                       {item.gender === 'male' ? 'مرد' : item.gender === 'female' ? 'زن' : ''}
                     </CTableHeaderCell>
-                    {item.firstname && item.lastname && item.gender ? (
-                      <CButton
-                        color="success"
-                        variant="outline"
-                        onClick={() => {
-                          setAttendant([
-                            ...attendant,
-                            {
-                              firstname: item.firstname,
-                              lastname: item.lastname,
-                              gender: item.gender,
-                            },
-                          ])
-                        }}
-                      >
-                        انتخاب
-                      </CButton>
-                    ) : null}
+                    <CTableHeaderCell>
+                      {item.firstname && item.lastname && item.gender ? (
+                        <CButton
+                          color="success"
+                          variant="outline"
+                          onClick={() => {
+                            setAttendant([
+                              ...attendant,
+                              {
+                                firstname: item.firstname,
+                                lastname: item.lastname,
+                                gender: item.gender,
+                              },
+                            ])
+                          }}
+                        >
+                          انتخاب
+                        </CButton>
+                      ) : null}
+                    </CTableHeaderCell>
                   </CTableRow>
                 ))}
               </CTableBody>

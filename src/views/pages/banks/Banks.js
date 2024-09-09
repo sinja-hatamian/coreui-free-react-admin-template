@@ -34,7 +34,6 @@ const Banks = () => {
   useEffect(() => {
     AxiosInstance.get('/banks')
       .then((res) => {
-        console.log(res.data)
         setBankslist(res.data.data.banks)
       })
       .catch((err) => {

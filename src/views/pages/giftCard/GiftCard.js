@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import moment from 'moment-jalaali'
+// import moment from 'moment-jalaali'
 import {
   CButton,
   CRow,
@@ -30,7 +30,7 @@ const GiftCard = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [card, setCard] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [value, setValue] = useState(new Date())
+  // const [value, setValue] = useState(new Date())
   const [file, setFile] = useState(null)
   const [cardNumber, setCardNumber] = useState('')
   const [cardHistory, setCardHistory] = useState([])
@@ -45,7 +45,6 @@ const GiftCard = () => {
   useEffect(() => {
     AxiosInstance.get('/gift-cards')
       .then((res) => {
-        console.log(res)
         setCard(res.data.data.gift_cards)
       })
       .catch((err) => {
@@ -71,26 +70,20 @@ const GiftCard = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0])
-    console.log(e.target.files[0])
   }
 
   const handleUploadFile = () => {
-    console.log('handleUploadFile called')
-    console.log(file)
     if (file) {
       // Check if file exists and contains any files
       const fileReader = new FileReader()
       fileReader.readAsText(file)
       fileReader.onload = (e) => {
-        console.log('onload called')
         const data = e.target.result
         const lines = data.split(/\r\n|\n/)
         if (lines && lines.length > 0) {
           const result = []
           for (let i = 1; i < lines.length - 1; i++) {
             const obj = lines[i].split(',')
-            console.log(i)
-            console.log(lines[i])
             if (obj.length > 0) {
               const card = {
                 number: obj[0],
@@ -101,11 +94,9 @@ const GiftCard = () => {
               }
               result.push(card)
             }
-            console.log(result)
           }
           AxiosInstance.post('/gift-cards/upload-csv', { cards: result })
             .then((res) => {
-              console.log(res)
               setCard([
                 ...card.filter((item) =>
                   res.data.data.gift_cards.find((newItem) => newItem.id !== item.id),
@@ -114,7 +105,6 @@ const GiftCard = () => {
               ])
             })
             .catch((err) => {
-              console.log(err)
               toast.error(
                 err.response.data.errors
                   ? err.response.data.errors[0].msg
@@ -132,10 +122,8 @@ const GiftCard = () => {
   }
 
   const handleSaveGiftCard = () => {
-    console.log(formdata)
     AxiosInstance.post('/gift-cards', formdata)
       .then((res) => {
-        console.log(res)
         setCard([...card, ...res.data.data.gift_cards])
         toast.success('کارت با موفقیت ثبت شد')
         setActiveKey(1)
@@ -165,7 +153,6 @@ const GiftCard = () => {
       is_active: formdata.is_active,
     })
       .then((res) => {
-        console.log(res)
         setCard([...card.filter((item) => item.id !== formdata.id), res.data.data.gift_card])
         toast.success('کارت با موفقیت ویرایش شد')
         setActiveKey(1)
@@ -179,7 +166,6 @@ const GiftCard = () => {
   const handleShowHistory = () => {
     AxiosInstance.get(`/gift-card-histories?number=${cardNumber}`)
       .then((res) => {
-        console.log(res)
         setCardHistory(res.data.data.gift_card_histories)
       })
       .catch((err) => {

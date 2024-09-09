@@ -38,7 +38,6 @@ const Wristband = () => {
   useEffect(() => {
     AxiosInstance.get('/wrist-bands')
       .then((res) => {
-        console.log(res.data)
         setWristband(res.data.data.wrist_bands)
       })
       .catch((err) => {
@@ -47,7 +46,6 @@ const Wristband = () => {
     AxiosInstance.get('/stages')
       .then((res) => {
         setStage(res.data.data.stages)
-        console.log(res.data.data.stages)
       })
       .catch((err) => {
         console.log(err)

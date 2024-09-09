@@ -47,7 +47,6 @@ const OperatorReg = () => {
   useEffect(() => {
     AxiosInstance.get('/managers')
       .then((res) => {
-        console.log(res.data.data)
         setOperatorList(res.data.data.managers)
       })
       .catch((err) => {
@@ -56,7 +55,6 @@ const OperatorReg = () => {
 
     AxiosInstance.get('/roles')
       .then((res) => {
-        console.log(res.data.data)
         setRoles(res.data.data.roles)
       })
       .catch((err) => {

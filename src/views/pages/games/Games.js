@@ -43,7 +43,6 @@ const Games = () => {
     AxiosInstance.get('/games')
       .then((res) => {
         setGames(res.data.data.games)
-        console.log(res.data.data.games)
       })
       .catch((err) => {
         console.log(err)
@@ -51,7 +50,6 @@ const Games = () => {
     AxiosInstance.get('/stages')
       .then((res) => {
         setStage(res.data.data.stages)
-        console.log(res.data.data.stages)
       })
       .catch((err) => {
         console.log(err)

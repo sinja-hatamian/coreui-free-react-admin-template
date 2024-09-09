@@ -97,9 +97,7 @@ const CustomerReg = () => {
     axios
       .get(`${process.env.REACT_APP_BACKEND_URL}/api/states`)
       .then((res) => {
-        console.log(res)
         setState(res.data.data.states)
-        console.log(state)
       })
       .catch((err) => {
         console.log(err)
@@ -107,11 +105,9 @@ const CustomerReg = () => {
   }, [])
 
   const handleSaveCustomer = () => {
-    console.log(formdata)
     AxiosInstance.post('/users', formdata)
       .then((res) => {
         localStorage.setItem('customer', JSON.stringify(res.data.data.user))
-        console.log(res)
         toast.success('کاربر با موفقیت ثبت شد')
         setActiveKey(2)
       })
@@ -126,7 +122,6 @@ const CustomerReg = () => {
         const customerData = res.data.data.user
         fetchCity(customerData.state_id)
         setValue(new Date(customerData.birthday))
-        console.log(customerData)
         setFormdata((prev) => ({
           ...prev,
           ...customerData,
@@ -162,7 +157,6 @@ const CustomerReg = () => {
         const customerData = res.data.data.user
         fetchCity(customerData.state_id)
         setValue(new Date(customerData.birthday))
-        console.log(customerData)
         setFormdata((prev) => ({
           ...prev,
           ...customerData,
@@ -232,7 +226,6 @@ const CustomerReg = () => {
   const handleUpdateCustomer = () => {
     AxiosInstance.put(`/users/${formdata.id}`, formdata)
       .then((res) => {
-        console.log(res)
         toast.success('کاربر با موفقیت ویرایش شد')
       })
       .catch((err) => {
@@ -244,7 +237,6 @@ const CustomerReg = () => {
   const handleDate = (newDate) => {
     if (newDate) {
       setValue(newDate.valueOf())
-      console.log(newDate.valueOf())
       setFormdata((prev) => ({ ...prev, birthday: newDate.valueOf() }))
     }
   }
