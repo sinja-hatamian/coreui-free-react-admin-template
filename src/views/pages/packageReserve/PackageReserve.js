@@ -470,7 +470,8 @@ const PackageReserve = () => {
                       {isActivePackage.find((pkg) => pkg.id === formData.package_id)?.title || ''}
                     </p>
                     <p>
-                      <strong>قیمت نهایی :</strong> {formData.total_price} ریال
+                      <strong>قیمت نهایی :</strong> {numberWithCommas(formData.total_price || 0)}{' '}
+                      ریال
                     </p>
                     <p>
                       <strong>توضیحات:</strong> {formData.description}
@@ -491,7 +492,7 @@ const PackageReserve = () => {
                     </ul>
                   </CModalBody>
                   <CModalFooter>
-                    <CButton color="secondary" onClick={() => setIsModalOpen(false)}>
+                    <CButton color="secondary" onClick={() => setIsModalDetailsOpen(false)}>
                       بستن
                     </CButton>
                   </CModalFooter>
