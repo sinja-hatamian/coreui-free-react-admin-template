@@ -37,7 +37,7 @@
     "jalaali-js": "^1.2.7",
     "jalali-moment": "^3.3.11",
     "moment": "^2.30.1",
-    "moment-jalaali": "^0.10.0",
+    "moment-jalaali": "^0.10.1",
     "persian-datepicker": "^1.2.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

@@ -37,6 +37,7 @@ import {
   CModalTitle,
   CModalBody,
   CModalFooter,
+  CFormLabel,
 } from '@coreui/react'
 
 const PackageReserve = () => {
@@ -51,6 +52,8 @@ const PackageReserve = () => {
   const [selectedChildren, setSelectedChildren] = useState({})
   const [nationalCode, setNationalCode] = useState('')
   const [phone, setPhone] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
   const [customerData, setCustomerData] = useState({
     firstname: '',
     lastname: '',
@@ -68,13 +71,13 @@ const PackageReserve = () => {
   })
 
   useEffect(() => {
-    AxiosInstance.get('/package-reserves')
-      .then((res) => {
-        setData(res.data.data.package_reserves)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    // AxiosInstance.get('/package-reserves')
+    //   .then((res) => {
+    //     setData(res.data.data.package_reserves)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //   })
 
     AxiosInstance.get('/packages/active')
       .then((res) => {
@@ -301,11 +304,11 @@ const PackageReserve = () => {
     )
   }
 
-  const handleTime = (date, name) => {
-    const formattedTime = moment(date.toDate()).format('HH:mm')
-    setFormData({ ...formData, [name]: formattedTime })
+  const handleTimeChange = (time) => {
+    // Convert the time to a moment object and format it
+    const formattedTime = moment(time).format('HH:mm')
+    setFormData({ ...formData, start_time: formattedTime })
   }
-
   const fetchUser = () => {
     AxiosInstance.get(`/users/national-code/${nationalCode}`)
       .then((res) => {
@@ -341,7 +344,6 @@ const PackageReserve = () => {
   const showDetails = (id) => {
     AxiosInstance.get(`/package-reserves/${id}`)
       .then((res) => {
-        console.log(res.data.data.package_reserve)
         setCustomerData({
           firstname: res.data.data.package_reserve.user_firstname,
           lastname: res.data.data.package_reserve.user_lastname,
@@ -376,14 +378,44 @@ const PackageReserve = () => {
   }
 
   const handleReserve = () => {
-    console.log(formData)
-    AxiosInstance.post('/package-reserves', formData)
+    const formDataToSend = new FormData()
+    formDataToSend.append('start_time', formData.start_time)
+    AxiosInstance.post('/package-reserves', formDataToSend)
+    console
+      .log(formDataToSend)
       .then((res) => {
         toast.success('رزرو با موفقیت ثبت شد')
+        setIsModalOpen(false)
+        setActiveKey(1)
       })
       .catch((err) => {
         toast.error('خطا در ثبت رزرو')
       })
+  }
+
+  const handleShowReserves = () => {
+    AxiosInstance.get(`package-reserves?start_date=${startDate}&end_date=${endDate}`)
+
+      .then((res) => {
+        setData(res.data.data.package_reserves)
+        console.log(startDate)
+        console.log(endDate)
+      })
+      .catch((err) => {
+        console.log(err)
+
+        toast.error('خطا در دریافت اطلاعات')
+      })
+  }
+
+  const handleStartDate = (date) => {
+    date = new Date(date)
+    setStartDate(date.valueOf())
+  }
+
+  const handleEndDate = (date) => {
+    date = new Date(date)
+    setEndDate(date.valueOf())
   }
 
   return (
@@ -403,7 +435,56 @@ const PackageReserve = () => {
       <CTabContent>
         <CTabPane aria-label="home-tab" visible={activeKey === 1}>
           <CRow>
+            <CCard>
+              <CCardHeader>
+                <strong>جستجو بر اساس تاریخ</strong>
+              </CCardHeader>
+              <CCardBody>
+                <CRow>
+                  <CForm>
+                    <CCol md="6" className="mb-3">
+                      <CFormLabel
+                        htmlFor="startDate"
+                        className="form-label"
+                        style={{
+                          padding: '10px',
+                        }}
+                      >
+                        از تاریخ
+                      </CFormLabel>
+                      <DatePicker
+                        value={startDate}
+                        onChange={handleStartDate}
+                        locale={persian_fa}
+                        calendar={persian}
+                      />
+                    </CCol>
+                    <CCol md="6" className="mb-3">
+                      <CFormLabel
+                        htmlFor="endDate"
+                        className="form-label"
+                        style={{
+                          padding: '10px',
+                        }}
+                      >
+                        تا تاریخ
+                      </CFormLabel>
+                      <DatePicker
+                        value={endDate}
+                        onChange={handleEndDate}
+                        locale={persian_fa}
+                        calendar={persian}
+                      />
+                    </CCol>
+                  </CForm>
+                </CRow>
+                <CButton color="primary" onClick={handleShowReserves}>
+                  جستجو
+                </CButton>
+              </CCardBody>
+            </CCard>
             <CCol>
+              <br />
               <CCard>
                 <CCardHeader>
                   <strong>لیست کلیه رزروها</strong>
@@ -445,51 +526,105 @@ const PackageReserve = () => {
                   </CTable>
                 </CCardBody>
                 <CModal visible={isModalDetailsOpen} onClose={() => setIsModalDetailsOpen(false)}>
-                  <CModalHeader>
+                  <CModalHeader className="bg-primary text-white">
                     <CModalTitle>جزئیات رزرو</CModalTitle>
                   </CModalHeader>
-                  <CModalBody>
-                    <p>
-                      <strong>نام مشتری:</strong> {customerData.firstname} {customerData.lastname}
-                    </p>
-                    <p>
-                      <strong>تاریخ:</strong> {moment(formData.date).format('jYYYY/jMM/jDD')}
-                    </p>
-                    <p>
-                      <strong>ساعت:</strong>{' '}
-                      {/* {formData.start_time.split('T')[1].split(':').slice(0, 2).join(':')} */}
-                    </p>
-                    <p>
-                      <strong>تعداد کل مهمانان:</strong> {formData.total_count}
-                    </p>
-                    <p>
-                      <strong>تعداد بازیکن:</strong> {formData.player_count}
-                    </p>
-                    <p>
-                      <strong>پکیج انتخاب شده:</strong>{' '}
-                      {isActivePackage.find((pkg) => pkg.id === formData.package_id)?.title || ''}
-                    </p>
-                    <p>
-                      <strong>قیمت نهایی :</strong> {numberWithCommas(formData.total_price || 0)}{' '}
-                      ریال
-                    </p>
-                    <p>
-                      <strong>توضیحات:</strong> {formData.description}
-                    </p>
+                  <CModalBody className="p-4">
+                    <CTable striped hover bordered responsive className="mb-4">
+                      <CTableBody>
+                        {/* Customer Name */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">نام مشتری:</CTableHeaderCell>
+                          <CTableDataCell>
+                            {customerData.firstname} {customerData.lastname}
+                          </CTableDataCell>
+                        </CTableRow>
+                        {/* Date */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">تاریخ:</CTableHeaderCell>
+                          <CTableDataCell>
+                            {moment(formData.date).format('jYYYY/jMM/jDD')}
+                          </CTableDataCell>
+                        </CTableRow>
+                        {/* Time */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">ساعت:</CTableHeaderCell>
+                          <CTableDataCell>{formData.start_time}</CTableDataCell>
+                        </CTableRow>
+                        {/* Total Guests */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">تعداد کل مهمانان:</CTableHeaderCell>
+                          <CTableDataCell>{formData.total_count}</CTableDataCell>
+                        </CTableRow>
+                        {/* Players Count */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">تعداد بازیکن:</CTableHeaderCell>
+                          <CTableDataCell>{formData.player_count}</CTableDataCell>
+                        </CTableRow>
+                        {/* Selected Package */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">پکیج انتخاب شده:</CTableHeaderCell>
+                          <CTableDataCell>
+                            {isActivePackage.find((pkg) => pkg.id === formData.package_id)?.title ||
+                              'N/A'}
+                          </CTableDataCell>
+                        </CTableRow>
+                        {/* Final Price */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">قیمت نهایی :</CTableHeaderCell>
+                          <CTableDataCell>
+                            {numberWithCommas(formData.total_price || 0)} ریال
+                          </CTableDataCell>
+                        </CTableRow>
+                        {/* Description */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">توضیحات:</CTableHeaderCell>
+                          <CTableDataCell>{formData.description}</CTableDataCell>
+                        </CTableRow>
+                      </CTableBody>
+                    </CTable>
 
-                    <strong>آیتم‌ها:</strong>
-                    <ul>
-                      {formData.items.map((item) => (
-                        <li key={item.id}>
-                          {
-                            isActiveItems
+                    {/* Item Details */}
+                    <h5 className="mt-4">آیتم‌ها</h5>
+                    <CTable striped hover bordered responsive>
+                      <CTableHead>
+                        <CTableRow>
+                          <CTableHeaderCell>نام آیتم</CTableHeaderCell>
+                          <CTableHeaderCell>تعداد</CTableHeaderCell>
+                          <CTableHeaderCell>قیمت کل (ریال)</CTableHeaderCell>
+                        </CTableRow>
+                      </CTableHead>
+                      <CTableBody>
+                        {formData.items.length > 0 ? (
+                          formData.items.map((item) => {
+                            const foundItem = isActiveItems
                               .map((parent) => parent.children)
                               .flat()
-                              .find((child) => child.id === item.id)?.title
-                          }
-                        </li>
-                      ))}
-                    </ul>
+                              .concat(isActiveOtherItems)
+                              .find((i) => String(i.id) === String(item.id))
+
+                            const title = foundItem?.title ?? 'Unknown Title'
+                            const price = foundItem?.price ?? 0
+
+                            return (
+                              <CTableRow key={item.id}>
+                                <CTableDataCell>{title}</CTableDataCell>
+                                <CTableDataCell>{item.count}</CTableDataCell>
+                                <CTableDataCell>
+                                  {numberWithCommas(item.count * price)}
+                                </CTableDataCell>
+                              </CTableRow>
+                            )
+                          })
+                        ) : (
+                          <CTableRow>
+                            <CTableDataCell colSpan="3" className="text-center">
+                              آیتمی یافت نشد
+                            </CTableDataCell>
+                          </CTableRow>
+                        )}
+                      </CTableBody>
+                    </CTable>
                   </CModalBody>
                   <CModalFooter>
                     <CButton color="secondary" onClick={() => setIsModalDetailsOpen(false)}>
@@ -601,12 +736,8 @@ const PackageReserve = () => {
                           format="HH:mm"
                           calendar={persian}
                           locale={persian_fa}
-                          value={
-                            formData.start_time
-                              ? moment(formData.start_time, 'HH:mm').toDate()
-                              : null
-                          }
-                          onChange={(date) => handleTime(date, 'start_time')}
+                          value={formData.start_time ? moment(formData.start_time, 'HH:mm') : null}
+                          onChange={handleTimeChange}
                           plugins={[<TimePicker key={1} hideSeconds />]}
                         />
                       </CForm>
@@ -734,36 +865,60 @@ const PackageReserve = () => {
           </CRow>
         </CTabPane>
         <CModal visible={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <CModalHeader>
+          <CModalHeader className="bg-primary text-white">
             <CModalTitle>جزئیات رزرو</CModalTitle>
           </CModalHeader>
-          <CModalBody>
-            <p>
-              <strong>نام مشتری:</strong> {customerData.firstname} {customerData.lastname}
-            </p>
-            <p>
-              <strong>تاریخ:</strong> {moment(formData.date).format('jYYYY/jMM/jDD')}
-            </p>
-            <p>
-              <strong>ساعت:</strong> {formData.start_time}
-            </p>
-            <p>
-              <strong>تعداد کل مهمانان:</strong> {formData.total_count}
-            </p>
-            <p>
-              <strong>تعداد بازیکن:</strong> {formData.player_count}
-            </p>
-            <p>
-              <strong>پکیج انتخاب شده:</strong>{' '}
-              {isActivePackage.find((pkg) => pkg.id === formData.package_id)?.title || ''}
-            </p>
-            <p>
-              <strong>قیمت نهایی :</strong> {calculatedPrice && numberWithCommas(calculatedPrice)}{' '}
-              ریال
-            </p>
-            <p>
-              <strong>توضیحات:</strong> {formData.description}
-            </p>
+          <CModalBody className="p-4">
+            <CTable striped hover bordered responsive className="mb-4">
+              <CTableBody>
+                {/* Customer Name */}
+                <CTableRow>
+                  <CTableHeaderCell className="fw-bold">نام مشتری:</CTableHeaderCell>
+                  <CTableDataCell>
+                    {customerData.firstname} {customerData.lastname}
+                  </CTableDataCell>
+                </CTableRow>
+                {/* Date */}
+                <CTableRow>
+                  <CTableHeaderCell className="fw-bold">تاریخ:</CTableHeaderCell>
+                  <CTableDataCell>{moment(formData.date).format('jYYYY/jMM/jDD')}</CTableDataCell>
+                </CTableRow>
+                {/* Time */}
+                <CTableRow>
+                  <CTableHeaderCell className="fw-bold">ساعت:</CTableHeaderCell>
+                  <CTableDataCell>{formData.start_time}</CTableDataCell>
+                </CTableRow>
+                {/* Total Guests */}
+                <CTableRow>
+                  <CTableHeaderCell className="fw-bold">تعداد کل مهمانان:</CTableHeaderCell>
+                  <CTableDataCell>{formData.total_count}</CTableDataCell>
+                </CTableRow>
+                {/* Players Count */}
+                <CTableRow>
+                  <CTableHeaderCell className="fw-bold">تعداد بازیکن:</CTableHeaderCell>
+                  <CTableDataCell>{formData.player_count}</CTableDataCell>
+                </CTableRow>
+                {/* Selected Package */}
+                <CTableRow>
+                  <CTableHeaderCell className="fw-bold">پکیج انتخاب شده:</CTableHeaderCell>
+                  <CTableDataCell>
+                    {isActivePackage.find((pkg) => pkg.id === formData.package_id)?.title || 'N/A'}
+                  </CTableDataCell>
+                </CTableRow>
+                {/* Final Price */}
+                <CTableRow>
+                  <CTableHeaderCell className="fw-bold">قیمت نهایی :</CTableHeaderCell>
+                  <CTableDataCell>
+                    {calculatedPrice && numberWithCommas(calculatedPrice)} ریال
+                  </CTableDataCell>
+                </CTableRow>
+                {/* Description */}
+                <CTableRow>
+                  <CTableHeaderCell className="fw-bold">توضیحات:</CTableHeaderCell>
+                  <CTableDataCell>{formData.description}</CTableDataCell>
+                </CTableRow>
+              </CTableBody>
+            </CTable>
           </CModalBody>
           <CModalFooter>
             <CButton color="secondary" onClick={() => setIsModalOpen(false)}>
