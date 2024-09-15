@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
+import { CSidebar, CSidebarBrand, CSidebarNav } from '@coreui/react'
 // import CIcon from '@coreui/icons-react'
 
 import { AppSidebarNav } from './AppSidebarNav'
@@ -25,31 +25,6 @@ const AppSidebar = () => {
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
-  // useEffect(() => {
-  //   const manager = JSON.parse(localStorage.getItem('manager'))
-  //   if (manager) {
-  //     if (manager.is_superadmin === true) {
-  //       setIsSuperAdmin(true)
-  //     } else {
-  //       setIsSuperAdmin(false)
-  //     }
-  //   }
-  //   if (manager) {
-  //     if (manager.roles[0] === 'customer_support') {
-  //       setIsCustomerSupport(true)
-  //     } else {
-  //       setIsCustomerSupport(false)
-  //     }
-  //   }
-  //   if (manager) {
-  //     if (manager.roles[0] === 'package_seller') {
-  //       setIsPackageSeller(true)
-  //     } else {
-  //       setIsPackageSeller(false)
-  //     }
-  //   }
-  // }, [])
-
   useEffect(() => {
     const manager = JSON.parse(localStorage.getItem('manager'))
     if (manager) {
@@ -60,35 +35,6 @@ const AppSidebar = () => {
   }, [])
 
   return (
-    // <CSidebar
-    //   position="fixed"
-    //   unfoldable={unfoldable}
-    //   visible={sidebarShow}
-    //   onVisibleChange={(visible) => {
-    //     dispatch({ type: 'set', sidebarShow: visible })
-    //   }}
-    // >
-    //   <CSidebarBrand className="d-none d-md-flex" to="/">
-    //     {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
-    //     <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} /> */}
-    //     <img src={logo} alt="logo" width="120px" />
-    //   </CSidebarBrand>
-    //   <CSidebarNav>
-    //     <SimpleBar>
-    //       {/* <AppSidebarNav items={navigation} /> */}
-    //       {isSuperAdmin && <AppSidebarNav items={navigation} />}
-    //       {isCustomerSupport && <AppSidebarNav items={crmNav} />}
-    //       {!isSuperAdmin && !isCustomerSupport && <AppSidebarNav items={userNavigation} />}
-    //       {isPackageSeller && !isSuperAdmin && !isCustomerSupport && (
-    //         <AppSidebarNav items={packageNav} />
-    //       )}
-    //     </SimpleBar>
-    //   </CSidebarNav>
-    //   <CSidebarToggler
-    //     className="d-none d-lg-flex"
-    //     onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
-    //   />
-    // </CSidebar>
     <CSidebar
       position="fixed"
       unfoldable={unfoldable}
