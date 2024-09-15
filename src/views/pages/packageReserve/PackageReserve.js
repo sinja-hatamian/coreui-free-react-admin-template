@@ -44,6 +44,7 @@ const PackageReserve = () => {
   const [data, setData] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isModalDetailsOpen, setIsModalDetailsOpen] = useState(false)
+  const [isModalCustomerOpen, setIsModalCustomerOpen] = useState(false)
   const [calculatedPrice, setCalculatedPrice] = useState(null)
   const [isActivePackage, setIsActivePackage] = useState([])
   const [isActiveItems, setIsActiveItems] = useState([])
@@ -68,6 +69,19 @@ const PackageReserve = () => {
     description: '',
     discount: '',
     items: [],
+  })
+  const [userData, setUserData] = useState({
+    national_code: '',
+    firstname: '',
+    lastname: '',
+    introduction_way: '',
+    introduction_way_id: '',
+    password: '',
+    phone: '',
+    state_id: '',
+    city_id: '',
+    gender: '',
+    birthday: '',
   })
 
   useEffect(() => {
@@ -338,6 +352,27 @@ const PackageReserve = () => {
       })
       .catch((err) => {
         toast.error('کاربری با این شماره تلفن یافت نشد')
+      })
+  }
+
+  const handleSaveCustomerInputChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value })
+  }
+
+  const handleSaveCustomer = () => {
+    AxiosInstance.post('/users', userData)
+      .then((res) => {
+        setCustomerData({
+          id: res.data.data.user.id,
+          firstname: res.data.data.user.firstname,
+          lastname: res.data.data.user.lastname,
+        })
+        setFormData({ ...formData, user_id: res.data.data.user.id })
+        toast.success('کاربر با موفقیت ثبت شد')
+        setIsModalCustomerOpen(false)
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
 
@@ -671,6 +706,11 @@ const PackageReserve = () => {
                     <CCol md="6" className="mb-3">
                       <CButton color="primary" onClick={fetchUSerByPhone}>
                         جستجو بر اساس شماره تلفن
+                      </CButton>
+                    </CCol>
+                    <CCol md="12" className="mb-3">
+                      <CButton color="primary" onClick={() => setIsModalCustomerOpen(true)}>
+                        ثبت مشتری جدید
                       </CButton>
                     </CCol>
                   </CRow>
