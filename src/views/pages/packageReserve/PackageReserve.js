@@ -304,9 +304,9 @@ const PackageReserve = () => {
     )
   }
 
-  const handleTimeChange = (time) => {
-    // Convert the time to a moment object and format it
-    const formattedTime = moment(time).format('HH:mm')
+  const handleTimeChange = (date) => {
+    // Ensure moment is used correctly to format the time
+    const formattedTime = moment(date.toDate()).format('HH:mm')
     setFormData({ ...formData, start_time: formattedTime })
   }
   const fetchUser = () => {
@@ -378,17 +378,13 @@ const PackageReserve = () => {
   }
 
   const handleReserve = () => {
-    const formDataToSend = new FormData()
-    formDataToSend.append('start_time', formData.start_time)
-    AxiosInstance.post('/package-reserves', formDataToSend)
-    console
-      .log(formDataToSend)
+    AxiosInstance.post('/package-reserves', formData)
       .then((res) => {
         toast.success('رزرو با موفقیت ثبت شد')
         setIsModalOpen(false)
-        setActiveKey(1)
       })
       .catch((err) => {
+        console.log(err)
         toast.error('خطا در ثبت رزرو')
       })
   }
@@ -734,11 +730,15 @@ const PackageReserve = () => {
                         <DatePicker
                           disableDayPicker
                           format="HH:mm"
-                          calendar={persian}
+                          calendar={persian} // Your calendar settings
                           locale={persian_fa}
-                          value={formData.start_time ? moment(formData.start_time, 'HH:mm') : null}
+                          value={
+                            formData.start_time
+                              ? moment(formData.start_time, 'HH:mm').toDate()
+                              : null
+                          }
                           onChange={handleTimeChange}
-                          plugins={[<TimePicker key={1} hideSeconds />]}
+                          plugins={[<TimePicker key={1} hideSeconds />]} // Using timepicker with hidden seconds
                         />
                       </CForm>
                     </CCol>
