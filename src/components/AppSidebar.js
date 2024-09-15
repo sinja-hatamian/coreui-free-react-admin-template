@@ -13,35 +13,82 @@ import 'simplebar/dist/simplebar.min.css'
 // sidebar nav config
 import navigation from '../_nav'
 import userNavigation from '../_userNav'
-import crmNav from '../_crmNav'
+import supportNav from '../_supportNav'
+import packageNav from '../_packageNav'
 // import AxiosInstance from 'src/utils/AxiosInstance'
 
 const AppSidebar = () => {
-  const [isSuperAdmin, setIsSuperAdmin] = useState()
-  const [isCustomerSupport, setIsCustomerSupport] = useState()
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const [isCustomerSupport, setIsCustomerSupport] = useState(false)
+  const [isPackageSeller, setIsPackageSeller] = useState(false)
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
+  // useEffect(() => {
+  //   const manager = JSON.parse(localStorage.getItem('manager'))
+  //   if (manager) {
+  //     if (manager.is_superadmin === true) {
+  //       setIsSuperAdmin(true)
+  //     } else {
+  //       setIsSuperAdmin(false)
+  //     }
+  //   }
+  //   if (manager) {
+  //     if (manager.roles[0] === 'customer_support') {
+  //       setIsCustomerSupport(true)
+  //     } else {
+  //       setIsCustomerSupport(false)
+  //     }
+  //   }
+  //   if (manager) {
+  //     if (manager.roles[0] === 'package_seller') {
+  //       setIsPackageSeller(true)
+  //     } else {
+  //       setIsPackageSeller(false)
+  //     }
+  //   }
+  // }, [])
+
   useEffect(() => {
     const manager = JSON.parse(localStorage.getItem('manager'))
     if (manager) {
-      if (manager.is_superadmin === true) {
-        setIsSuperAdmin(true)
-      } else {
-        setIsSuperAdmin(false)
-      }
-    }
-    if (manager) {
-      if (manager.roles[0] === 'customer_support') {
-        setIsCustomerSupport(true)
-      } else {
-        setIsCustomerSupport(false)
-      }
+      setIsSuperAdmin(manager.is_superadmin === true)
+      setIsCustomerSupport(manager.roles[0] === 'customer_support')
+      setIsPackageSeller(manager.roles[0] === 'package_seller')
     }
   }, [])
 
   return (
+    // <CSidebar
+    //   position="fixed"
+    //   unfoldable={unfoldable}
+    //   visible={sidebarShow}
+    //   onVisibleChange={(visible) => {
+    //     dispatch({ type: 'set', sidebarShow: visible })
+    //   }}
+    // >
+    //   <CSidebarBrand className="d-none d-md-flex" to="/">
+    //     {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
+    //     <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} /> */}
+    //     <img src={logo} alt="logo" width="120px" />
+    //   </CSidebarBrand>
+    //   <CSidebarNav>
+    //     <SimpleBar>
+    //       {/* <AppSidebarNav items={navigation} /> */}
+    //       {isSuperAdmin && <AppSidebarNav items={navigation} />}
+    //       {isCustomerSupport && <AppSidebarNav items={crmNav} />}
+    //       {!isSuperAdmin && !isCustomerSupport && <AppSidebarNav items={userNavigation} />}
+    //       {isPackageSeller && !isSuperAdmin && !isCustomerSupport && (
+    //         <AppSidebarNav items={packageNav} />
+    //       )}
+    //     </SimpleBar>
+    //   </CSidebarNav>
+    //   <CSidebarToggler
+    //     className="d-none d-lg-flex"
+    //     onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
+    //   />
+    // </CSidebar>
     <CSidebar
       position="fixed"
       unfoldable={unfoldable}
@@ -51,22 +98,20 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
-        <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} /> */}
         <img src={logo} alt="logo" width="120px" />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          {/* <AppSidebarNav items={navigation} /> */}
           {isSuperAdmin && <AppSidebarNav items={navigation} />}
-          {isCustomerSupport && <AppSidebarNav items={crmNav} />}
-          {!isSuperAdmin && !isCustomerSupport && <AppSidebarNav items={userNavigation} />}
+          {isCustomerSupport && !isSuperAdmin && <AppSidebarNav items={supportNav} />}
+          {isPackageSeller && !isSuperAdmin && !isCustomerSupport && (
+            <AppSidebarNav items={packageNav} />
+          )}
+          {!isSuperAdmin && !isCustomerSupport && !isPackageSeller && (
+            <AppSidebarNav items={userNavigation} />
+          )}
         </SimpleBar>
       </CSidebarNav>
-      <CSidebarToggler
-        className="d-none d-lg-flex"
-        onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
-      />
     </CSidebar>
   )
 }

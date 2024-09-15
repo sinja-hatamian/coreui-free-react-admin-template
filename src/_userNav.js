@@ -4,11 +4,9 @@ import {
   cilDollar,
   cilCheckCircle,
   cilChart,
-  cilChartLine,
   cilBarChart,
   cilExitToApp,
   cilBookmark,
-  cilBasketball,
   cilInbox,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
@@ -77,17 +75,6 @@ const _userNav = [
       },
     ],
   },
-
-  // {
-  //   component: CNavTitle,
-  //   name: 'کلاس های تابستانی',
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'ثبت کلاس',
-  //   to: '/pages/classReg',
-  //   icon: <CIcon icon={cilBasketball} customClassName="nav-icon" />,
-  // },
 ]
 
 export default _userNav

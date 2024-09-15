@@ -3,7 +3,7 @@ import CIcon from '@coreui/icons-react'
 import { cilChart, cilBookmark } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
-const _crmNav = [
+const _supportNav = [
   {
     component: CNavTitle,
     name: 'پشتیبانی مشتریان',
@@ -22,4 +22,4 @@ const _crmNav = [
   },
 ]
 
-export default _crmNav
+export default _supportNav
