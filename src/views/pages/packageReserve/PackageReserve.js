@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
+import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import DatePicker from 'react-multi-date-picker'
@@ -38,6 +39,7 @@ import {
   CModalBody,
   CModalFooter,
   CFormLabel,
+  CFormSelect,
 } from '@coreui/react'
 
 const PackageReserve = () => {
@@ -53,6 +55,10 @@ const PackageReserve = () => {
   const [selectedChildren, setSelectedChildren] = useState({})
   const [nationalCode, setNationalCode] = useState('')
   const [phone, setPhone] = useState('')
+  const [introductionWays, setIntroductionWays] = useState([])
+  const [state, setState] = useState([])
+  const [city, setCity] = useState([])
+  const [value, setValue] = useState(new Date())
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [customerData, setCustomerData] = useState({
@@ -84,15 +90,18 @@ const PackageReserve = () => {
     birthday: '',
   })
 
-  useEffect(() => {
-    // AxiosInstance.get('/package-reserves')
-    //   .then((res) => {
-    //     setData(res.data.data.package_reserves)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
+  // const fetchCity = (state_id) => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_BACKEND_URL}/api/states/${state_id}/cities`)
+  //     .then((res) => {
+  //       setCity(res.data.data.cities)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
 
+  useEffect(() => {
     AxiosInstance.get('/packages/active')
       .then((res) => {
         setIsActivePackage(res.data.data.packages)
@@ -124,11 +133,35 @@ const PackageReserve = () => {
       .catch((err) => {
         console.log(err)
       })
+
+    AxiosInstance.get('/introduction-ways')
+      .then((res) => {
+        setIntroductionWays(res.data.data.introduction_ways)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/states`)
+      .then((res) => {
+        setState(res.data.data.states)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   const handleDate = (date) => {
     const formattedDate = moment(date.toDate()).format('YYYY-MM-DD')
     setFormData({ ...formData, date: formattedDate })
+  }
+
+  const handleBirthDate = (newDate) => {
+    if (newDate) {
+      setValue(newDate.valueOf())
+      setUserData((prev) => ({ ...prev, birthday: newDate.valueOf() }))
+    }
   }
 
   const handleRadioChange = (parentId, child) => {
@@ -356,7 +389,18 @@ const PackageReserve = () => {
   }
 
   const handleSaveCustomerInputChange = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    if (name === 'state_id') {
+      axios
+        .get(`${process.env.REACT_APP_BACKEND_URL}/api/states/${value}/cities`)
+        .then((res) => {
+          setCity(res.data.data.cities)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+    setUserData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSaveCustomer = () => {
@@ -715,6 +759,165 @@ const PackageReserve = () => {
                     </CCol>
                   </CRow>
                 </CCardBody>
+                <CModal visible={isModalCustomerOpen} onClose={() => setIsModalCustomerOpen(false)}>
+                  <CModalHeader className="bg-primary text-white">
+                    <CModalTitle>ثبت مشتری جدید</CModalTitle>
+                  </CModalHeader>
+                  <CModalBody className="p-4">
+                    <CForm>
+                      <CRow>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="national_code">کد ملی</CFormLabel>
+                          <CFormInput
+                            id="national_code"
+                            name="national_code"
+                            value={userData.national_code}
+                            onChange={handleSaveCustomerInputChange}
+                            placeholder="کد ملی"
+                            required
+                          />
+                        </CCol>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="phone">شماره تلفن</CFormLabel>
+                          <CFormInput
+                            id="phone"
+                            name="phone"
+                            value={userData.phone}
+                            onChange={handleSaveCustomerInputChange}
+                            placeholder="شماره تلفن"
+                            required
+                          />
+                        </CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="firstname">نام</CFormLabel>
+                          <CFormInput
+                            id="firstname"
+                            name="firstname"
+                            value={userData.firstname}
+                            onChange={handleSaveCustomerInputChange}
+                            placeholder="نام"
+                            required
+                          />
+                        </CCol>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="lastname">نام خانوادگی</CFormLabel>
+                          <CFormInput
+                            id="lastname"
+                            name="lastname"
+                            value={userData.lastname}
+                            onChange={handleSaveCustomerInputChange}
+                            placeholder="نام خانوادگی"
+                            required
+                          />
+                        </CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="introduction_way">روش معرفی</CFormLabel>
+                          <CFormSelect
+                            id="introduction_way"
+                            name="introduction_way"
+                            value={userData.introduction_way}
+                            onChange={handleSaveCustomerInputChange}
+                            required
+                          >
+                            <option value="">انتخاب کنید</option>
+                            {introductionWays.map((way) => (
+                              <option key={way.id} value={way.id}>
+                                {way.title}
+                              </option>
+                            ))}
+                          </CFormSelect>
+                        </CCol>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="state_id">استان</CFormLabel>
+                          <CFormSelect
+                            id="state_id"
+                            name="state_id"
+                            value={userData.state_id}
+                            onChange={handleSaveCustomerInputChange}
+                            required
+                          >
+                            <option value="">انتخاب کنید</option>
+                            {state.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </CFormSelect>
+                        </CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="city_id">شهر</CFormLabel>
+                          <CFormSelect
+                            id="city_id"
+                            name="city_id"
+                            value={userData.city_id}
+                            onChange={handleSaveCustomerInputChange}
+                            required
+                          >
+                            <option value="">انتخاب کنید</option>
+                            {city.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </CFormSelect>
+                        </CCol>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="password">رمز عبور</CFormLabel>
+                          <CFormInput
+                            id="password"
+                            name="password"
+                            type="password"
+                            value={userData.password}
+                            onChange={handleSaveCustomerInputChange}
+                            placeholder="رمز عبور"
+                            required
+                          />
+                        </CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="gender">جنسیت</CFormLabel>
+                          <CFormSelect
+                            id="gender"
+                            value={userData.gender}
+                            name="gender"
+                            onChange={handleSaveCustomerInputChange}
+                            required
+                          >
+                            <option value="">انتخاب کنید</option>
+                            <option value="male">مرد</option>
+                            <option value="female">زن</option>
+                          </CFormSelect>
+                        </CCol>
+                        <CCol md="6" className="mb-3">
+                          <CFormLabel htmlFor="birthday">تاریخ تولد</CFormLabel>
+                          <DatePicker
+                            id="birthday"
+                            value={value}
+                            onChange={handleBirthDate}
+                            locale={persian_fa}
+                            calendar={persian}
+                            required
+                          />
+                        </CCol>
+                      </CRow>
+                    </CForm>
+                  </CModalBody>
+                  <CModalFooter>
+                    <CButton color="success" onClick={handleSaveCustomer}>
+                      ثبت
+                    </CButton>
+                    <CButton color="secondary" onClick={() => setIsModalCustomerOpen(false)}>
+                      بستن
+                    </CButton>
+                  </CModalFooter>
+                </CModal>
               </CCard>
               <br />
               <CCard>
