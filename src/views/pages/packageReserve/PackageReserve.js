@@ -89,6 +89,22 @@ const PackageReserve = () => {
     gender: '',
     birthday: '',
   })
+  const [packageReserve, setPackageReserve] = useState({
+    user_id: '',
+    package_id: '',
+    date: '',
+    start_time: '',
+    end_time: '',
+    total_count: '',
+    player_count: '',
+    description: '',
+    total_price: '',
+    discount: '',
+    payment_price: '',
+    user_firstname: '',
+    user_lastname: '',
+    items: [],
+  })
 
   // const fetchCity = (state_id) => {
   //   axios
@@ -355,6 +371,7 @@ const PackageReserve = () => {
     // Ensure moment is used correctly to format the time
     const formattedTime = moment(date.toDate()).format('HH:mm')
     setFormData({ ...formData, start_time: formattedTime })
+    setPackageReserve({ ...packageReserve, start_time: formattedTime, end_time: formattedTime })
   }
   const fetchUser = () => {
     AxiosInstance.get(`/users/national-code/${nationalCode}`)
@@ -423,20 +440,7 @@ const PackageReserve = () => {
   const showDetails = (id) => {
     AxiosInstance.get(`/package-reserves/${id}`)
       .then((res) => {
-        setCustomerData({
-          firstname: res.data.data.package_reserve.user_firstname,
-          lastname: res.data.data.package_reserve.user_lastname,
-        })
-        setFormData({
-          date: res.data.data.package_reserve.date,
-          start_time: res.data.data.package_reserve.start_time,
-          total_count: res.data.data.package_reserve.total_count,
-          player_count: res.data.data.package_reserve.player_count,
-          description: res.data.data.package_reserve.description,
-          total_price: res.data.data.package_reserve.total_price,
-          package_id: res.data.data.package_reserve.package_id,
-          items: res.data.data.package_reserve.items,
-        })
+        setPackageReserve(res.data.data.package_reserve)
         setIsModalDetailsOpen(true)
       })
       .catch((err) => {
@@ -570,7 +574,8 @@ const PackageReserve = () => {
                       <CTableRow>
                         <CTableHeaderCell>نام مشتری</CTableHeaderCell>
                         <CTableHeaderCell>تاریخ</CTableHeaderCell>
-                        <CTableHeaderCell>ساعت</CTableHeaderCell>
+                        <CTableHeaderCell>ساعت شروع</CTableHeaderCell>
+                        <CTableHeaderCell>ساعت پایان </CTableHeaderCell>
                         <CTableHeaderCell>قیمت</CTableHeaderCell>
                         <CTableHeaderCell>وضعیت</CTableHeaderCell>
                         <CTableHeaderCell>جزئیات</CTableHeaderCell>
@@ -587,6 +592,11 @@ const PackageReserve = () => {
                           </CTableDataCell>
                           <CTableDataCell>
                             {item.start_time.split('T')[1].split(':').slice(0, 2).join(':')}
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            {item.end_time
+                              ? item.end_time.split('T')[1].split(':').slice(0, 2).join(':')
+                              : '-'}
                           </CTableDataCell>
                           <CTableDataCell>{numberWithCommas(item.total_price)}</CTableDataCell>
                           <CTableDataCell>{item.status}</CTableDataCell>
@@ -611,50 +621,48 @@ const PackageReserve = () => {
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">نام مشتری:</CTableHeaderCell>
                           <CTableDataCell>
-                            {customerData.firstname} {customerData.lastname}
+                            {packageReserve.user_firstname} {packageReserve.user_lastname}
                           </CTableDataCell>
                         </CTableRow>
                         {/* Date */}
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">تاریخ:</CTableHeaderCell>
                           <CTableDataCell>
-                            {moment(formData.date).format('jYYYY/jMM/jDD')}
+                            {moment(packageReserve.date).format('jYYYY/jMM/jDD')}
                           </CTableDataCell>
                         </CTableRow>
-                        {/* Time */}
+                        {/* Start Time */}
                         <CTableRow>
-                          <CTableHeaderCell className="fw-bold">ساعت:</CTableHeaderCell>
-                          <CTableDataCell>{formData.start_time}</CTableDataCell>
+                          <CTableHeaderCell className="fw-bold">ساعت شروع:</CTableHeaderCell>
+                          <CTableDataCell>{packageReserve.start_time}</CTableDataCell>
+                        </CTableRow>
+                        {/* End Time */}
+                        <CTableRow>
+                          <CTableHeaderCell className="fw-bold">ساعت پایانی:</CTableHeaderCell>
+                          <CTableDataCell>{packageReserve.end_time}</CTableDataCell>
                         </CTableRow>
                         {/* Total Guests */}
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">تعداد کل مهمانان:</CTableHeaderCell>
-                          <CTableDataCell>{formData.total_count}</CTableDataCell>
+                          <CTableDataCell>{packageReserve.total_count}</CTableDataCell>
                         </CTableRow>
                         {/* Players Count */}
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">تعداد بازیکن:</CTableHeaderCell>
-                          <CTableDataCell>{formData.player_count}</CTableDataCell>
+                          <CTableDataCell>{packageReserve.player_count}</CTableDataCell>
                         </CTableRow>
                         {/* Selected Package */}
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">پکیج انتخاب شده:</CTableHeaderCell>
                           <CTableDataCell>
-                            {isActivePackage.find((pkg) => pkg.id === formData.package_id)?.title ||
-                              'N/A'}
-                          </CTableDataCell>
-                        </CTableRow>
-                        {/* Final Price */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">قیمت نهایی :</CTableHeaderCell>
-                          <CTableDataCell>
-                            {numberWithCommas(formData.total_price || 0)} ریال
+                            {isActivePackage.find((pkg) => pkg.id === packageReserve.package_id)
+                              ?.title || 'N/A'}
                           </CTableDataCell>
                         </CTableRow>
                         {/* Description */}
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">توضیحات:</CTableHeaderCell>
-                          <CTableDataCell>{formData.description}</CTableDataCell>
+                          <CTableDataCell>{packageReserve.description}</CTableDataCell>
                         </CTableRow>
                       </CTableBody>
                     </CTable>
@@ -670,8 +678,8 @@ const PackageReserve = () => {
                         </CTableRow>
                       </CTableHead>
                       <CTableBody>
-                        {formData.items.length > 0 ? (
-                          formData.items.map((item) => {
+                        {packageReserve.items.length > 0 ? (
+                          packageReserve.items.map((item) => {
                             const foundItem = isActiveItems
                               .map((parent) => parent.children)
                               .flat()
@@ -698,6 +706,29 @@ const PackageReserve = () => {
                             </CTableDataCell>
                           </CTableRow>
                         )}
+                      </CTableBody>
+                    </CTable>
+                    <h5 className="mt-4">پرداختی</h5>
+                    <CTable striped hover bordered responsive>
+                      <CTableHead>
+                        <CTableRow>
+                          <CTableHeaderCell>قیمت کل</CTableHeaderCell>
+                          <CTableHeaderCell>تخفیف</CTableHeaderCell>
+                          <CTableHeaderCell>قیمت پرداختی</CTableHeaderCell>
+                        </CTableRow>
+                      </CTableHead>
+                      <CTableBody>
+                        <CTableRow>
+                          <CTableDataCell>
+                            {numberWithCommas(packageReserve.total_price)} ریال
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            {numberWithCommas(packageReserve.discount)} ریال
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            {numberWithCommas(packageReserve.payment_price)} ریال
+                          </CTableDataCell>
+                        </CTableRow>
                       </CTableBody>
                     </CTable>
                   </CModalBody>

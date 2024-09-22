@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
-import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {
   CRow,
@@ -100,6 +99,7 @@ const ShowPackages = () => {
                 <CTableHeaderCell>نام بسته</CTableHeaderCell>
                 <CTableHeaderCell>قیمت به ازای نفر</CTableHeaderCell>
                 <CTableHeaderCell>توضیحات</CTableHeaderCell>
+                <CTableHeaderCell>مدت زمان (ساعت)</CTableHeaderCell>
                 <CTableHeaderCell> وضعیت</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -109,6 +109,7 @@ const ShowPackages = () => {
                   <CTableDataCell>{item.title}</CTableDataCell>
                   <CTableDataCell>{numberWithCommas(item.price_per_person)}</CTableDataCell>
                   <CTableDataCell>{item.description}</CTableDataCell>
+                  <CTableDataCell>{item.duration}</CTableDataCell>
                   <CTableDataCell>{item.status === '1' ? 'فعال' : 'غیرفعال'}</CTableDataCell>
                   <CTableDataCell>
                     <CButton
@@ -161,6 +162,16 @@ const ShowPackages = () => {
                           value={currentPackage?.description}
                           onChange={handleInput}
                           placeholder="توضیحات"
+                        />
+                      </CCol>
+                    </CRow>
+                    <CRow>
+                      <CCol>
+                        <CFormInput
+                          name="duration"
+                          value={currentPackage?.duration}
+                          onChange={handleInput}
+                          placeholder="مدت زمان"
                         />
                       </CCol>
                     </CRow>

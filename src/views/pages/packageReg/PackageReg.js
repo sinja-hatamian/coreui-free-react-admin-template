@@ -20,6 +20,7 @@ const PackageReg = () => {
     description: '',
     price_per_person: '',
     status: '',
+    duration: '',
   })
 
   const handleInput = (e) => {
@@ -64,6 +65,7 @@ const PackageReg = () => {
           <CRow className="mb-3">
             <CCol md="6">
               <CFormInput
+                label="عنوان پکیج"
                 name="title"
                 placeholder="عنوان"
                 onChange={handleInput}
@@ -73,6 +75,7 @@ const PackageReg = () => {
             </CCol>
             <CCol md="6">
               <CFormInput
+                label="قیمت (به ازای هر نفر)"
                 name="price_per_person"
                 placeholder="قیمت"
                 onChange={handleInput}
@@ -84,6 +87,7 @@ const PackageReg = () => {
           <CRow className="mb-3">
             <CCol md="6">
               <CFormSelect
+                label="وضعیت فعالیت"
                 name="status"
                 onChange={handleInput}
                 value={formData.status}
@@ -93,6 +97,18 @@ const PackageReg = () => {
                 <option value="1">فعال</option>
                 <option value="0">غیرفعال</option>
               </CFormSelect>
+            </CCol>
+          </CRow>
+          <CRow className="mb-3">
+            <CCol md="6">
+              <CFormInput
+                label="مدت زمان (ساعت)"
+                name="duration"
+                onChange={handleInput}
+                value={formData.duration}
+                className="mb-3"
+                placeholder="مدت زمان"
+              />
             </CCol>
           </CRow>
           <CRow className="mb-3">
