@@ -465,6 +465,7 @@ const GiftCard = () => {
                   />
                 </CCol>
               </CRow>
+              <br />
               <CRow>
                 <CCol md={12}>
                   <CButton color="primary" onClick={handleShowHistory}>
@@ -472,10 +473,10 @@ const GiftCard = () => {
                   </CButton>
                 </CCol>
               </CRow>
+              <br />
               <CTable striped>
                 <CTableHead>
                   <CTableRow>
-                    <CTableHeaderCell>کد کارت</CTableHeaderCell>
                     <CTableHeaderCell>مبلغ</CTableHeaderCell>
                     <CTableHeaderCell>توضیحات</CTableHeaderCell>
                     <CTableHeaderCell>وضعیت</CTableHeaderCell>
@@ -487,7 +488,6 @@ const GiftCard = () => {
                 <CTableBody>
                   {cardHistory.map((item) => (
                     <CTableRow key={item.id}>
-                      <CTableDataCell>{item.number}</CTableDataCell>
                       <CTableDataCell>
                         {item && item.amount !== undefined ? numberWithCommas(item.amount) : ''}
                       </CTableDataCell>
