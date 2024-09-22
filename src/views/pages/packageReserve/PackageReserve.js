@@ -1016,12 +1016,18 @@ const PackageReserve = () => {
                     <CCol md="2" className="mb-3">
                       <CForm>
                         <CFormInput
+                          type="number"
+                          min={0}
+                          max={10}
                           id="discount"
                           name="discount"
                           placeholder="تخفیف"
                           label="تخفیف(ریال)"
                           value={formData.discount}
-                          onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
+                          onChange={(e) => {
+                            const value = Math.min(10, Math.max(0, Number(e.target.value)))
+                            setFormData({ ...formData, discount: value })
+                          }}
                         />
                       </CForm>
                     </CCol>
