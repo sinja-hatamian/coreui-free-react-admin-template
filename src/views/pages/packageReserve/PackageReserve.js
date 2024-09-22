@@ -59,8 +59,8 @@ const PackageReserve = () => {
   const [state, setState] = useState([])
   const [city, setCity] = useState([])
   const [value, setValue] = useState(new Date())
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
+  const [startDate, setStartDate] = useState(moment().toDate())
+  const [endDate, setEndDate] = useState(moment().toDate())
   const [customerData, setCustomerData] = useState({
     firstname: '',
     lastname: '',
