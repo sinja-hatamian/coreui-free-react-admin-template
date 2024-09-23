@@ -27,35 +27,59 @@ const _nav = [
     name: 'مدیریت ',
   },
   {
-    component: CNavItem,
-    name: 'افزودن کاربر جدید',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-    to: '/base/operatorReg',
-  },
-  {
-    component: CNavItem,
-    name: ' مدیریت راه های آشنایی',
-    icon: <CIcon icon={cilRoom} customClassName="nav-icon" />,
-    to: '/pages/introductionWays',
-  },
-
-  {
-    component: CNavItem,
-    name: 'مدیریت جدول اعتبارات',
-    to: '/pages/ChargeCredits',
-    icon: <CIcon icon={cilGrid} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'مدیریت بانک ها',
-    to: '/pages/banks',
-    icon: <CIcon icon={cilBank} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'مدیریت دستگاه پوز',
-    to: '/pages/posDevice',
-    icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
+    component: CNavGroup,
+    name: ' امور مدیریتی',
+    icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'افزودن کاربر جدید',
+        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+        to: '/base/operatorReg',
+      },
+      {
+        component: CNavItem,
+        name: ' مدیریت راه های آشنایی',
+        icon: <CIcon icon={cilRoom} customClassName="nav-icon" />,
+        to: '/pages/introductionWays',
+      },
+      {
+        component: CNavItem,
+        name: 'مدیریت جدول اعتبارات',
+        to: '/pages/ChargeCredits',
+        icon: <CIcon icon={cilGrid} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'مدیریت بانک ها',
+        to: '/pages/banks',
+        icon: <CIcon icon={cilBank} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'مدیریت دستگاه پوز',
+        to: '/pages/posDevice',
+        icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: ' مدیریت  بازی ها ',
+        to: '/pages/Games',
+        icon: <CIcon icon={cilGamepad} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'مدیریت گیت ها ',
+        to: '/pages/Gates',
+        icon: <CIcon icon={cilDoor} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: ' مدیریت دستبند ها ',
+        to: '/pages/Wristband',
+        icon: <CIcon icon={cilColorBorder} customClassName="nav-icon" />,
+      },
+    ],
   },
   {
     component: CNavGroup,
@@ -83,24 +107,6 @@ const _nav = [
         to: '/pages/stageDayException',
       },
     ],
-  },
-  {
-    component: CNavItem,
-    name: ' مدیریت  بازی ها ',
-    to: '/pages/Games',
-    icon: <CIcon icon={cilGamepad} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'مدیریت گیت ها ',
-    to: '/pages/Gates',
-    icon: <CIcon icon={cilDoor} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: ' مدیریت دستبند ها ',
-    to: '/pages/Wristband',
-    icon: <CIcon icon={cilColorBorder} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
