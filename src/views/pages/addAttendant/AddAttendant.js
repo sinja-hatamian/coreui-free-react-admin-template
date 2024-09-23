@@ -381,6 +381,7 @@ const AddAttendant = () => {
                       onChange={(event) => handleChange(event, index)}
                       value={item.tag || ''}
                       locale="fa-IR"
+                      required
                     ></CFormInput>
                   </CCol>
                   <CCol md={4}>

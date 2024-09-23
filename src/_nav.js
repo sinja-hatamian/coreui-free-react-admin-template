@@ -168,6 +168,30 @@ const _nav = [
 
   {
     component: CNavTitle,
+    name: 'گزارشات',
+  },
+  {
+    component: CNavGroup,
+    name: 'گزارشات',
+    icon: <CIcon icon={cilInbox} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'گزارشات مشتریان',
+        to: '/pages/customerFullLog',
+        icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'گزارشات گردش حساب مشتری',
+        to: '/pages/customerFinanceLog',
+        icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
+      },
+    ],
+  },
+
+  {
+    component: CNavTitle,
     name: 'پکیج ‌ها',
   },
   {
@@ -204,29 +228,6 @@ const _nav = [
         component: CNavItem,
         name: 'روزهای پکیج',
         to: '/pages/packageDays',
-      },
-    ],
-  },
-  {
-    component: CNavTitle,
-    name: 'گزارشات',
-  },
-  {
-    component: CNavGroup,
-    name: 'گزارشات',
-    icon: <CIcon icon={cilInbox} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'گزارشات مشتریان',
-        to: '/pages/customerFullLog',
-        icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'گزارشات گردش حساب مشتری',
-        to: '/pages/customerFinanceLog',
-        icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
       },
     ],
   },
