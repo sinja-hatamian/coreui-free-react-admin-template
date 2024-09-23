@@ -29,7 +29,6 @@ import {
 const GiftCard = () => {
   const [activeKey, setActiveKey] = useState(1)
   const [card, setCard] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
   // const [value, setValue] = useState(new Date())
   const [file, setFile] = useState(null)
   const [cardNumber, setCardNumber] = useState('')
@@ -330,15 +329,6 @@ const GiftCard = () => {
               <strong>لیست کارت هدیه</strong>
             </CCardHeader>
             <CCardBody>
-              <CFormInput
-                label="جستجوی کارت"
-                name="search"
-                placeholder="شماره کارت را وارد نمایید"
-                aria-label="search"
-                locale="fa-IR"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
               <CTable striped>
                 <CTableHead>
                   <CTableRow>
@@ -351,75 +341,65 @@ const GiftCard = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {searchTerm ? (
-                    card
-                      .filter((item) => item.number.includes(searchTerm))
-                      .map((item) => (
-                        <CTableRow key={item.id}>
-                          <CTableDataCell>{item.number}</CTableDataCell>
-                          <CTableDataCell>
-                            {item && item.amount !== undefined ? (
-                              numberWithCommas(item.amount)
-                            ) : (
-                              <span>Amount Not Available</span>
-                            )}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            {item && item.description !== undefined ? (
-                              item.description
-                            ) : (
-                              <span>Description Not Available</span>
-                            )}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            {item && item.is_active !== undefined ? (
-                              item.is_active ? (
-                                <span className="badge bg-success">فعال</span>
-                              ) : (
-                                <span className="badge bg-danger">غیر فعال</span>
-                              )
-                            ) : (
-                              <span>Active Not Available</span>
-                            )}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            {item && item.directive !== undefined ? (
-                              item.directive
-                            ) : (
-                              <span>Directive Not Available</span>
-                            )}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            <CButton
-                              color="primary"
-                              onClick={() => {
-                                if (item) {
-                                  setFormdata({
-                                    id: item.id,
-                                    numbers: [item.number],
-                                    amount: item.amount,
-                                    directive: item.directive,
-                                    description: item.description,
-                                    is_active: item.is_active,
-                                  })
-                                  setActiveKey(2)
-                                } else {
-                                  console.log('Item is undefined')
-                                }
-                              }}
-                            >
-                              ویرایش
-                            </CButton>
-                          </CTableDataCell>
-                        </CTableRow>
-                      ))
-                  ) : (
-                    <CTableRow>
-                      <CTableDataCell colSpan="6" className="text-center">
-                        هیچ کارتی برای نمایش وجود ندارد
+                  {card.map((item) => (
+                    <CTableRow key={item.id}>
+                      <CTableDataCell>{item.number}</CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.amount !== undefined ? (
+                          numberWithCommas(item.amount)
+                        ) : (
+                          <span>Amount Not Available</span>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.description !== undefined ? (
+                          item.description
+                        ) : (
+                          <span>Description Not Available</span>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.is_active !== undefined ? (
+                          item.is_active ? (
+                            <span className="badge bg-success">فعال</span>
+                          ) : (
+                            <span className="badge bg-danger">غیر فعال</span>
+                          )
+                        ) : (
+                          <span>Active Not Available</span>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {item && item.directive !== undefined ? (
+                          item.directive
+                        ) : (
+                          <span>Directive Not Available</span>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <CButton
+                          color="primary"
+                          onClick={() => {
+                            if (item) {
+                              setFormdata({
+                                id: item.id,
+                                numbers: [item.number],
+                                amount: item.amount,
+                                directive: item.directive,
+                                description: item.description,
+                                is_active: item.is_active,
+                              })
+                              setActiveKey(2)
+                            } else {
+                              console.log('Item is undefined')
+                            }
+                          }}
+                        >
+                          ویرایش
+                        </CButton>
                       </CTableDataCell>
                     </CTableRow>
-                  )}
+                  ))}
                 </CTableBody>
               </CTable>
             </CCardBody>
