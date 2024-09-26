@@ -105,7 +105,6 @@ const Decrese = () => {
           ...formData,
           user_id: customerData.id,
         })
-        console.log(res)
         toast.success('مشتری یافت شد')
       })
       .catch((err) => {
@@ -116,12 +115,10 @@ const Decrese = () => {
   const handleDecrese = () => {
     AxiosInstance.post('/cards/decrease', formData)
       .then((res) => {
-        console.log(formData)
         toast.success('موجودی کارت کاهش یافت')
         setTimeout(() => {
           window.location.reload()
         }, 2000)
-        console.log(res)
       })
       .catch((err) => {
         console.log(err)

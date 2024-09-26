@@ -63,7 +63,6 @@ const CallReport = () => {
     AxiosInstance.get(`/users/national-code/${nationalCode}`)
       .then((res) => {
         const customerData = res.data.data.user
-        console.log(customerData)
         setCustomerData(customerData)
         setFormData({
           ...formData,
@@ -80,7 +79,6 @@ const CallReport = () => {
     AxiosInstance.get(`users/phone/${phone}`)
       .then((res) => {
         const customerData = res.data.data.user
-        console.log(customerData)
         setCustomerData(customerData)
         setFormData({
           ...formData,
@@ -95,7 +93,6 @@ const CallReport = () => {
   }
 
   const showCallReports = () => {
-    console.log(customerData.id)
     AxiosInstance.get(`/call-reports/`, {
       params: {
         user_id: formData.user_id,

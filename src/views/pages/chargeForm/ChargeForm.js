@@ -44,9 +44,7 @@ const ChargeForm = () => {
   useEffect(() => {
     AxiosInstance.get(`/payment-histories/register`)
       .then((res) => {
-        console.log(res.data)
         setChargeForm(res.data.data.payment_histories)
-        console.log(res.data.data.payment_histories.description)
         setPaymentHistories({
           pos_amounts: res.data.data.pos_amounts,
           gift_amount: res.data.data.gift_amount,
@@ -61,7 +59,6 @@ const ChargeForm = () => {
     if (manager.is_superadmin) {
       AxiosInstance.get('/managers')
         .then((res) => {
-          console.log(res.data)
           setManagers(res.data.data.managers)
         })
         .catch((error) => {
@@ -121,7 +118,6 @@ const ChargeForm = () => {
   const handleCashSubmit = () => {
     AxiosInstance.post('/managers/close-register', cash)
       .then((res) => {
-        console.log(res.data)
         alert('صندوق با موفقیت بسته شد')
       })
       .catch((err) => {

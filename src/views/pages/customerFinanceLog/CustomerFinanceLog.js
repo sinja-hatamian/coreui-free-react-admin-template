@@ -68,7 +68,6 @@ const CustomerFinanceLog = () => {
           phone: res.data.data.user.phone,
           card_number: res.data.data.user.card_number,
         })
-        console.log(res.data.data.user)
       })
       .catch((error) => {
         toast.error('مشتری با این کد ملی یافت نشد')
@@ -88,7 +87,6 @@ const CustomerFinanceLog = () => {
           phone: res.data.data.user.phone,
           card_number: res.data.data.user.card_number,
         })
-        console.log(res.data.data.user)
       })
       .catch((err) => {
         console.log(err)
@@ -108,7 +106,6 @@ const CustomerFinanceLog = () => {
           phone: res.data.data.user.phone,
           card_number: res.data.data.user.card_number,
         })
-        console.log(res.data.data.user)
       })
       .catch((err) => {
         console.log(err)
@@ -127,9 +124,6 @@ const CustomerFinanceLog = () => {
         setReport(res.data.data.report)
         setStartDate(res.data.data.start_date)
         setEndDate(res.data.data.end_date)
-        console.log(res.data.data.report)
-        console.log(startDate)
-        console.log(endDate)
       })
       .catch((error) => {
         toast.error(error.response.data.message)

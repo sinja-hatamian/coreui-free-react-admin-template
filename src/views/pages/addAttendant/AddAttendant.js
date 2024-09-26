@@ -103,7 +103,6 @@ const AddAttendant = () => {
       }),
     })
       .then((res) => {
-        console.log(res)
         const newAttendant = res.data.data
         setAttendant([...attendant, newAttendant])
         toast.success('همراه با موفقیت ثبت شد')

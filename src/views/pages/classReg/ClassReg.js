@@ -39,7 +39,6 @@ const ClassReg = () => {
     AxiosInstance.get('/classes')
       .then((res) => {
         setClasses(res.data.data.classes)
-        console.log(res.data)
       })
       .catch((err) => {
         console.log(err)

@@ -6,7 +6,6 @@ import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import jalaali from 'jalaali-js'
-
 import {
   CCol,
   CRow,
@@ -98,10 +97,7 @@ const CustomerFullLog = () => {
   const handleCustomerFullReport = (id) => {
     AxiosInstance.get(`/users/customers/${id}`)
       .then((res) => {
-        console.log(res)
         setCustomerFullReport(res.data.data.report)
-        console.log(customerFullReport)
-        console.log('second modal shows')
       })
       .catch((error) => {
         toast.error(error.response.data.message)
@@ -140,7 +136,6 @@ const CustomerFullLog = () => {
           phone: res.data.data.user.phone,
           card_number: res.data.data.user.card_number,
         })
-        console.log(res.data.data.user)
       })
       .catch((error) => {
         toast.error('مشتری با این کد ملی یافت نشد')
@@ -159,7 +154,6 @@ const CustomerFullLog = () => {
           phone: res.data.data.user.phone,
           card_number: res.data.data.user.card_number,
         })
-        console.log(res.data.data.user)
       })
       .catch((err) => {
         console.log(err)
@@ -178,7 +172,6 @@ const CustomerFullLog = () => {
           phone: res.data.data.user.phone,
           card_number: res.data.data.user.card_number,
         })
-        console.log(res.data.data.user)
       })
       .catch((err) => {
         console.log(err)

@@ -161,7 +161,6 @@ const ShowByTag = () => {
   const handleExit = (TagSerial) => {
     AxiosInstance.post('/attendants/exit', { tag: TagSerial })
       .then((res) => {
-        console.log(res.data)
         if (res.data.data?.customers) {
           setCustomers(res.data.data.customers)
           if (!res.data.data.customers.find((customer) => customer.ExitTime == null)) {
