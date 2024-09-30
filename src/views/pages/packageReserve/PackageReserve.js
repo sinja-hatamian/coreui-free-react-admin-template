@@ -733,6 +733,7 @@ const PackageReserve = () => {
                     </CTable>
                   </CModalBody>
                   <CModalFooter>
+                    <CButton color="warning">پرینت</CButton>
                     <CButton color="secondary" onClick={() => setIsModalDetailsOpen(false)}>
                       بستن
                     </CButton>
