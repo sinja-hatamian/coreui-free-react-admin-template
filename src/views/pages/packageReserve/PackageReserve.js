@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
@@ -8,6 +8,7 @@ import TimePicker from 'react-multi-date-picker/plugins/time_picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import moment from 'moment-jalaali'
+import { useReactToPrint } from 'react-to-print'
 import {
   CCard,
   CCardBody,
@@ -106,6 +107,23 @@ const PackageReserve = () => {
     items: [],
   })
 
+  const contentRef = useRef(null)
+  const reactToPrintFn = useReactToPrint({
+    contentRef,
+    onBeforePrint: () => {
+      const height = handlePixcel(contentRef.current.offsetHeight)
+
+      const style = document.createElement('style')
+      style.innerHTML = `@media print { @page { size: 8cm ${
+        height + height / 2
+      }cm; margin: 0; } .table {  width: 100%; direction: rtl; } }`
+      document.head.appendChild(style)
+      return new Promise((resolve) => {
+        resolve()
+      })
+    },
+  })
+
   // const fetchCity = (state_id) => {
   //   axios
   //     .get(`${process.env.REACT_APP_BACKEND_URL}/api/states/${state_id}/cities`)
@@ -167,6 +185,20 @@ const PackageReserve = () => {
         console.log(err)
       })
   }, [])
+
+  const handlePixcel = (px) => {
+    let d = document.body
+
+    let customeEl = document.createElement('div')
+    customeEl.id = 'printer'
+    customeEl.style =
+      'position: absolute; top: -10000cm; left: -10000cm; height:1000cm; width:1000cm '
+    d.appendChild(customeEl)
+
+    let pixcel = customeEl.offsetHeight / 1000
+    customeEl.remove()
+    return px / pixcel
+  }
 
   const handleDate = (date) => {
     const formattedDate = moment(date.toDate()).format('YYYY-MM-DD')
@@ -614,8 +646,8 @@ const PackageReserve = () => {
                   <CModalHeader className="bg-primary text-white">
                     <CModalTitle>جزئیات رزرو</CModalTitle>
                   </CModalHeader>
-                  <CModalBody className="p-4">
-                    <CTable striped hover bordered responsive className="mb-4">
+                  <CModalBody className="table p-4" ref={contentRef}>
+                    <CTable className="mb-4" striped hover bordered responsive>
                       <CTableBody>
                         {/* Customer Name */}
                         <CTableRow>
@@ -733,7 +765,9 @@ const PackageReserve = () => {
                     </CTable>
                   </CModalBody>
                   <CModalFooter>
-                    <CButton color="warning">پرینت</CButton>
+                    <CButton onClick={reactToPrintFn} color="warning">
+                      پرینت
+                    </CButton>
                     <CButton color="secondary" onClick={() => setIsModalDetailsOpen(false)}>
                       بستن
                     </CButton>
