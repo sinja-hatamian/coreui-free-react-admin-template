@@ -48,7 +48,18 @@ const CustomerFullLog = () => {
 
   const contentRef = useRef(null)
   const reactToPrintFn = useReactToPrint({
-    content: () => contentRef.current,
+    contentRef,
+    onBeforePrint: () => {
+      const height = handlePixcel(contentRef.current.offsetHeight)
+      const style = document.createElement('style')
+      style.innerHTML = `@media print { @page { size: 8cm ${
+        height * 2
+      }cm; margin:0; } .table { width: 100%; direction: rtl; } }`
+      document.head.appendChild(style)
+      return new Promise((resolve) => {
+        resolve()
+      })
+    },
   })
 
   const handleGetReport = () => {
@@ -84,6 +95,20 @@ const CustomerFullLog = () => {
           console.log(error.response.groupCustomers.message)
         }
       })
+  }
+
+  const handlePixcel = (px) => {
+    let d = document.body
+
+    let customeEl = document.createElement('div')
+    customeEl.id = 'printer'
+    customeEl.style =
+      'position: absolute; top: -10000cm; left: -10000cm; height:1000cm; width:1000cm '
+    d.appendChild(customeEl)
+
+    let pixcel = customeEl.offsetHeight / 1000
+    customeEl.remove()
+    return px / pixcel
   }
 
   const handleCustomerReport = (id) => {
@@ -403,15 +428,6 @@ const CustomerFullLog = () => {
                         جزئیات
                       </CButton>
                     </CTableDataCell>
-                    <CTableDataCell>
-                      <CIcon
-                        icon={cilPrint}
-                        onClick={() => {
-                          console.log('print')
-                        }}
-                        style={{ cursor: 'pointer', fontSize: '1.5rem' }}
-                      />
-                    </CTableDataCell>
                   </CTableRow>
                 ))}
               </CTableBody>
@@ -444,39 +460,6 @@ const CustomerFullLog = () => {
                   {customerReport.map((item) => (
                     <CTableRow key={item.id}>
                       <CTableDataCell>{item.TagSerial}</CTableDataCell>
-                      {/* <CTableDataCell>
-                        {(() => {
-                          if (!item.inOutLogEnterTime) {
-                            return 'N/A'
-                          }
-
-                          const dateTime = new Date(item.inOutLogEnterTime)
-                          if (isNaN(dateTime)) {
-                            return 'Invalid date'
-                          }
-
-                          const date = dateTime.toISOString().split('T')[0].replace(/-/g, '/')
-                          const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
-                          return date + '-' + time
-                        })()}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        {(() => {
-                          if (!item.inOutLogExitTime) {
-                            return 'خارج نشده'
-                          }
-
-                          const dateTime = new Date(item.inOutLogExitTime)
-                          if (isNaN(dateTime)) {
-                            return 'Invalid date'
-                          }
-
-                          const jalaliDate = jalaali.toJalaali(dateTime)
-                          const date = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`
-                          const time = `${dateTime.getUTCHours()}:${dateTime.getUTCMinutes()}:${dateTime.getUTCSeconds()}`
-                          return date + '-' + time
-                        })()}
-                      </CTableDataCell> */}
                       <CTableDataCell>
                         {item.UseCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                       </CTableDataCell>
@@ -500,17 +483,6 @@ const CustomerFullLog = () => {
                 </CTableBody>
               </CTable>
             </CModalBody>
-            {/* <CModalFooter
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                borderTop: 'none',
-              }}
-            >
-              <CButton color="danger" onClick={() => setModal(!modal)}>
-                بستن
-              </CButton>
-            </CModalFooter> */}
           </CModal>
         }
         {
@@ -524,24 +496,16 @@ const CustomerFullLog = () => {
             <CModalHeader closeButton>
               <CModalTitle>گزارش کامل مشتری</CModalTitle>
             </CModalHeader>
-            <CModalBody>
-              <CTable striped>
-                <CTableHead>
-                  <CTableRow>
-                    <CTableHeaderCell>شماره دستبند </CTableHeaderCell>
-                    <CTableHeaderCell>زمان ورود </CTableHeaderCell>
-                    <CTableHeaderCell>زمان خروج </CTableHeaderCell>
-                    <CTableHeaderCell> نام بازی </CTableHeaderCell>
-                    <CTableHeaderCell> هزینه در بازی </CTableHeaderCell>
-                    <CTableHeaderCell>تایم اصلی بازی(دقیقه)</CTableHeaderCell>
-                    <CTableHeaderCell>تایم حضور در بازی(دقیقه)</CTableHeaderCell>
-                    <CTableHeaderCell> تایم استراحت (دقیقه)</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {customerFullReport.map((item) => (
-                    <CTableRow key={item.id}>
+            <CModalBody className="table" ref={contentRef}>
+              {customerFullReport.map((item) => (
+                <CTable key={item.id} striped className="mb-4">
+                  <CTableBody>
+                    <CTableRow>
+                      <CTableHeaderCell>شماره دستبند</CTableHeaderCell>
                       <CTableDataCell>{item.customerTagSerial}</CTableDataCell>
+                    </CTableRow>
+                    <CTableRow>
+                      <CTableHeaderCell>زمان ورود</CTableHeaderCell>
                       <CTableDataCell>
                         {(() => {
                           const dateTime = new Date(item.inOutLogEnterTime)
@@ -551,6 +515,9 @@ const CustomerFullLog = () => {
                           return date + '-' + time
                         })()}
                       </CTableDataCell>
+                    </CTableRow>
+                    <CTableRow>
+                      <CTableHeaderCell>زمان خروج</CTableHeaderCell>
                       <CTableDataCell>
                         {(() => {
                           const dateTime = new Date(item.inOutLogExitTime)
@@ -560,15 +527,38 @@ const CustomerFullLog = () => {
                           return date + '-' + time
                         })()}
                       </CTableDataCell>
+                    </CTableRow>
+                    <CTableRow>
+                      <CTableHeaderCell>نام بازی</CTableHeaderCell>
                       <CTableDataCell>{item.gameName}</CTableDataCell>
+                    </CTableRow>
+                    <CTableRow>
+                      <CTableHeaderCell>هزینه در بازی</CTableHeaderCell>
                       <CTableDataCell>{item.inOutLogPrice}</CTableDataCell>
+                    </CTableRow>
+                    <CTableRow>
+                      <CTableHeaderCell>تایم اصلی بازی(دقیقه)</CTableHeaderCell>
                       <CTableDataCell>{item.gameBaseTime}</CTableDataCell>
+                    </CTableRow>
+                    <CTableRow>
+                      <CTableHeaderCell>تایم حضور در بازی(دقیقه)</CTableHeaderCell>
                       <CTableDataCell>{item.totalPlayTime}</CTableDataCell>
+                    </CTableRow>
+                    <CTableRow>
+                      <CTableHeaderCell>تایم استراحت (دقیقه)</CTableHeaderCell>
                       <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
                     </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
+                    <CTableRow>
+                      <CTableHeaderCell>عملیات</CTableHeaderCell>
+                      <CTableDataCell>
+                        <CButton color="warning" onClick={reactToPrintFn}>
+                          چاپ
+                        </CButton>
+                      </CTableDataCell>
+                    </CTableRow>
+                  </CTableBody>
+                </CTable>
+              ))}
             </CModalBody>
             {/* <CModalFooter
               style={{

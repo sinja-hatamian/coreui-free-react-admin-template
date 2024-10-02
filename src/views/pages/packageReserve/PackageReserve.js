@@ -112,7 +112,6 @@ const PackageReserve = () => {
     contentRef,
     onBeforePrint: () => {
       const height = handlePixcel(contentRef.current.offsetHeight)
-
       const style = document.createElement('style')
       style.innerHTML = `@media print { @page { size: 8cm ${
         height + height / 2
