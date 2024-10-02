@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import AxiosInstance from 'src/utils/AxiosInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -6,6 +6,9 @@ import DatePicker from 'react-multi-date-picker'
 import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import jalaali from 'jalaali-js'
+import { useReactToPrint } from 'react-to-print'
+import CIcon from '@coreui/icons-react'
+import { cilPrint } from '@coreui/icons'
 import {
   CCol,
   CRow,
@@ -41,6 +44,11 @@ const CustomerFullLog = () => {
     lastname: '',
     national_code: '',
     phone: '',
+  })
+
+  const contentRef = useRef(null)
+  const reactToPrintFn = useReactToPrint({
+    content: () => contentRef.current,
   })
 
   const handleGetReport = () => {
@@ -395,6 +403,15 @@ const CustomerFullLog = () => {
                         جزئیات
                       </CButton>
                     </CTableDataCell>
+                    <CTableDataCell>
+                      <CIcon
+                        icon={cilPrint}
+                        onClick={() => {
+                          console.log('print')
+                        }}
+                        style={{ cursor: 'pointer', fontSize: '1.5rem' }}
+                      />
+                    </CTableDataCell>
                   </CTableRow>
                 ))}
               </CTableBody>
@@ -517,7 +534,8 @@ const CustomerFullLog = () => {
                     <CTableHeaderCell> نام بازی </CTableHeaderCell>
                     <CTableHeaderCell> هزینه در بازی </CTableHeaderCell>
                     <CTableHeaderCell>تایم اصلی بازی(دقیقه)</CTableHeaderCell>
-                    <CTableHeaderCell> تایم اضافی سپری شده در بازی(دقیقه)</CTableHeaderCell>
+                    <CTableHeaderCell>تایم حضور در بازی(دقیقه)</CTableHeaderCell>
+                    <CTableHeaderCell> تایم استراحت (دقیقه)</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -543,9 +561,9 @@ const CustomerFullLog = () => {
                         })()}
                       </CTableDataCell>
                       <CTableDataCell>{item.gameName}</CTableDataCell>
-
                       <CTableDataCell>{item.inOutLogPrice}</CTableDataCell>
                       <CTableDataCell>{item.gameBaseTime}</CTableDataCell>
+                      <CTableDataCell>{item.totalPlayTime}</CTableDataCell>
                       <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
                     </CTableRow>
                   ))}
