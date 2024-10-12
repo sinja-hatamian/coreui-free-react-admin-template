@@ -187,13 +187,11 @@ const PackageReserve = () => {
 
   const handlePixcel = (px) => {
     let d = document.body
-
     let customeEl = document.createElement('div')
     customeEl.id = 'printer'
     customeEl.style =
       'position: absolute; top: -10000cm; left: -10000cm; height:1000cm; width:1000cm '
     d.appendChild(customeEl)
-
     let pixcel = customeEl.offsetHeight / 1000
     customeEl.remove()
     return px / pixcel
@@ -528,10 +526,6 @@ const PackageReserve = () => {
     setEndDate(date.valueOf())
   }
 
-  const timeSpiliter = (time) => {
-    return time.split('T')[1].split(':').slice(0, 2).join(':')
-  }
-
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -677,12 +671,28 @@ const PackageReserve = () => {
                         {/* Start Time */}
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">ساعت شروع:</CTableHeaderCell>
-                          <CTableDataCell>{packageReserve.start_time}</CTableDataCell>
+                          <CTableDataCell>
+                            {packageReserve.start_time
+                              ? packageReserve.start_time
+                                  .split('T')[1]
+                                  .split(':')
+                                  .slice(0, 2)
+                                  .join(':')
+                              : '-'}
+                          </CTableDataCell>
                         </CTableRow>
                         {/* End Time */}
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">ساعت پایانی:</CTableHeaderCell>
-                          <CTableDataCell>{packageReserve.end_time}</CTableDataCell>
+                          <CTableDataCell>
+                            {packageReserve.end_time
+                              ? packageReserve.end_time
+                                  .split('T')[1]
+                                  .split(':')
+                                  .slice(0, 2)
+                                  .join(':')
+                              : '-'}
+                          </CTableDataCell>
                         </CTableRow>
                         {/* Total Guests */}
                         <CTableRow>
