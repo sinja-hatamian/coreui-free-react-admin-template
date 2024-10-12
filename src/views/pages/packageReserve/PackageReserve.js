@@ -528,6 +528,10 @@ const PackageReserve = () => {
     setEndDate(date.valueOf())
   }
 
+  const timeSpiliter = (time) => {
+    return time.split('T')[1].split(':').slice(0, 2).join(':')
+  }
+
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -630,7 +634,15 @@ const PackageReserve = () => {
                               : '-'}
                           </CTableDataCell>
                           <CTableDataCell>{numberWithCommas(item.total_price)}</CTableDataCell>
-                          <CTableDataCell>{item.status}</CTableDataCell>
+                          <CTableDataCell>
+                            {item.status == 0
+                              ? 'پرداخت نشده'
+                              : item.status == 1
+                              ? 'پرداخت شده'
+                              : item.status == -1
+                              ? 'لغو شده'
+                              : ''}
+                          </CTableDataCell>
                           <CTableDataCell>
                             <CButton color="primary" onClick={() => showDetails(item.id)}>
                               نمایش جزئیات
