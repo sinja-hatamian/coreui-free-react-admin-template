@@ -526,6 +526,8 @@ const PackageReserve = () => {
     setEndDate(date.valueOf())
   }
 
+  const days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه']
+
   return (
     <>
       <CNav variant="tabs" role="tablist">
@@ -603,6 +605,7 @@ const PackageReserve = () => {
                       <CTableRow>
                         <CTableHeaderCell>نام مشتری</CTableHeaderCell>
                         <CTableHeaderCell>تاریخ</CTableHeaderCell>
+                        <CTableHeaderCell>روز</CTableHeaderCell>
                         <CTableHeaderCell>ساعت شروع</CTableHeaderCell>
                         <CTableHeaderCell>ساعت پایان </CTableHeaderCell>
                         <CTableHeaderCell>قیمت</CTableHeaderCell>
@@ -619,6 +622,7 @@ const PackageReserve = () => {
                           <CTableDataCell>
                             {moment(item.date).format('jYYYY/jMM/jDD')}
                           </CTableDataCell>
+                          <CTableDataCell>{days[new Date(item.date).getDay()]}</CTableDataCell>
                           <CTableDataCell>
                             {item.start_time.split('T')[1].split(':').slice(0, 2).join(':')}
                           </CTableDataCell>
