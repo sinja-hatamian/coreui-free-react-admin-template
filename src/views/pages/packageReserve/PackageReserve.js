@@ -815,7 +815,16 @@ const PackageReserve = () => {
           <CRow>
             <CCol>
               <CCard>
-                <CCardHeader>
+                <CCardHeader
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'right',
+                    backgroundColor: '#321FDA',
+                    color: 'white',
+                  }}
+                >
                   <strong>یافتن مشتری </strong>
                 </CCardHeader>
                 <CCardBody>
@@ -832,7 +841,7 @@ const PackageReserve = () => {
                       </CForm>
                     </CCol>
                     <CCol md="6" className="mb-3">
-                      <CButton color="primary" onClick={fetchUser}>
+                      <CButton color="warning" onClick={fetchUser}>
                         جستجو بر اساس کد ملی
                       </CButton>
                     </CCol>
@@ -848,12 +857,12 @@ const PackageReserve = () => {
                       </CForm>
                     </CCol>
                     <CCol md="6" className="mb-3">
-                      <CButton color="primary" onClick={fetchUSerByPhone}>
+                      <CButton color="warning" onClick={fetchUSerByPhone}>
                         جستجو بر اساس شماره تلفن
                       </CButton>
                     </CCol>
                     <CCol md="12" className="mb-3">
-                      <CButton color="primary" onClick={() => setIsModalCustomerOpen(true)}>
+                      <CButton color="success" onClick={() => setIsModalCustomerOpen(true)}>
                         ثبت مشتری جدید
                       </CButton>
                     </CCol>
@@ -1021,7 +1030,16 @@ const PackageReserve = () => {
               </CCard>
               <br />
               <CCard>
-                <CCardHeader>
+                <CCardHeader
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'right',
+                    backgroundColor: '#321FDA',
+                    color: 'white',
+                  }}
+                >
                   <strong>اطلاعات مشتری</strong>
                 </CCardHeader>
                 <CCardBody>
@@ -1035,7 +1053,16 @@ const PackageReserve = () => {
               </CCard>
               <br />
               <CCard>
-                <CCardHeader>
+                <CCardHeader
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'right',
+                    backgroundColor: '#321FDA',
+                    color: 'white',
+                  }}
+                >
                   <strong>اطلاعات رزرو</strong>
                 </CCardHeader>
                 <CCardBody>
@@ -1150,7 +1177,16 @@ const PackageReserve = () => {
               </CCard>
               <br />
               <CCard>
-                <CCardHeader>
+                <CCardHeader
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'right',
+                    backgroundColor: '#321FDA',
+                    color: 'white',
+                  }}
+                >
                   <strong>انتخاب پکیج</strong>
                 </CCardHeader>
                 <CCardBody>
@@ -1194,7 +1230,16 @@ const PackageReserve = () => {
               </CCard>
               <br />
               <CCard>
-                <CCardHeader>
+                <CCardHeader
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'right',
+                    backgroundColor: '#321FDA',
+                    color: 'white',
+                  }}
+                >
                   <strong>انتخاب آیتم</strong>
                 </CCardHeader>
                 <CCardBody>
