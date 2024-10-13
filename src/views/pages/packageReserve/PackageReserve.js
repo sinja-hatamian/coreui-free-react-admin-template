@@ -669,9 +669,18 @@ const PackageReserve = () => {
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">تاریخ:</CTableHeaderCell>
                           <CTableDataCell>
-                            {moment(packageReserve.date).format('jYYYY/jMM/jDD')}
+                            {days[new Date(packageReserve.date).getDay()] +
+                              ' - ' +
+                              moment(packageReserve.date).format('jYYYY/jMM/jDD')}
                           </CTableDataCell>
                         </CTableRow>
+                        {/* Day */}
+                        {/* <CTableRow>
+                          <CTableHeaderCell className="fw-bold">روز:</CTableHeaderCell>
+                          <CTableDataCell>
+                            {days[new Date(packageReserve.date).getDay()]}
+                          </CTableDataCell>
+                        </CTableRow> */}
                         {/* Start Time */}
                         <CTableRow>
                           <CTableHeaderCell className="fw-bold">ساعت شروع:</CTableHeaderCell>
