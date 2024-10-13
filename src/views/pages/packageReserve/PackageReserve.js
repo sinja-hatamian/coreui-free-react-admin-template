@@ -123,17 +123,6 @@ const PackageReserve = () => {
     },
   })
 
-  // const fetchCity = (state_id) => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_BACKEND_URL}/api/states/${state_id}/cities`)
-  //     .then((res) => {
-  //       setCity(res.data.data.cities)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }
-
   useEffect(() => {
     AxiosInstance.get('/packages/active')
       .then((res) => {
@@ -545,269 +534,299 @@ const PackageReserve = () => {
       <CTabContent>
         <CTabPane aria-label="home-tab" visible={activeKey === 1}>
           <CRow>
-            <CCard>
-              <CCardHeader>
-                <strong>جستجو بر اساس تاریخ</strong>
-              </CCardHeader>
-              <CCardBody>
-                <CRow>
-                  <CForm>
-                    <CCol md="6" className="mb-3">
-                      <CFormLabel
-                        htmlFor="startDate"
-                        className="form-label"
-                        style={{
-                          padding: '10px',
-                        }}
-                      >
-                        از تاریخ
-                      </CFormLabel>
-                      <DatePicker
-                        value={startDate}
-                        onChange={handleStartDate}
-                        locale={persian_fa}
-                        calendar={persian}
-                      />
-                    </CCol>
-                    <CCol md="6" className="mb-3">
-                      <CFormLabel
-                        htmlFor="endDate"
-                        className="form-label"
-                        style={{
-                          padding: '10px',
-                        }}
-                      >
-                        تا تاریخ
-                      </CFormLabel>
-                      <DatePicker
-                        value={endDate}
-                        onChange={handleEndDate}
-                        locale={persian_fa}
-                        calendar={persian}
-                      />
-                    </CCol>
-                  </CForm>
-                </CRow>
-                <CButton color="primary" onClick={handleShowReserves}>
-                  جستجو
-                </CButton>
-              </CCardBody>
-            </CCard>
             <CCol>
-              <br />
               <CCard>
-                <CCardHeader>
-                  <strong>لیست کلیه رزروها</strong>
+                <CCardHeader
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'right',
+                    backgroundColor: '#321FDA',
+                    color: 'white',
+                    padding: '10px 0', // Adjust padding as needed
+                    margin: '0', // Ensure no margin
+                  }}
+                >
+                  <strong>جستجو بر اساس تاریخ</strong>
                 </CCardHeader>
                 <CCardBody>
-                  <CTable>
-                    <CTableHead>
-                      <CTableRow>
-                        <CTableHeaderCell>نام مشتری</CTableHeaderCell>
-                        <CTableHeaderCell>تاریخ</CTableHeaderCell>
-                        <CTableHeaderCell>روز</CTableHeaderCell>
-                        <CTableHeaderCell>ساعت شروع</CTableHeaderCell>
-                        <CTableHeaderCell>ساعت پایان </CTableHeaderCell>
-                        <CTableHeaderCell>قیمت</CTableHeaderCell>
-                        <CTableHeaderCell>وضعیت</CTableHeaderCell>
-                        <CTableHeaderCell>جزئیات</CTableHeaderCell>
-                      </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                      {data.map((item) => (
-                        <CTableRow key={item.id}>
-                          <CTableDataCell>
-                            {item.user_firstname} {item.user_lastname}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            {moment(item.date).format('jYYYY/jMM/jDD')}
-                          </CTableDataCell>
-                          <CTableDataCell>{days[new Date(item.date).getDay()]}</CTableDataCell>
-                          <CTableDataCell>
-                            {item.start_time.split('T')[1].split(':').slice(0, 2).join(':')}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            {item.end_time
-                              ? item.end_time.split('T')[1].split(':').slice(0, 2).join(':')
-                              : '-'}
-                          </CTableDataCell>
-                          <CTableDataCell>{numberWithCommas(item.total_price)}</CTableDataCell>
-                          <CTableDataCell>
-                            {item.status == 0
-                              ? 'پرداخت نشده'
-                              : item.status == 1
-                              ? 'پرداخت شده'
-                              : item.status == -1
-                              ? 'لغو شده'
-                              : ''}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            <CButton color="primary" onClick={() => showDetails(item.id)}>
-                              نمایش جزئیات
-                            </CButton>
-                          </CTableDataCell>
-                        </CTableRow>
-                      ))}
-                    </CTableBody>
-                  </CTable>
+                  <CRow>
+                    <CForm>
+                      <CCol md="6" className="mb-3">
+                        <CFormLabel
+                          htmlFor="startDate"
+                          className="form-label"
+                          style={{
+                            padding: '10px',
+                          }}
+                        >
+                          از تاریخ
+                        </CFormLabel>
+                        <DatePicker
+                          value={startDate}
+                          onChange={handleStartDate}
+                          locale={persian_fa}
+                          calendar={persian}
+                          className="form-control"
+                        />
+                      </CCol>
+                      <CCol md="6" className="mb-3">
+                        <CFormLabel
+                          htmlFor="endDate"
+                          className="form-label"
+                          style={{
+                            padding: '10px',
+                          }}
+                        >
+                          تا تاریخ
+                        </CFormLabel>
+                        <DatePicker
+                          value={endDate}
+                          onChange={handleEndDate}
+                          locale={persian_fa}
+                          calendar={persian}
+                          className="form-control"
+                        />
+                      </CCol>
+                    </CForm>
+                  </CRow>
+                  <CCol md="12" className="mb-3">
+                    <CButton color="success" onClick={handleShowReserves}>
+                      جستجو
+                    </CButton>
+                  </CCol>
                 </CCardBody>
-                <CModal visible={isModalDetailsOpen} onClose={() => setIsModalDetailsOpen(false)}>
-                  <CModalHeader className="bg-primary text-white">
-                    <CModalTitle>جزئیات رزرو</CModalTitle>
-                  </CModalHeader>
-                  <CModalBody className="table p-4" ref={contentRef}>
-                    <CTable className="mb-4" striped hover bordered responsive>
+              </CCard>
+              <CCol>
+                <br />
+                <CCard>
+                  <CCardHeader
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      textAlign: 'right',
+                      backgroundColor: '#321FDA',
+                      color: 'white',
+                    }}
+                  >
+                    <strong>لیست کلیه رزروها</strong>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CTable>
+                      <CTableHead>
+                        <CTableRow>
+                          <CTableHeaderCell>نام مشتری</CTableHeaderCell>
+                          <CTableHeaderCell>تاریخ</CTableHeaderCell>
+                          <CTableHeaderCell>روز</CTableHeaderCell>
+                          <CTableHeaderCell>ساعت شروع</CTableHeaderCell>
+                          <CTableHeaderCell>ساعت پایان </CTableHeaderCell>
+                          <CTableHeaderCell>قیمت</CTableHeaderCell>
+                          <CTableHeaderCell>وضعیت</CTableHeaderCell>
+                          <CTableHeaderCell>جزئیات</CTableHeaderCell>
+                        </CTableRow>
+                      </CTableHead>
                       <CTableBody>
-                        {/* Customer Name */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">نام مشتری:</CTableHeaderCell>
-                          <CTableDataCell>
-                            {packageReserve.user_firstname} {packageReserve.user_lastname}
-                          </CTableDataCell>
-                        </CTableRow>
-                        {/* Date */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">تاریخ:</CTableHeaderCell>
-                          <CTableDataCell>
-                            {days[new Date(packageReserve.date).getDay()] +
-                              ' - ' +
-                              moment(packageReserve.date).format('jYYYY/jMM/jDD')}
-                          </CTableDataCell>
-                        </CTableRow>
-                        {/* Day */}
-                        {/* <CTableRow>
+                        {data.map((item) => (
+                          <CTableRow key={item.id}>
+                            <CTableDataCell>
+                              {item.user_firstname} {item.user_lastname}
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              {moment(item.date).format('jYYYY/jMM/jDD')}
+                            </CTableDataCell>
+                            <CTableDataCell>{days[new Date(item.date).getDay()]}</CTableDataCell>
+                            <CTableDataCell>
+                              {item.start_time.split('T')[1].split(':').slice(0, 2).join(':')}
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              {item.end_time
+                                ? item.end_time.split('T')[1].split(':').slice(0, 2).join(':')
+                                : '-'}
+                            </CTableDataCell>
+                            <CTableDataCell>{numberWithCommas(item.total_price)}</CTableDataCell>
+                            <CTableDataCell>
+                              {item.status == 0
+                                ? 'پرداخت نشده'
+                                : item.status == 1
+                                ? 'پرداخت شده'
+                                : item.status == -1
+                                ? 'لغو شده'
+                                : ''}
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              <CButton color="primary" onClick={() => showDetails(item.id)}>
+                                نمایش جزئیات
+                              </CButton>
+                            </CTableDataCell>
+                          </CTableRow>
+                        ))}
+                      </CTableBody>
+                    </CTable>
+                  </CCardBody>
+                  <CModal visible={isModalDetailsOpen} onClose={() => setIsModalDetailsOpen(false)}>
+                    <CModalHeader className="bg-primary text-white">
+                      <CModalTitle>جزئیات رزرو</CModalTitle>
+                    </CModalHeader>
+                    <CModalBody className="table p-4" ref={contentRef}>
+                      <CTable className="mb-4" striped hover bordered responsive>
+                        <CTableBody>
+                          {/* Customer Name */}
+                          <CTableRow>
+                            <CTableHeaderCell className="fw-bold">نام مشتری:</CTableHeaderCell>
+                            <CTableDataCell>
+                              {packageReserve.user_firstname} {packageReserve.user_lastname}
+                            </CTableDataCell>
+                          </CTableRow>
+                          {/* Date */}
+                          <CTableRow>
+                            <CTableHeaderCell className="fw-bold">تاریخ:</CTableHeaderCell>
+                            <CTableDataCell>
+                              {days[new Date(packageReserve.date).getDay()] +
+                                ' - ' +
+                                moment(packageReserve.date).format('jYYYY/jMM/jDD')}
+                            </CTableDataCell>
+                          </CTableRow>
+                          {/* Day */}
+                          {/* <CTableRow>
                           <CTableHeaderCell className="fw-bold">روز:</CTableHeaderCell>
                           <CTableDataCell>
                             {days[new Date(packageReserve.date).getDay()]}
                           </CTableDataCell>
                         </CTableRow> */}
-                        {/* Start Time */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">ساعت شروع:</CTableHeaderCell>
-                          <CTableDataCell>
-                            {packageReserve.start_time
-                              ? packageReserve.start_time
-                                  .split('T')[1]
-                                  .split(':')
-                                  .slice(0, 2)
-                                  .join(':')
-                              : '-'}
-                          </CTableDataCell>
-                        </CTableRow>
-                        {/* End Time */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">ساعت پایانی:</CTableHeaderCell>
-                          <CTableDataCell>
-                            {packageReserve.end_time
-                              ? packageReserve.end_time
-                                  .split('T')[1]
-                                  .split(':')
-                                  .slice(0, 2)
-                                  .join(':')
-                              : '-'}
-                          </CTableDataCell>
-                        </CTableRow>
-                        {/* Total Guests */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">تعداد کل مهمانان:</CTableHeaderCell>
-                          <CTableDataCell>{packageReserve.total_count}</CTableDataCell>
-                        </CTableRow>
-                        {/* Players Count */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">تعداد بازیکن:</CTableHeaderCell>
-                          <CTableDataCell>{packageReserve.player_count}</CTableDataCell>
-                        </CTableRow>
-                        {/* Selected Package */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">پکیج انتخاب شده:</CTableHeaderCell>
-                          <CTableDataCell>
-                            {isActivePackage.find((pkg) => pkg.id === packageReserve.package_id)
-                              ?.title || 'N/A'}
-                          </CTableDataCell>
-                        </CTableRow>
-                        {/* Description */}
-                        <CTableRow>
-                          <CTableHeaderCell className="fw-bold">توضیحات:</CTableHeaderCell>
-                          <CTableDataCell>{packageReserve.description}</CTableDataCell>
-                        </CTableRow>
-                      </CTableBody>
-                    </CTable>
-
-                    {/* Item Details */}
-                    <h5 className="mt-4">آیتم‌ها</h5>
-                    <CTable striped hover bordered responsive>
-                      <CTableHead>
-                        <CTableRow>
-                          <CTableHeaderCell>نام آیتم</CTableHeaderCell>
-                          <CTableHeaderCell>تعداد</CTableHeaderCell>
-                          <CTableHeaderCell>قیمت کل (ریال)</CTableHeaderCell>
-                        </CTableRow>
-                      </CTableHead>
-                      <CTableBody>
-                        {packageReserve.items.length > 0 ? (
-                          packageReserve.items.map((item) => {
-                            const foundItem = isActiveItems
-                              .map((parent) => parent.children)
-                              .flat()
-                              .concat(isActiveOtherItems)
-                              .find((i) => String(i.id) === String(item.id))
-
-                            const title = foundItem?.title ?? 'Unknown Title'
-                            const price = foundItem?.price ?? 0
-
-                            return (
-                              <CTableRow key={item.id}>
-                                <CTableDataCell>{title}</CTableDataCell>
-                                <CTableDataCell>{item.count}</CTableDataCell>
-                                <CTableDataCell>
-                                  {numberWithCommas(item.count * price)}
-                                </CTableDataCell>
-                              </CTableRow>
-                            )
-                          })
-                        ) : (
+                          {/* Start Time */}
                           <CTableRow>
-                            <CTableDataCell colSpan="3" className="text-center">
-                              آیتمی یافت نشد
+                            <CTableHeaderCell className="fw-bold">ساعت شروع:</CTableHeaderCell>
+                            <CTableDataCell>
+                              {packageReserve.start_time
+                                ? packageReserve.start_time
+                                    .split('T')[1]
+                                    .split(':')
+                                    .slice(0, 2)
+                                    .join(':')
+                                : '-'}
                             </CTableDataCell>
                           </CTableRow>
-                        )}
-                      </CTableBody>
-                    </CTable>
-                    <h5 className="mt-4">پرداختی</h5>
-                    <CTable striped hover bordered responsive>
-                      <CTableHead>
-                        <CTableRow>
-                          <CTableHeaderCell>قیمت کل</CTableHeaderCell>
-                          <CTableHeaderCell>تخفیف</CTableHeaderCell>
-                          <CTableHeaderCell>قیمت پرداختی</CTableHeaderCell>
-                        </CTableRow>
-                      </CTableHead>
-                      <CTableBody>
-                        <CTableRow>
-                          <CTableDataCell>
-                            {numberWithCommas(packageReserve.total_price)} ریال
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            {numberWithCommas(packageReserve.discount)} ریال
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            {numberWithCommas(packageReserve.payment_price)} ریال
-                          </CTableDataCell>
-                        </CTableRow>
-                      </CTableBody>
-                    </CTable>
-                  </CModalBody>
-                  <CModalFooter>
-                    <CButton onClick={reactToPrintFn} color="warning">
-                      پرینت
-                    </CButton>
-                    <CButton color="secondary" onClick={() => setIsModalDetailsOpen(false)}>
-                      بستن
-                    </CButton>
-                  </CModalFooter>
-                </CModal>
-              </CCard>
+                          {/* End Time */}
+                          <CTableRow>
+                            <CTableHeaderCell className="fw-bold">ساعت پایانی:</CTableHeaderCell>
+                            <CTableDataCell>
+                              {packageReserve.end_time
+                                ? packageReserve.end_time
+                                    .split('T')[1]
+                                    .split(':')
+                                    .slice(0, 2)
+                                    .join(':')
+                                : '-'}
+                            </CTableDataCell>
+                          </CTableRow>
+                          {/* Total Guests */}
+                          <CTableRow>
+                            <CTableHeaderCell className="fw-bold">
+                              تعداد کل مهمانان:
+                            </CTableHeaderCell>
+                            <CTableDataCell>{packageReserve.total_count}</CTableDataCell>
+                          </CTableRow>
+                          {/* Players Count */}
+                          <CTableRow>
+                            <CTableHeaderCell className="fw-bold">تعداد بازیکن:</CTableHeaderCell>
+                            <CTableDataCell>{packageReserve.player_count}</CTableDataCell>
+                          </CTableRow>
+                          {/* Selected Package */}
+                          <CTableRow>
+                            <CTableHeaderCell className="fw-bold">
+                              پکیج انتخاب شده:
+                            </CTableHeaderCell>
+                            <CTableDataCell>
+                              {isActivePackage.find((pkg) => pkg.id === packageReserve.package_id)
+                                ?.title || 'N/A'}
+                            </CTableDataCell>
+                          </CTableRow>
+                          {/* Description */}
+                          <CTableRow>
+                            <CTableHeaderCell className="fw-bold">توضیحات:</CTableHeaderCell>
+                            <CTableDataCell>{packageReserve.description}</CTableDataCell>
+                          </CTableRow>
+                        </CTableBody>
+                      </CTable>
+
+                      {/* Item Details */}
+                      <h5 className="mt-4">آیتم‌ها</h5>
+                      <CTable striped hover bordered responsive>
+                        <CTableHead>
+                          <CTableRow>
+                            <CTableHeaderCell>نام آیتم</CTableHeaderCell>
+                            <CTableHeaderCell>تعداد</CTableHeaderCell>
+                            <CTableHeaderCell>قیمت کل (ریال)</CTableHeaderCell>
+                          </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                          {packageReserve.items.length > 0 ? (
+                            packageReserve.items.map((item) => {
+                              const foundItem = isActiveItems
+                                .map((parent) => parent.children)
+                                .flat()
+                                .concat(isActiveOtherItems)
+                                .find((i) => String(i.id) === String(item.id))
+
+                              const title = foundItem?.title ?? 'Unknown Title'
+                              const price = foundItem?.price ?? 0
+
+                              return (
+                                <CTableRow key={item.id}>
+                                  <CTableDataCell>{title}</CTableDataCell>
+                                  <CTableDataCell>{item.count}</CTableDataCell>
+                                  <CTableDataCell>
+                                    {numberWithCommas(item.count * price)}
+                                  </CTableDataCell>
+                                </CTableRow>
+                              )
+                            })
+                          ) : (
+                            <CTableRow>
+                              <CTableDataCell colSpan="3" className="text-center">
+                                آیتمی یافت نشد
+                              </CTableDataCell>
+                            </CTableRow>
+                          )}
+                        </CTableBody>
+                      </CTable>
+                      <h5 className="mt-4">پرداختی</h5>
+                      <CTable striped hover bordered responsive>
+                        <CTableHead>
+                          <CTableRow>
+                            <CTableHeaderCell>قیمت کل</CTableHeaderCell>
+                            <CTableHeaderCell>تخفیف</CTableHeaderCell>
+                            <CTableHeaderCell>قیمت پرداختی</CTableHeaderCell>
+                          </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                          <CTableRow>
+                            <CTableDataCell>
+                              {numberWithCommas(packageReserve.total_price)} ریال
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              {numberWithCommas(packageReserve.discount)} ریال
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              {numberWithCommas(packageReserve.payment_price)} ریال
+                            </CTableDataCell>
+                          </CTableRow>
+                        </CTableBody>
+                      </CTable>
+                    </CModalBody>
+                    <CModalFooter>
+                      <CButton onClick={reactToPrintFn} color="warning">
+                        پرینت
+                      </CButton>
+                      <CButton color="secondary" onClick={() => setIsModalDetailsOpen(false)}>
+                        بستن
+                      </CButton>
+                    </CModalFooter>
+                  </CModal>
+                </CCard>
+              </CCol>
             </CCol>
           </CRow>
         </CTabPane>
