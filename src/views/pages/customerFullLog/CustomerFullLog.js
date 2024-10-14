@@ -7,8 +7,6 @@ import persian from 'react-date-object/calendars/persian'
 import persian_fa from 'react-date-object/locales/persian_fa'
 import jalaali from 'jalaali-js'
 import { useReactToPrint } from 'react-to-print'
-import CIcon from '@coreui/icons-react'
-import { cilPrint } from '@coreui/icons'
 import {
   CCol,
   CRow,
@@ -530,15 +528,17 @@ const CustomerFullLog = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell>نام بازی</CTableHeaderCell>
-                      <CTableDataCell>{item.gameName}</CTableDataCell>
+                      <CTableDataCell>{item.gameName ? item.gameName : '-'}</CTableDataCell>
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell>هزینه در بازی</CTableHeaderCell>
-                      <CTableDataCell>{item.inOutLogPrice}</CTableDataCell>
+                      <CTableDataCell>
+                        {item.inOutLogPrice ? item.inOutLogPrice : '-'}
+                      </CTableDataCell>
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell>تایم اصلی بازی(دقیقه)</CTableHeaderCell>
-                      <CTableDataCell>{item.gameBaseTime}</CTableDataCell>
+                      <CTableDataCell>{item.gameBaseTime ? item.gameBaseTime : '-'}</CTableDataCell>
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell>تایم حضور در بازی(دقیقه)</CTableHeaderCell>
@@ -546,31 +546,19 @@ const CustomerFullLog = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell>تایم استراحت (دقیقه)</CTableHeaderCell>
-                      <CTableDataCell>{item.inOutLogAbsentTime}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell>عملیات</CTableHeaderCell>
                       <CTableDataCell>
-                        <CButton color="warning" onClick={reactToPrintFn}>
-                          چاپ
-                        </CButton>
+                        {item.inOutLogAbsentTime ? item.inOutLogAbsentTime : '-'}
                       </CTableDataCell>
                     </CTableRow>
                   </CTableBody>
                 </CTable>
               ))}
+              <div>
+                <CButton color="warning" onClick={reactToPrintFn}>
+                  پرینت
+                </CButton>
+              </div>
             </CModalBody>
-            {/* <CModalFooter
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                borderTop: 'none',
-              }}
-            >
-              <CButton color="danger" onClick={() => setModal(!modal)}>
-                بستن
-              </CButton>
-            </CModalFooter> */}
           </CModal>
         }
       </CCol>
