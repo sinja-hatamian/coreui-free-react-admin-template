@@ -389,7 +389,6 @@ const PackageReserve = () => {
     // Ensure moment is used correctly to format the time
     const formattedTime = moment(date.toDate()).format('HH:mm')
     setFormData({ ...formData, start_time: formattedTime })
-    setPackageReserve({ ...packageReserve, start_time: formattedTime, end_time: formattedTime })
   }
   const fetchUser = () => {
     AxiosInstance.get(`/users/national-code/${nationalCode}`)
@@ -467,7 +466,6 @@ const PackageReserve = () => {
   }
 
   const hadleCalculate = () => {
-    console.log(formData)
     AxiosInstance.post('/package-reserves/calculate-price', formData)
       .then((res) => {
         setCalculatedPrice(res.data.data.total_price)
@@ -638,7 +636,9 @@ const PackageReserve = () => {
                             </CTableDataCell>
                             <CTableDataCell>{days[new Date(item.date).getDay()]}</CTableDataCell>
                             <CTableDataCell>
-                              {item.start_time.split('T')[1].split(':').slice(0, 2).join(':')}
+                              {item.start_time
+                                ? item.start_time.split('T')[1].split(':').slice(0, 2).join(':')
+                                : '-'}
                             </CTableDataCell>
                             <CTableDataCell>
                               {item.end_time
@@ -688,13 +688,6 @@ const PackageReserve = () => {
                                 moment(packageReserve.date).format('jYYYY/jMM/jDD')}
                             </CTableDataCell>
                           </CTableRow>
-                          {/* Day */}
-                          {/* <CTableRow>
-                          <CTableHeaderCell className="fw-bold">روز:</CTableHeaderCell>
-                          <CTableDataCell>
-                            {days[new Date(packageReserve.date).getDay()]}
-                          </CTableDataCell>
-                        </CTableRow> */}
                           {/* Start Time */}
                           <CTableRow>
                             <CTableHeaderCell className="fw-bold">ساعت شروع:</CTableHeaderCell>
@@ -1085,20 +1078,50 @@ const PackageReserve = () => {
                   <strong>اطلاعات رزرو</strong>
                 </CCardHeader>
                 <CCardBody>
-                  <CRow
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      textAlign: 'right',
-                      gap: '20px', // Add gap between columns
-                    }}
-                  >
-                    <CCol md="2" className="mb-3">
-                      <CForm>
-                        <div>
-                          <p>تاریخ</p>
-                        </div>
+                  <CForm>
+                    <CRow className="mb-3">
+                      <CCol md="6">
+                        <CFormLabel htmlFor="total_count">تعداد کل مهمانان</CFormLabel>
+                        <CFormInput
+                          id="total_count"
+                          name="total_count"
+                          placeholder="تعداد کل مهمانان"
+                          value={formData.total_count}
+                          onChange={(e) =>
+                            setFormData({ ...formData, total_count: e.target.value })
+                          }
+                        />
+                        <CFormLabel htmlFor="player_count" className="mt-3">
+                          تعداد بازیکن
+                        </CFormLabel>
+                        <CFormInput
+                          id="player_count"
+                          name="player_count"
+                          placeholder="تعداد بازیکن"
+                          value={formData.player_count}
+                          onChange={(e) =>
+                            setFormData({ ...formData, player_count: e.target.value })
+                          }
+                        />
+                        <CFormLabel htmlFor="discount" className="mt-3">
+                          تخفیف (ریال)
+                        </CFormLabel>
+                        <CFormInput
+                          type="number"
+                          min={0}
+                          max={10}
+                          id="discount"
+                          name="discount"
+                          placeholder="تخفیف"
+                          value={formData.discount}
+                          onChange={(e) => {
+                            const value = Math.min(10, Math.max(0, Number(e.target.value)))
+                            setFormData({ ...formData, discount: value })
+                          }}
+                        />
+                      </CCol>
+                      <CCol md="6" style={{ display: 'flex', justifyContent: 'space-around' }}>
+                        <CFormLabel htmlFor="date">تاریخ</CFormLabel>
                         <DatePicker
                           value={
                             formData.date ? moment(formData.date, 'YYYY-MM-DD').toDate() : null
@@ -1108,18 +1131,13 @@ const PackageReserve = () => {
                           calendar={persian}
                           calendarPosition="bottom-right"
                           locale={persian_fa}
+                          className="form-control"
                         />
-                      </CForm>
-                    </CCol>
-                    <CCol md="2" className="mb-3">
-                      <CForm>
-                        <div>
-                          <p>ساعت</p>
-                        </div>
+                        <CFormLabel htmlFor="time">ساعت</CFormLabel>
                         <DatePicker
                           disableDayPicker
                           format="HH:mm"
-                          calendar={persian} // Your calendar settings
+                          calendar={persian}
                           locale={persian_fa}
                           value={
                             formData.start_time
@@ -1127,71 +1145,26 @@ const PackageReserve = () => {
                               : null
                           }
                           onChange={handleTimeChange}
-                          plugins={[<TimePicker key={1} hideSeconds />]} // Using timepicker with hidden seconds
+                          plugins={[<TimePicker key={1} hideSeconds />]}
+                          className="form-control"
                         />
-                      </CForm>
-                    </CCol>
-                    <CCol md="2" className="mb-3">
-                      <CForm>
-                        <CFormInput
-                          id="total_count"
-                          name="total_count"
-                          placeholder=" تعداد کل مهمانان"
-                          label="تعداد کل مهمانان"
-                          value={formData.total_count}
-                          onChange={(e) =>
-                            setFormData({ ...formData, total_count: e.target.value })
-                          }
-                        />
-                      </CForm>
-                    </CCol>
-                    <CCol md="2" className="mb-3">
-                      <CForm>
-                        <CFormInput
-                          id="player_count"
-                          name="player_count"
-                          placeholder="تعداد بازیکن"
-                          label="تعداد بازیکن"
-                          value={formData.player_count}
-                          onChange={(e) =>
-                            setFormData({ ...formData, player_count: e.target.value })
-                          }
-                        />
-                      </CForm>
-                    </CCol>
-                    <CCol md="2" className="mb-3">
-                      <CForm>
-                        <CFormInput
-                          type="number"
-                          min={0}
-                          max={10}
-                          id="discount"
-                          name="discount"
-                          placeholder="تخفیف"
-                          label="تخفیف(ریال)"
-                          value={formData.discount}
-                          onChange={(e) => {
-                            const value = Math.min(10, Math.max(0, Number(e.target.value)))
-                            setFormData({ ...formData, discount: value })
-                          }}
-                        />
-                      </CForm>
-                    </CCol>
-                    <CCol md="12" className="mb-3">
-                      <CForm>
+                      </CCol>
+                    </CRow>
+                    <CRow>
+                      <CCol md="12" className="mb-3">
+                        <CFormLabel htmlFor="description">توضیحات</CFormLabel>
                         <CFormTextarea
                           id="description"
                           name="description"
                           placeholder="توضیحات"
-                          label="توضیحات"
                           value={formData.description}
                           onChange={(e) =>
                             setFormData({ ...formData, description: e.target.value })
                           }
                         />
-                      </CForm>
-                    </CCol>
-                  </CRow>
+                      </CCol>
+                    </CRow>
+                  </CForm>
                 </CCardBody>
               </CCard>
               <br />
